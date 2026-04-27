@@ -157,6 +157,47 @@ function BriefMetric({ value, label }: { value: string; label: string }) {
   );
 }
 
+function LoyaltyChart() {
+  const points = loyalty.map((value, index) => {
+    const x = 55 + index * 32.5;
+    const y = 330 - (value / 60) * 250;
+    return `${x},${y}`;
+  });
+  const line = points.join(" ");
+  const area = `55,330 ${line} 445,330`;
+
+  return (
+    <article className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-[21px] font-black uppercase leading-none tracking-normal">LOYALTY MEMBERS</h3>
+          <p className="mt-[9px] text-[12px] font-black uppercase leading-none tracking-[0.22em] text-muted-foreground">CUMULATIVE GROWTH 2025-26</p>
+        </div>
+        <span className="grid size-[32px] place-items-center rounded-full bg-muted/25 text-muted-foreground" aria-hidden="true">⌁</span>
+      </div>
+      <svg viewBox="0 0 480 330" className="mt-[22px] h-[285px] w-full overflow-visible" role="img" aria-label="Loyalty members cumulative growth line chart">
+        <defs>
+          <linearGradient id="loyaltyFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {[80, 142, 205, 267, 330].map((y) => (
+          <line key={y} x1="55" x2="445" y1={y} y2={y} className="stroke-border/50" strokeDasharray="3 4" />
+        ))}
+        {['60k', '45k', '30k', '15k', '0k'].map((label, index) => (
+          <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
+        ))}
+        <polygon points={area} className="fill-primary text-primary" fill="url(#loyaltyFill)" />
+        <polyline points={line} fill="none" className="stroke-primary" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Jan 26'].map((label, index) => (
+          <text key={label} x={55 + index * 35.5} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
+        ))}
+      </svg>
+    </article>
+  );
+}
+
 function Metric({ value, label }: { value: string; label: string }) {
   return (
     <div className="border-t border-border pt-6">
