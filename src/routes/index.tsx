@@ -52,9 +52,9 @@ function Index() {
 function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto grid h-[98px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-8 px-6">
+      <div className="mx-auto grid h-[76px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[98px] lg:gap-8 lg:px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[58px] w-auto object-contain" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[44px] w-auto object-contain lg:h-[58px]" />
         </a>
         <nav className="hidden items-center justify-end gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Data + Innovation</a>
@@ -63,7 +63,7 @@ function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex h-[40px] items-center bg-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80">Contact Us</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
         </div>
       </div>
     </header>
@@ -72,11 +72,11 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative min-h-[980px] overflow-hidden bg-background pt-[98px]">
+    <section className="relative min-h-[780px] overflow-hidden bg-background pt-[76px] lg:min-h-[980px] lg:pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto max-w-[1088px] overflow-hidden px-6 pt-[96px] sm:pt-[104px]">
+      <div className="mx-auto max-w-[1088px] overflow-hidden px-5 pt-[72px] sm:pt-[88px] lg:px-6 lg:pt-[96px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[42px] max-w-[1030px] font-display text-[clamp(72px,9.6vw,162px)] font-black uppercase leading-[0.84] tracking-normal">
+        <h1 className="hero-title mt-[38px] max-w-[1030px] font-display text-[clamp(54px,11.4vw,214px)] font-black uppercase leading-[0.84] tracking-normal lg:mt-[42px]">
           <span className="hero-title-group hero-title-up">
             <span className="hero-title-line whitespace-nowrap">15 Years</span>
             <span className="hero-title-line whitespace-nowrap">of</span>
@@ -86,12 +86,12 @@ function Hero() {
             <span className="hero-title-line whitespace-nowrap">Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[44px] max-w-[850px] text-[clamp(20px,2.05vw,34px)] font-light leading-[1.22] text-muted-foreground">
+        <p className="hero-copy mt-[36px] max-w-[850px] text-[clamp(18px,2.05vw,34px)] font-light leading-[1.25] text-muted-foreground lg:mt-[44px]">
           Born in Cambodia, today a market-leading experience-led socially responsible business.
         </p>
         <div className="hero-copy mt-8 flex flex-wrap gap-4">
-          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-8 py-5 text-[18px] font-black uppercase tracking-[0.12em] text-background">Watch the Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-8 py-5 text-[18px] font-black uppercase tracking-[0.12em]">Join the Story</a>
+          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-background lg:px-8 lg:py-5 lg:text-[18px]">Watch the Film</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] lg:px-8 lg:py-5 lg:text-[18px]">Join the Story</a>
         </div>
       </div>
     </section>
