@@ -130,13 +130,11 @@ function Hero() {
       <div className="mx-auto max-w-[1088px] overflow-hidden px-5 pt-[72px] sm:pt-[88px] lg:px-6 lg:pt-[96px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
         <h1 className="hero-title mt-[38px] max-w-[1030px] font-display text-[clamp(46px,10.2vw,190px)] font-black uppercase leading-[0.86] tracking-normal lg:mt-[42px]">
-          <span className="hero-title-group hero-title-up">
-            <span className="hero-title-line whitespace-nowrap">15 Years</span>
-            <span className="hero-title-line whitespace-nowrap">of</span>
+          <span className="hero-title-mask">
+            <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">15 Years Of</span>
           </span>
-          <span className="hero-title-group hero-title-down">
-            <span className="hero-title-line whitespace-nowrap">Mad</span>
-            <span className="hero-title-line whitespace-nowrap">Monkey</span>
+          <span className="hero-title-mask hero-title-mask-second">
+            <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">Mad Monkey</span>
           </span>
         </h1>
         <p className="hero-copy mt-[34px] max-w-[760px] text-[clamp(16px,1.75vw,28px)] font-light leading-[1.28] text-muted-foreground lg:mt-[42px]">
