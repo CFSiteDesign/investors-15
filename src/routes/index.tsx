@@ -52,18 +52,18 @@ function Index() {
 function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto flex h-[98px] max-w-[1184px] items-center justify-between px-6">
+      <div className="mx-auto grid h-[98px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-8 px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[54px] w-auto object-contain" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[58px] w-auto object-contain" />
         </a>
-        <nav className="hidden items-center gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
+        <nav className="hidden items-center justify-end gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Data + Innovation</a>
           <a href="#secure" className="transition-opacity hover:opacity-60">Secure</a>
           <a href="#ethical" className="transition-opacity hover:opacity-60">Ethical</a>
         </nav>
         <div className="flex items-center gap-3">
-          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden border border-foreground px-6 py-5 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="bg-foreground px-6 py-5 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80">Contact Us</a>
+          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex h-[40px] items-center bg-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80">Contact Us</a>
         </div>
       </div>
     </header>
@@ -254,8 +254,10 @@ function Ethical() {
 
 function EmailBar() {
   return (
-    <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground py-3 text-center text-[11px] font-black uppercase tracking-[0.42em] text-background">
-      <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM">FOUNDERS@MADMONKEYHOSTELS.COM</a>
+    <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[11px] font-black uppercase tracking-[0.42em] text-background">
+      <div className="mx-auto flex h-[32px] max-w-[1184px] items-center justify-end px-6">
+        <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM">FOUNDERS@MADMONKEYHOSTELS.COM</a>
+      </div>
     </footer>
   );
 }
