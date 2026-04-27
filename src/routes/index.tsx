@@ -100,13 +100,13 @@ function Hero() {
 
 function Manifesto() {
   return (
-    <section className="bg-background pb-[116px] pt-[72px]">
-      <div className="mx-auto max-w-[1088px] px-6">
-        <h2 className="max-w-[1030px] font-display text-[clamp(48px,6.2vw,98px)] uppercase leading-[0.92] tracking-normal">
+    <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
+      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
+        <h2 className="max-w-[1030px] font-display text-[clamp(34px,6.2vw,98px)] uppercase leading-[0.94] tracking-normal">
           As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
           <span className="block text-muted/70">Our expansion isn’t just about size; it’s about impact.</span>
         </h2>
-        <div className="mt-[58px] grid gap-9 text-[20px] font-light leading-[1.55] text-muted-foreground md:grid-cols-2">
+        <div className="mt-[40px] grid gap-8 text-[17px] font-light leading-[1.55] text-muted-foreground md:grid-cols-2 lg:mt-[58px] lg:gap-9 lg:text-[20px]">
           <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
           <div className="space-y-8">
             <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
@@ -121,17 +121,17 @@ function Manifesto() {
 
 function DataInnovation() {
   return (
-    <section id="data" className="border-y border-border bg-background py-[39px]">
-      <div className="mx-auto grid max-w-[1045px] grid-cols-1 px-[51px] lg:min-h-[439px] lg:grid-cols-[450px_1fr] lg:px-[51px]">
+    <section id="data" className="border-y border-border bg-background py-[32px] lg:py-[39px]">
+      <div className="mx-auto grid max-w-[1045px] grid-cols-1 px-5 sm:px-[51px] lg:min-h-[439px] lg:grid-cols-[450px_1fr]">
         <div className="relative z-10 bg-background pb-10 lg:pb-0">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
           </p>
-          <h2 className="mt-[16px] font-display text-[clamp(54px,5.7vw,62px)] uppercase leading-[1.13] tracking-normal">
+          <h2 className="mt-[16px] font-display text-[clamp(42px,8.8vw,62px)] uppercase leading-[1.13] tracking-normal">
             DATA-DRIVEN<br />OPERATIONS
           </h2>
-          <p className="mt-[21px] max-w-[405px] text-[18px] font-light leading-[1.38] text-muted-foreground">
+          <p className="mt-[21px] max-w-[405px] text-[16px] font-light leading-[1.38] text-muted-foreground sm:text-[18px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
           <div className="mt-[21px] grid max-w-[404px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
@@ -151,8 +151,8 @@ function DataInnovation() {
 function BriefMetric({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <p className="font-display text-[60px] uppercase leading-none tracking-normal">{value}</p>
-      <p className="mt-[10px] text-[13px] font-black uppercase leading-[1.5] tracking-[0.18em] text-muted-foreground">{label}</p>
+      <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
+      <p className="mt-[10px] text-[11px] font-black uppercase leading-[1.5] tracking-[0.18em] text-muted-foreground sm:text-[13px]">{label}</p>
     </div>
   );
 }
