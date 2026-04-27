@@ -31,8 +31,8 @@ const reviews = [
 ];
 
 const loyalty = [7, 9, 11.5, 13.2, 14.4, 15.8, 17.1, 18.2, 20.2, 22.6, 27.1, 38.8, 52.2];
-const guests = [2.6, 4.1, 5.3, 6.4, 7.8, 8.9, 10.8, 11.6, 10.1, 9.4, 12.3, 13.4];
-const ages = [1.1, 3.4, 5.9, 7.4, 6.8, 5.2, 3.7, 2.3, 1.2, 0.7, 0.4];
+const guests = [11.2, 10.9, 12.4, 12.3, 11.7, 9.7, 9.3, 9.1, 8.6, 10.5, 11.0, 11.1];
+const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
 
 function Index() {
   return (
@@ -278,35 +278,67 @@ function Performance() {
             <p className="mt-2 text-[14px] font-black uppercase tracking-[0.14em]">APRIL 2026</p>
           </div>
         </div>
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          <Chart title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} x="Jan 25 Feb Mar Apr May Jun Jul Aug Sep Oct Nov Jan 26" y="0k 15k 30k 45k 60k" />
-          <Chart title="Guests Per Month" subtitle="2025 Performance" data={guests} x="Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec" y="0k 3.5k 7k 10.5k 14k" />
-          <Chart title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} x="18 21 24 27 30 33 36 39 42 45 48" y="0k 2k 4k 6k 8k" />
+        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
+          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
+          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
         </div>
       </div>
     </section>
   );
 }
 
-function Chart({ title, subtitle, data, x, y }: { title: string; subtitle: string; data: number[]; x: string; y: string }) {
-  const chartRef = useRef<HTMLElement | null>(null);
-  const isVisible = useInView(chartRef);
+function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; wide?: boolean }) {
   const max = Math.max(...data);
+  const xLabels = x.split(",");
+  const yLabels = y.split(",");
+  const points = data.map((value, index) => {
+    const xPos = 58 + (index / (data.length - 1)) * 392;
+    const yPos = 292 - (value / max) * 238;
+    return `${xPos},${yPos}`;
+  });
+  const area = `58,292 ${points.join(" ")} 450,292`;
+
   return (
-    <article ref={chartRef} className="bg-background p-6 text-foreground">
-      <h4 className="text-[22px] font-black">{title}</h4>
-      <p className="mt-1 text-[14px] font-semibold text-muted-foreground">{subtitle}</p>
-      <div className="chart-grid mt-8 flex h-[260px] items-end gap-2 border-b border-l border-border px-3 pb-3">
-        {data.map((value, index) => (
-          <span
-            key={`${title}-${index}`}
-            className={`block flex-1 origin-bottom bg-gradient-to-t from-graph-blue to-graph-purple ${isVisible ? "animate-bar-grow" : "scale-y-0 opacity-30"}`}
-            style={{ height: `${(value / max) * 100}%`, animationDelay: `${index * 80}ms` }}
-          />
-        ))}
+    <article className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h4 className="text-[23px] font-black uppercase leading-none">{title}</h4>
+          <p className="mt-3 text-[13px] font-black uppercase leading-none tracking-[0.22em] text-muted-foreground">{subtitle}</p>
+        </div>
+        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted/35 text-muted-foreground" aria-hidden="true">⌁</span>
       </div>
-      <p className="mt-4 text-[10px] font-black uppercase tracking-[0.04em] text-muted-foreground">{x}</p>
-      <p className="mt-2 text-[10px] font-black uppercase tracking-[0.08em] text-muted-foreground">{y}</p>
+      <svg viewBox="0 0 500 360" className="mt-8 h-[330px] w-full overflow-visible" role="img" aria-label={`${title} chart`}>
+        <defs>
+          <linearGradient id={`${title.replace(/\s+/g, "-")}-fill`} x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-graph-purple)" stopOpacity="0.72" />
+            <stop offset="100%" stopColor="var(--color-graph-blue)" stopOpacity="0.04" />
+          </linearGradient>
+        </defs>
+        {[54, 113.5, 173, 232.5, 292].map((lineY) => (
+          <line key={lineY} x1="58" x2="450" y1={lineY} y2={lineY} className="stroke-border/50" strokeDasharray="3 5" />
+        ))}
+        {yLabels.map((label, index) => (
+          <text key={label} x="18" y={58 + index * 59.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
+        ))}
+        {type === "line" ? (
+          <>
+            <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
+            <polyline points={points.join(" ")} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+          </>
+        ) : (
+          data.map((value, index) => {
+            const barWidth = wide ? 10 : 30;
+            const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
+            const xPos = 58 + index * (barWidth + gap);
+            const height = (value / max) * 238;
+            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} />;
+          })
+        )}
+        {xLabels.map((label, index) => (
+          <text key={`${label}-${index}`} x={58 + (index / (xLabels.length - 1)) * 392} y="330" className="fill-muted-foreground text-[12px] font-bold" textAnchor="middle">{label}</text>
+        ))}
+      </svg>
     </article>
   );
 }
