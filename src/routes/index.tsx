@@ -302,14 +302,20 @@ function Performance() {
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <Reveal>
-          <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
+          <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar: Scale</p>
           <h2 className="premium-headline mt-8 max-w-full font-display text-[clamp(50px,9.4vw,138px)] uppercase leading-[0.84]">MAD MONKEY</h2>
-          <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
+          <p className="mt-6 max-w-[760px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">Mad Monkey is built for rapid, capital-efficient expansion across high-growth travel markets.</p>
         </Reveal>
         <Reveal delay={140}>
-          <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
-            <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
-            <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
+          <div className="mt-12 grid max-w-[900px] gap-8 border-t border-secondary-foreground pt-8 md:grid-cols-2">
+            <div>
+              <p className="text-[13px] font-black uppercase tracking-[0.16em]">Fast Development Cycle</p>
+              <p className="mt-4 text-[16px] font-light leading-[1.55] lg:text-[19px]">New properties are typically developed and launched within 4 months, enabling us to deploy capital quickly and capture demand ahead of competitors.</p>
+            </div>
+            <div>
+              <p className="text-[13px] font-black uppercase tracking-[0.16em]">Rapid Ramp Up</p>
+              <p className="mt-4 text-[16px] font-light leading-[1.55] lg:text-[19px]">Last 3 properties launched were operationally profitable in month 1, driven by our established brand, distribution network, and pre-opening demand generation.</p>
+            </div>
           </div>
         </Reveal>
 
