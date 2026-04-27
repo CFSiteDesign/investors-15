@@ -106,13 +106,11 @@ function Manifesto() {
           As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
           <span className="block text-muted-foreground">Our expansion isn’t just about size; it’s about impact.</span>
         </h2>
-        <div className="mt-[36px] grid max-w-[960px] gap-8 text-[15px] font-light leading-[1.65] text-muted-foreground md:grid-cols-2 lg:mt-[52px] lg:gap-10 lg:text-[17px]">
+        <div className="mt-[36px] max-w-[760px] space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:mt-[52px] lg:text-[18px]">
           <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
-          <div className="space-y-8">
-            <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
-            <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
-            <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
-          </div>
+          <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
+          <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
+          <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
         </div>
       </div>
     </section>
