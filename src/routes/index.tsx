@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
@@ -32,6 +32,31 @@ const reviews = [
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guests = [12.6, 12.3, 14, 13.9, 13.2, 10.9, 10.4, 10.1, 9.6, 11.8, 12.4, 12.5];
 const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
+
+function useScrollReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [hasEntered, setHasEntered] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasEntered(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, hasEntered };
+}
 
 function Index() {
   return (
@@ -152,6 +177,7 @@ function BriefMetric({ value, label }: { value: string; label: string }) {
 }
 
 function LoyaltyChart() {
+  const { ref, hasEntered } = useScrollReveal<HTMLElement>();
   const points = loyalty.map((value, index) => {
     const x = 55 + (index / (loyalty.length - 1)) * 390;
     const y = 330 - (value / 55) * 250;
@@ -161,7 +187,7 @@ function LoyaltyChart() {
   const area = `55,330 ${line} 445,330`;
 
   return (
-    <article className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
+    <article ref={ref} className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-[21px] font-black uppercase leading-none tracking-normal">LOYALTY MEMBERS</h3>
@@ -183,7 +209,7 @@ function LoyaltyChart() {
           <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
         <polygon points={area} fill="url(#loyaltyFill)" />
-        <polyline points={line} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+        <polyline points={line} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
         {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26', 'Feb', 'Mar'].map((label, index) => (
           <text key={`${label}-${index}`} x={55 + (index / (loyalty.length - 1)) * 390} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
         ))}
@@ -265,6 +291,7 @@ function Performance() {
 }
 
 function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; maxValue: number; wide?: boolean }) {
+  const { ref, hasEntered } = useScrollReveal<HTMLElement>();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const xLabels = x.split(",");
   const yLabels = y.split(",");
@@ -283,7 +310,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   };
 
   return (
-    <article className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
+    <article ref={ref} className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <h4 className="text-[23px] font-black uppercase leading-none">{title}</h4>
@@ -307,7 +334,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
         {type === "line" ? (
           <>
             <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
-            <polyline points={points.join(" ")} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+            <polyline points={points.join(" ")} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
             {pointPositions.map((point, index) => (
               <circle key={`${title}-hit-${index}`} cx={point.x} cy={point.y} r="12" className="fill-transparent" onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />
             ))}
@@ -318,7 +345,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
             const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
             const xPos = 58 + index * (barWidth + gap);
             const height = (value / maxValue) * 238;
-            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
+            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className={`${hasEntered ? "animate-bar-grow" : "chart-bar-hidden"} fill-graph-purple odd:fill-graph-blue`} style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: hasEntered ? `${index * 55}ms` : "0ms" }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
           })
         )}
         {hovered ? (
