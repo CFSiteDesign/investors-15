@@ -43,6 +43,7 @@ function Index() {
       <ReviewTicker />
       <Performance />
       <Ethical />
+      <Footer />
       <EmailBar />
     </main>
   );
@@ -353,6 +354,47 @@ function Ethical() {
         </div>
       </div>
     </section>
+  );
+}
+
+const footerLinks = ["About Us", "Locations", "Investors", "Sustainability", "Press", "Careers"];
+
+function Footer() {
+  return (
+    <footer className="border-t border-border bg-background px-6 pb-20 pt-10 text-foreground md:px-12 md:py-16 md:pb-24 lg:px-24">
+      <div className="mb-8 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <img src={madMonkeyLogo} alt="Mad Monkey Hostels" loading="lazy" className="mb-8 h-12 w-auto object-contain md:h-16" />
+          <div className="mb-4 flex gap-4">
+            <a href="#" aria-label="Facebook" className="grid size-10 place-items-center border border-border text-[16px] font-black transition-colors hover:bg-foreground hover:text-background">f</a>
+            <a href="#" aria-label="Instagram" className="grid size-10 place-items-center border border-border text-[15px] font-black transition-colors hover:bg-foreground hover:text-background">◎</a>
+          </div>
+          <div className="space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Navigation</p>
+            <ul className="grid grid-cols-2 gap-4 text-[14px] font-black uppercase tracking-[0.16em]">
+              {footerLinks.map((label) => (
+                <li key={label}>
+                  <a href="#" className="transition-opacity hover:opacity-60">{label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="lg:col-span-8">
+          <p className="mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Latest from LinkedIn</p>
+          <div className="h-[400px] w-full overflow-hidden border border-border bg-muted/20">
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:activity:7437354283815165954" height="400" width="100%" frameBorder="0" allowFullScreen title="Embedded LinkedIn Post" className="h-full w-full grayscale transition-all duration-500 hover:grayscale-0" />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-between gap-8 border-t border-border pt-12 md:flex-row">
+        <p className="text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">© 2026 Mad Monkey Hostels. All Rights Reserved.</p>
+        <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
+          <a href="#" className="transition-opacity hover:opacity-100">Privacy Policy</a>
+          <a href="#" className="transition-opacity hover:opacity-100">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
   );
 }
 
