@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 
@@ -30,9 +31,12 @@ const reviews = [
 ];
 
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
-const guests = [12.6, 12.3, 14, 13.9, 13.2, 10.9, 10.4, 10.1, 9.6, 11.8, 12.4, 12.5];
-const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
 const guestCapacity = [622.052, 661.718, 940.781, 1037.176];
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Enter a valid email address").max(255, "Email must be less than 255 characters"),
+});
 
 function useScrollReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -96,6 +100,7 @@ function Index() {
       <DataInnovation />
       <ReviewTicker />
       <Performance />
+      <Network />
       <Ethical />
       <Footer />
       <EmailBar />
@@ -295,14 +300,20 @@ function Performance() {
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <Reveal>
-          <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
+          <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar: Scale</p>
           <h2 className="premium-headline mt-8 max-w-full font-display text-[clamp(50px,9.4vw,138px)] uppercase leading-[0.84]">MAD MONKEY</h2>
-          <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
+          <p className="mt-6 max-w-[760px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">Mad Monkey is built for rapid, capital-efficient expansion across high-growth travel markets.</p>
         </Reveal>
         <Reveal delay={140}>
-          <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
-            <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
-            <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
+          <div className="mt-12 grid max-w-[900px] gap-8 border-t border-secondary-foreground pt-8 md:grid-cols-2">
+            <div>
+              <p className="text-[13px] font-black uppercase tracking-[0.16em]">Fast Development Cycle</p>
+              <p className="mt-4 text-[16px] font-light leading-[1.55] lg:text-[19px]">New properties are typically developed and launched within 4 months, enabling us to deploy capital quickly and capture demand ahead of competitors.</p>
+            </div>
+            <div>
+              <p className="text-[13px] font-black uppercase tracking-[0.16em]">Rapid Ramp Up</p>
+              <p className="mt-4 text-[16px] font-light leading-[1.55] lg:text-[19px]">Last 3 properties launched were operationally profitable in month 1, driven by our established brand, distribution network, and pre-opening demand generation.</p>
+            </div>
           </div>
         </Reveal>
 
@@ -409,21 +420,58 @@ function Ethical() {
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
-          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
-          <h2 className="mt-8 max-w-[760px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth&nbsp;&amp; Sustainability</h2>
-          <p className="mt-8 max-w-[560px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Focus on the human element. Transparent social responsibility is at our core.</p>
+          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar: Integrity</p>
+          <h2 className="mt-8 max-w-[840px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">A Leading Force in Sustainability</h2>
+          <p className="mt-8 max-w-[680px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Local growth and sustainability are leading forces in all our operations, ensuring we invest back into all communities.</p>
         </Reveal>
         <Reveal delay={120}>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
-            <Metric value="93%" label="Local Workforce" />
-            <Metric value="450" label="WATER WELLS BUILT" />
+            <Metric value="93%" label="Local workforce, demonstrating strength in investing back into communities." />
+            <Metric value="300+" label="Community driven projects annually from beach clean-ups to water wells." />
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</a>
         </Reveal>
       </div>
     </section>
+  );
+}
+
+function ContactForm() {
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const result = contactSchema.safeParse({ name: form.get("name"), email: form.get("email") });
+
+    if (!result.success) {
+      const fields = result.error.flatten().fieldErrors;
+      setErrors({ name: fields.name?.[0], email: fields.email?.[0] });
+      return;
+    }
+
+    setErrors({});
+    const subject = encodeURIComponent("Mad Monkey Investor Info Request");
+    const body = encodeURIComponent(`Name: ${result.data.name}\nEmail: ${result.data.email}`);
+    window.location.href = `mailto:FOUNDERS@MADMONKEYHOSTELS.COM?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate className="mt-10 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-start">
+      <label className="block">
+        <span className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Name</span>
+        <input name="name" type="text" maxLength={100} className="mt-3 h-[54px] w-full border border-border bg-background px-4 text-[15px] font-bold text-foreground outline-none focus:border-foreground" />
+        {errors.name ? <span className="mt-2 block text-[12px] font-bold text-destructive">{errors.name}</span> : null}
+      </label>
+      <label className="block">
+        <span className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Email</span>
+        <input name="email" type="email" maxLength={255} className="mt-3 h-[54px] w-full border border-border bg-background px-4 text-[15px] font-bold text-foreground outline-none focus:border-foreground" />
+        {errors.email ? <span className="mt-2 block text-[12px] font-bold text-destructive">{errors.email}</span> : null}
+      </label>
+      <button type="submit" className="mt-[29px] h-[54px] bg-foreground px-7 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80">Request Info</button>
+    </form>
   );
 }
 
@@ -452,6 +500,10 @@ function Footer() {
             <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:activity:7437354283815165954" height="400" width="100%" frameBorder="0" allowFullScreen title="Embedded LinkedIn Post" className="h-full w-full grayscale transition-all duration-500 hover:grayscale-0" />
           </div>
         </div>
+      </div>
+      <div className="mt-12 border-t border-border pt-10">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Contact Founders@madmonkeyhostels.com</p>
+        <ContactForm />
       </div>
       <div className="flex flex-col items-center justify-between gap-8 border-t border-border pt-12 md:flex-row">
         <p className="text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">© 2026 Mad Monkey Hostels. All Rights Reserved.</p>
