@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
@@ -56,6 +56,16 @@ function useScrollReveal<T extends HTMLElement>() {
   }, []);
 
   return { ref, hasEntered };
+}
+
+function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const { ref, hasEntered } = useScrollReveal<HTMLDivElement>();
+
+  return (
+    <div ref={ref} className={`premium-reveal ${hasEntered ? "premium-reveal-in" : ""} ${className}`} style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}>
+      {children}
+    </div>
+  );
 }
 
 function Index() {
