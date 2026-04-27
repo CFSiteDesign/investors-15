@@ -110,9 +110,9 @@ function Header() {
           <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[44px] w-auto object-contain lg:h-[58px]" />
         </a>
         <nav className="hidden items-center justify-end gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
-          <a href="#data" className="transition-opacity hover:opacity-60">Data + Innovation</a>
-          <a href="#secure" className="transition-opacity hover:opacity-60">Secure</a>
-          <a href="#ethical" className="transition-opacity hover:opacity-60">Ethical</a>
+          <a href="#data" className="transition-opacity hover:opacity-60">Proven</a>
+          <a href="#secure" className="transition-opacity hover:opacity-60">Scale</a>
+          <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
         <div className="flex items-center gap-3">
           <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
@@ -138,11 +138,11 @@ function Hero() {
           </span>
         </h1>
         <p className="hero-copy mt-[34px] max-w-[760px] text-[clamp(16px,1.75vw,28px)] font-light leading-[1.28] text-muted-foreground lg:mt-[42px]">
-          Born in Cambodia, today a market-leading experience-led socially responsible business.
+          Founded by backpackers for backpackers, we are Southeast Asia’s market-leading, socially responsible travel platform headquartered in Singapore and operating across Southeast Asia.
         </p>
         <div className="hero-copy mt-8 flex flex-wrap gap-4">
           <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-background lg:px-8 lg:py-5 lg:text-[18px]">Watch the Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] lg:px-8 lg:py-5 lg:text-[18px]">Join the Story</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
         </div>
       </div>
     </section>
@@ -155,16 +155,13 @@ function Manifesto() {
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <div>
           <h2 className="max-w-[940px] font-display text-[clamp(26px,4.4vw,68px)] uppercase leading-[1.04] tracking-normal text-balance">
-            As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
-            <span className="block text-muted-foreground">Our expansion isn’t just about size; it’s about impact.</span>
+            While Southeast Asia is among the world's fastest-growing travel markets, it remains highly fragmented and underserved by branded operators.
+            <span className="block text-muted-foreground">Mad Monkey provides a proven, scalable model for adventure-led hospitality across the region.</span>
           </h2>
         </div>
         <div className="mt-[36px] max-w-[760px] lg:mt-[52px]">
           <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
-            <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
-            <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
-            <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
-            <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
+            <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
         </div>
       </div>
@@ -179,7 +176,7 @@ function DataInnovation() {
         <div className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
-            PILLAR 01: PROVEN
+            PILLAR: PROVEN
           </p>
           <h2 className="mt-[16px] max-w-[410px] font-display text-[clamp(34px,7vw,56px)] uppercase leading-[1.08] tracking-normal text-balance">
             DATA-DRIVEN OPERATIONS
@@ -188,8 +185,8 @@ function DataInnovation() {
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
           <div className="mt-[28px] grid max-w-[620px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
-            <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
-            <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
+            <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
+            <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
           </div>
         </div>
       </div>
