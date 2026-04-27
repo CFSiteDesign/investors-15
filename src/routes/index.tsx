@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
@@ -56,6 +56,16 @@ function useScrollReveal<T extends HTMLElement>() {
   }, []);
 
   return { ref, hasEntered };
+}
+
+function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const { ref, hasEntered } = useScrollReveal<HTMLDivElement>();
+
+  return (
+    <div ref={ref} className={`premium-reveal ${hasEntered ? "premium-reveal-in" : ""} ${className}`} style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}>
+      {children}
+    </div>
+  );
 }
 
 function Index() {
@@ -127,16 +137,20 @@ function Manifesto() {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <h2 className="max-w-[940px] font-display text-[clamp(26px,4.4vw,68px)] uppercase leading-[1.04] tracking-normal text-balance">
-          As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
-          <span className="block text-muted-foreground">Our expansion isn’t just about size; it’s about impact.</span>
-        </h2>
-        <div className="mt-[36px] max-w-[760px] space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:mt-[52px] lg:text-[18px]">
-          <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
-          <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
-          <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
-          <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
-        </div>
+        <Reveal>
+          <h2 className="max-w-[940px] font-display text-[clamp(26px,4.4vw,68px)] uppercase leading-[1.04] tracking-normal text-balance">
+            As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
+            <span className="block text-muted-foreground">Our expansion isn’t just about size; it’s about impact.</span>
+          </h2>
+        </Reveal>
+        <Reveal delay={120} className="mt-[36px] max-w-[760px] lg:mt-[52px]">
+          <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
+            <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
+            <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
+            <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
+            <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -146,7 +160,7 @@ function DataInnovation() {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
       <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
-        <div className="relative z-10 max-w-[760px] bg-background">
+        <Reveal className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
@@ -161,7 +175,7 @@ function DataInnovation() {
             <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -169,7 +183,7 @@ function DataInnovation() {
 
 function BriefMetric({ value, label }: { value: string; label: string }) {
   return (
-    <div>
+    <div className="premium-metric">
       <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
       <p className="mt-[10px] text-[12px] font-black uppercase leading-[1.58] tracking-[0.12em] text-muted-foreground sm:text-[13px]">{label}</p>
     </div>
@@ -220,7 +234,7 @@ function LoyaltyChart() {
 
 function Metric({ value, label }: { value: string; label: string }) {
   return (
-    <div className="border-t border-border pt-6">
+    <div className="premium-metric border-t border-border pt-6">
       <p className="font-display text-[clamp(54px,6vw,86px)] uppercase leading-none">{value}</p>
       <p className="mt-4 text-[13px] font-black uppercase leading-[1.35] tracking-[0.12em] text-muted-foreground">{label}</p>
     </div>
@@ -248,11 +262,15 @@ function Network() {
   return (
     <section className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full grayscale" />
-        <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
-          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
-          <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
-        </div>
+        <Reveal>
+          <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="premium-image h-auto w-full grayscale" />
+        </Reveal>
+        <Reveal delay={110}>
+          <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
+            <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
+            <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -262,15 +280,20 @@ function Performance() {
   return (
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
-        <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
-        <h2 className="mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
-        <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
-        <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
-          <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
-          <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
-        </div>
+        <Reveal>
+          <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
+          <h2 className="premium-headline mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
+          <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
+        </Reveal>
+        <Reveal delay={140}>
+          <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
+            <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
+            <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
+          </div>
+        </Reveal>
 
-        <div className="mt-[104px] flex flex-col justify-between gap-8 md:flex-row md:items-end">
+        <Reveal delay={80} className="mt-[104px]">
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-[14px] font-black uppercase tracking-[0.16em]">Performance & Growth</p>
             <h3 className="mt-6 max-w-[680px] font-display text-[clamp(38px,6.2vw,92px)] uppercase leading-[1] text-balance">Data-Driven Excellence</h3>
@@ -280,6 +303,7 @@ function Performance() {
             <p className="mt-2 text-[14px] font-black uppercase tracking-[0.14em]">APRIL 2026</p>
           </div>
         </div>
+        </Reveal>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
           <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
           <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} maxValue={14} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
@@ -369,16 +393,20 @@ function Ethical() {
   return (
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <div>
+        <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
           <h2 className="mt-8 max-w-[760px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth&nbsp;&amp; Sustainability</h2>
           <p className="mt-8 max-w-[560px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Focus on the human element. Transparent social responsibility is at our core.</p>
+        </Reveal>
+        <Reveal delay={120}>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
             <Metric value="93%" label="Local Workforce" />
             <Metric value="450" label="WATER WELLS BUILT" />
           </div>
+        </Reveal>
+        <Reveal delay={180}>
           <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
