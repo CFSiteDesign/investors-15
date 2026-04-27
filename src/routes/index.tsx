@@ -278,10 +278,10 @@ function Performance() {
             <p className="mt-2 text-[14px] font-black uppercase tracking-[0.14em]">APRIL 2026</p>
           </div>
         </div>
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          <Chart title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} x="Jan 25 Feb Mar Apr May Jun Jul Aug Sep Oct Nov Jan 26" y="0k 15k 30k 45k 60k" />
-          <Chart title="Guests Per Month" subtitle="2025 Performance" data={guests} x="Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec" y="0k 3.5k 7k 10.5k 14k" />
-          <Chart title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} x="18 21 24 27 30 33 36 39 42 45 48" y="0k 2k 4k 6k 8k" />
+        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
+          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
+          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
         </div>
       </div>
     </section>
