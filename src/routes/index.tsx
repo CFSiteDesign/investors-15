@@ -29,7 +29,7 @@ const reviews = [
   ["Google", "Guest Review", "15 years of excellence shows. Mad Monkey knows how to host a perfect stay.", "10/10"],
 ];
 
-const loyalty = [7, 9.5, 13, 15.5, 17, 18.5, 20, 21.5, 23.5, 26, 31, 60];
+const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guests = [12.6, 12.3, 14, 13.9, 13.2, 10.9, 10.4, 10.1, 9.6, 11.8, 12.4, 12.5];
 const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
 
@@ -153,8 +153,8 @@ function BriefMetric({ value, label }: { value: string; label: string }) {
 
 function LoyaltyChart() {
   const points = loyalty.map((value, index) => {
-    const x = 55 + index * 32.5;
-    const y = 330 - (value / 60) * 250;
+    const x = 55 + (index / (loyalty.length - 1)) * 390;
+    const y = 330 - (value / 55) * 250;
     return `${x},${y}`;
   });
   const line = points.join(" ");
@@ -179,13 +179,13 @@ function LoyaltyChart() {
         {[80, 142, 205, 267, 330].map((y) => (
           <line key={y} x1="55" x2="445" y1={y} y2={y} className="stroke-border/50" strokeDasharray="3 4" />
         ))}
-        {['60k', '45k', '30k', '15k', '0k'].map((label, index) => (
+        {['55k', '41k', '28k', '14k', '0k'].map((label, index) => (
           <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
         <polygon points={area} fill="url(#loyaltyFill)" />
         <polyline points={line} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
-        {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Jan 26'].map((label, index) => (
-          <text key={label} x={55 + index * 35.5} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
+        {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26', 'Feb', 'Mar'].map((label, index) => (
+          <text key={`${label}-${index}`} x={55 + (index / (loyalty.length - 1)) * 390} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
         ))}
       </svg>
     </article>
@@ -255,7 +255,7 @@ function Performance() {
           </div>
         </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={60} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
+          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
           <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} maxValue={14} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
           <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} maxValue={8} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
         </div>
