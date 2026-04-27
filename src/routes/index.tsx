@@ -160,7 +160,7 @@ function DataInnovation() {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
       <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
-        <div className="relative z-10 max-w-[760px] bg-background">
+        <Reveal className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
@@ -175,7 +175,7 @@ function DataInnovation() {
             <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
