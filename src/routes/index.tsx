@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
+import madMonkeyLogo from "../assets/mad-monkey-logo.png";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -53,8 +55,7 @@ function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
       <div className="mx-auto flex h-[98px] max-w-[1184px] items-center justify-between px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <span className="grid h-11 w-11 place-items-center rounded-full border-2 border-foreground text-[26px] leading-none">☻</span>
-          <span className="text-[24px] font-black lowercase leading-[0.82] tracking-normal">mad<br />monkey</span>
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[54px] w-auto object-contain" />
         </a>
         <nav className="hidden items-center gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Data + Innovation</a>
