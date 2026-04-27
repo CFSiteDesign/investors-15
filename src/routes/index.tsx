@@ -340,7 +340,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
 function Ethical() {
   return (
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
-      <div className="mx-auto grid max-w-[1088px] gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14 lg:px-6">
+      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <div>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
           <h2 className="mt-8 max-w-[620px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth & Sustainability</h2>
@@ -351,7 +351,6 @@ function Ethical() {
           </div>
           <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
         </div>
-        <img src={impactUrl} alt="Impact 1" loading="lazy" className="h-[440px] w-full object-cover grayscale lg:h-[620px]" />
       </div>
     </section>
   );
