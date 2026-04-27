@@ -300,7 +300,7 @@ function Performance() {
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
-          <h2 className="premium-headline mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
+          <h2 className="premium-headline mt-8 max-w-full font-display text-[clamp(50px,9.4vw,138px)] uppercase leading-[0.84]">MAD MONKEY</h2>
           <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
         </Reveal>
         <Reveal delay={140}>
