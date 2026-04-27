@@ -122,8 +122,8 @@ function Manifesto() {
 function DataInnovation() {
   return (
     <section id="data" className="border-y border-border bg-background py-[32px] lg:py-[39px]">
-      <div className="mx-auto grid max-w-[1045px] grid-cols-1 px-5 sm:px-[51px] lg:min-h-[439px] lg:grid-cols-[450px_1fr]">
-        <div className="relative z-10 bg-background pb-10 lg:pb-0">
+      <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
+        <div className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
@@ -131,17 +131,13 @@ function DataInnovation() {
           <h2 className="mt-[16px] max-w-[410px] font-display text-[clamp(34px,7vw,56px)] uppercase leading-[1.08] tracking-normal text-balance">
             DATA-DRIVEN OPERATIONS
           </h2>
-          <p className="mt-[21px] max-w-[405px] text-[15px] font-light leading-[1.52] text-muted-foreground sm:text-[16px]">
+          <p className="mt-[21px] max-w-[520px] text-[15px] font-light leading-[1.52] text-muted-foreground sm:text-[16px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
-          <div className="mt-[21px] grid max-w-[404px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
+          <div className="mt-[28px] grid max-w-[620px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
             <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
           </div>
-        </div>
-        <div className="relative min-h-[408px] border border-border bg-card/5 lg:ml-[27px] lg:mt-[9px]">
-          <div className="absolute left-0 right-0 top-[23px] h-px bg-border" />
-          <LoyaltyChart />
         </div>
       </div>
     </section>
