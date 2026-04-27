@@ -188,8 +188,8 @@ function LoyaltyChart() {
         {['60k', '45k', '30k', '15k', '0k'].map((label, index) => (
           <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
-        <polygon points={area} className="fill-primary text-primary" fill="url(#loyaltyFill)" />
-        <polyline points={line} fill="none" className="stroke-primary" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <polygon points={area} className="text-graph-purple" fill="url(#loyaltyFill)" />
+        <polyline points={line} fill="none" className="stroke-graph-purple" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Jan 26'].map((label, index) => (
           <text key={label} x={55 + index * 35.5} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
         ))}
@@ -280,7 +280,7 @@ function Chart({ title, subtitle, data, x, y }: { title: string; subtitle: strin
         {data.map((value, index) => (
           <span
             key={`${title}-${index}`}
-            className="block flex-1 origin-bottom bg-foreground animate-bar-grow"
+            className="block flex-1 origin-bottom animate-bar-grow bg-gradient-to-t from-graph-blue to-graph-purple"
             style={{ height: `${(value / max) * 100}%`, animationDelay: `${index * 80}ms` }}
           />
         ))}
