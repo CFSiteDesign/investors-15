@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
@@ -20,7 +20,6 @@ export const Route = createFileRoute("/")({
 const heroUrl = "https://i.imghippo.com/files/wei8466Qpo.jpg";
 const experienceUrl = "https://i.imghippo.com/files/idSb4836m.JPG";
 const networkUrl = "https://i.imghippo.com/files/rUB1888Pd.png";
-const impactUrl = "https://i.imghippo.com/files/Iifo4464TY.jpg";
 
 const reviews = [
   ["Google", "Guest Review", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
@@ -31,7 +30,7 @@ const reviews = [
 ];
 
 const loyalty = [7, 9.5, 13, 15.5, 17, 18.5, 20, 21.5, 23.5, 26, 31, 60];
-const guests = [11.5, 11.2, 12.7, 12.6, 12, 9.7, 9.256, 9.1, 8.6, 10.5, 11.2, 11.4];
+const guests = [12.6, 12.3, 14, 13.9, 13.2, 10.9, 10.4, 10.1, 9.6, 11.8, 12.4, 12.5];
 const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
 
 function Index() {
@@ -201,30 +200,6 @@ function Metric({ value, label }: { value: string; label: string }) {
   );
 }
 
-function useInView(ref: React.RefObject<Element | null>) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || isVisible) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -15% 0px", threshold: 0.25 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [ref, isVisible]);
-
-  return isVisible;
-}
-
 function ReviewTicker() {
   return (
     <section className="overflow-hidden border-y border-border bg-background py-8">
@@ -279,23 +254,22 @@ function Performance() {
           </div>
         </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
-          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
-          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
+          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={60} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
+          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} maxValue={14} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
+          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} maxValue={8} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
         </div>
       </div>
     </section>
   );
 }
 
-function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; wide?: boolean }) {
+function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; maxValue: number; wide?: boolean }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const max = Math.max(...data);
   const xLabels = x.split(",");
   const yLabels = y.split(",");
   const pointPositions = data.map((value, index) => {
     const xPos = 58 + (index / (data.length - 1)) * 392;
-    const yPos = 292 - (value / max) * 238;
+    const yPos = 292 - (value / maxValue) * 238;
     return { x: xPos, y: yPos, value, label: xLabels[index] ?? String(index + 1) };
   });
   const points = pointPositions.map((point) => `${point.x},${point.y}`);
@@ -342,7 +316,7 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
             const barWidth = wide ? 10 : 30;
             const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
             const xPos = 58 + index * (barWidth + gap);
-            const height = (value / max) * 238;
+            const height = (value / maxValue) * 238;
             return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
           })
         )}
@@ -366,7 +340,7 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
 function Ethical() {
   return (
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
-      <div className="mx-auto grid max-w-[1088px] gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14 lg:px-6">
+      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <div>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
           <h2 className="mt-8 max-w-[620px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth & Sustainability</h2>
@@ -377,7 +351,6 @@ function Ethical() {
           </div>
           <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
         </div>
-        <img src={impactUrl} alt="Impact 1" loading="lazy" className="h-[440px] w-full object-cover grayscale lg:h-[620px]" />
       </div>
     </section>
   );
