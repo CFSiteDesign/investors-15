@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import madMonkeyLogo from "../assets/mad-monkey-logo.png";
+import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
