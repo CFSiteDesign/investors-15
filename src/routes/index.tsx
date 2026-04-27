@@ -441,7 +441,7 @@ function Ethical() {
 function ContactForm() {
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const result = contactSchema.safeParse({ name: form.get("name"), email: form.get("email") });
@@ -500,6 +500,10 @@ function Footer() {
             <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:activity:7437354283815165954" height="400" width="100%" frameBorder="0" allowFullScreen title="Embedded LinkedIn Post" className="h-full w-full grayscale transition-all duration-500 hover:grayscale-0" />
           </div>
         </div>
+      </div>
+      <div className="mt-12 border-t border-border pt-10">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Contact Founders@madmonkeyhostels.com</p>
+        <ContactForm />
       </div>
       <div className="flex flex-col items-center justify-between gap-8 border-t border-border pt-12 md:flex-row">
         <p className="text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">© 2026 Mad Monkey Hostels. All Rights Reserved.</p>
