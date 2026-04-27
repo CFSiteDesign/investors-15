@@ -177,6 +177,7 @@ function BriefMetric({ value, label }: { value: string; label: string }) {
 }
 
 function LoyaltyChart() {
+  const { ref, hasEntered } = useScrollReveal<HTMLElement>();
   const points = loyalty.map((value, index) => {
     const x = 55 + (index / (loyalty.length - 1)) * 390;
     const y = 330 - (value / 55) * 250;
@@ -186,7 +187,7 @@ function LoyaltyChart() {
   const area = `55,330 ${line} 445,330`;
 
   return (
-    <article className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
+    <article ref={ref} className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-[21px] font-black uppercase leading-none tracking-normal">LOYALTY MEMBERS</h3>
@@ -208,7 +209,7 @@ function LoyaltyChart() {
           <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
         <polygon points={area} fill="url(#loyaltyFill)" />
-        <polyline points={line} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+        <polyline points={line} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
         {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26', 'Feb', 'Mar'].map((label, index) => (
           <text key={`${label}-${index}`} x={55 + (index / (loyalty.length - 1)) * 390} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
         ))}
