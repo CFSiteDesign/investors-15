@@ -280,15 +280,20 @@ function Performance() {
   return (
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
-        <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
-        <h2 className="mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
-        <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
-        <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
-          <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
-          <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
-        </div>
+        <Reveal>
+          <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
+          <h2 className="premium-headline mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
+          <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
+        </Reveal>
+        <Reveal delay={140}>
+          <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
+            <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
+            <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
+          </div>
+        </Reveal>
 
-        <div className="mt-[104px] flex flex-col justify-between gap-8 md:flex-row md:items-end">
+        <Reveal delay={80} className="mt-[104px]">
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-[14px] font-black uppercase tracking-[0.16em]">Performance & Growth</p>
             <h3 className="mt-6 max-w-[680px] font-display text-[clamp(38px,6.2vw,92px)] uppercase leading-[1] text-balance">Data-Driven Excellence</h3>
@@ -298,6 +303,7 @@ function Performance() {
             <p className="mt-2 text-[14px] font-black uppercase tracking-[0.14em]">APRIL 2026</p>
           </div>
         </div>
+        </Reveal>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
           <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
           <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} maxValue={14} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
