@@ -240,9 +240,25 @@
   }
 
   .hero-title { transform: scaleX(1.04); transform-origin: left top; width: min-content; }
-  .hero-title-group, .hero-title-line { display: block; }
-  .hero-title-up { animation: hero-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .hero-title-down { animation: hero-drop 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-title-line { display: block; }
+  .hero-title-mask {
+    display: block;
+    overflow: hidden;
+    clip-path: inset(0 50% 0 50%);
+    animation: hero-center-mask 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+  }
+  .hero-title-mask-second {
+    animation-delay: 0.32s;
+  }
+  .hero-title-center-reveal {
+    opacity: 0;
+    transform: translate3d(0, 0.12em, 0) scaleX(0.92);
+    transform-origin: center;
+    animation: hero-center-text 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+  }
+  .hero-title-mask-second .hero-title-center-reveal {
+    animation-delay: 0.32s;
+  }
   .hero-copy { animation: hero-fade 0.8s ease-out 0.62s both; }
 }
 
@@ -271,14 +287,15 @@
   to { stroke-dashoffset: 0; }
 }
 
-@keyframes hero-rise {
-  from { transform: translate3d(0, 1.78em, 0); opacity: 0.98; }
-  to { transform: translate3d(0, 0, 0); opacity: 1; }
+@keyframes hero-center-mask {
+  from { clip-path: inset(0 50% 0 50%); }
+  to { clip-path: inset(0 0 0 0); }
 }
 
-@keyframes hero-drop {
-  from { transform: translate3d(0, -1.62em, 0); opacity: 0.98; }
-  to { transform: translate3d(0, 0, 0); opacity: 1; }
+@keyframes hero-center-text {
+  from { opacity: 0; transform: translate3d(0, 0.12em, 0) scaleX(0.92); filter: blur(10px); }
+  36% { opacity: 1; }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scaleX(1); filter: blur(0); }
 }
 
 @keyframes hero-fade {
