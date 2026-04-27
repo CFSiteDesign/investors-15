@@ -343,7 +343,7 @@ function Ethical() {
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <div>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
-          <h2 className="mt-8 max-w-[620px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth & Sustainability</h2>
+          <h2 className="mt-8 max-w-[760px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth&nbsp;&amp; Sustainability</h2>
           <p className="mt-8 max-w-[560px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Focus on the human element. Transparent social responsibility is at our core.</p>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
             <Metric value="93%" label="Local Workforce" />
