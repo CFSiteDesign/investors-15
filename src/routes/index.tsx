@@ -226,12 +226,12 @@ function ReviewTicker() {
 
 function Network() {
   return (
-    <section className="bg-background py-[120px]">
-      <div className="mx-auto max-w-[1088px] px-6">
+    <section className="bg-background py-[82px] lg:py-[120px]">
+      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full grayscale" />
         <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
-          <p className="font-display text-[88px] leading-none">+12.4%</p>
+          <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
         </div>
       </div>
     </section>
@@ -240,20 +240,20 @@ function Network() {
 
 function Performance() {
   return (
-    <section id="secure" className="bg-secondary py-[96px] text-secondary-foreground">
-      <div className="mx-auto max-w-[1184px] px-6">
+    <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
+      <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
-        <h2 className="mt-8 font-display text-[clamp(78px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
-        <p className="mt-6 max-w-[680px] text-[25px] font-light leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
+        <h2 className="mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
+        <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
         <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
-          <p className="font-display text-[92px] leading-none">75%</p>
+          <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
           <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
         </div>
 
         <div className="mt-[104px] flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-[14px] font-black uppercase tracking-[0.16em]">Performance & Growth</p>
-            <h3 className="mt-6 font-display text-[clamp(58px,7vw,110px)] uppercase leading-[0.86]">Data-Driven<br />Excellence</h3>
+            <h3 className="mt-6 font-display text-[clamp(42px,7vw,110px)] uppercase leading-[0.9] lg:leading-[0.86]">Data-Driven<br />Excellence</h3>
           </div>
           <div className="border border-secondary-foreground px-6 py-5 text-right">
             <p className="text-[12px] font-black uppercase tracking-[0.16em] opacity-70">Last Updated</p>
