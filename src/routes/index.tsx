@@ -178,8 +178,8 @@ function LoyaltyChart() {
       <svg viewBox="0 0 480 330" className="mt-[22px] h-[285px] w-full overflow-visible" role="img" aria-label="Loyalty members cumulative growth line chart">
         <defs>
           <linearGradient id="loyaltyFill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--color-graph-purple)" stopOpacity="0.72" />
+            <stop offset="100%" stopColor="var(--color-graph-purple)" stopOpacity="0.06" />
           </linearGradient>
         </defs>
         {[80, 142, 205, 267, 330].map((y) => (
@@ -188,8 +188,8 @@ function LoyaltyChart() {
         {['60k', '45k', '30k', '15k', '0k'].map((label, index) => (
           <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
-        <polygon points={area} className="text-graph-purple" fill="url(#loyaltyFill)" />
-        <polyline points={line} fill="none" className="stroke-graph-purple" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <polygon points={area} fill="url(#loyaltyFill)" />
+        <polyline points={line} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
         {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Jan 26'].map((label, index) => (
           <text key={label} x={55 + index * 35.5} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
         ))}
