@@ -1,280 +1,248 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, BarChart3, Globe2, HeartHandshake, Play, ShieldCheck, Sparkles } from "lucide-react";
+import { Play } from "lucide-react";
 
-import heroImage from "../assets/mad-monkey-adventure-hero.jpg";
 import experienceImage from "../assets/mad-monkey-experience-generated.jpg";
 import impactImage from "../assets/mad-monkey-impact-generated.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "15 Years of Mad Monkey Adventure" },
+      { title: "15 Years of Mad Monkey" },
       {
         name: "description",
-        content: "A 15-year Mad Monkey marketing page celebrating growth, guest loyalty, ESG impact, and adventure hospitality.",
+        content: "15 Years of Mad Monkey — adventure hospitality, data-driven operations, secure growth, and ethical impact.",
       },
-      { property: "og:title", content: "15 Years of Mad Monkey Adventure" },
+      { property: "og:title", content: "15 Years of Mad Monkey" },
       {
         property: "og:description",
-        content: "Animated growth story for Mad Monkey's adventure hostel legacy across Asia.",
+        content: "A 15-year adventure hostel growth story with animated performance graphs.",
       },
     ],
   }),
   component: Index,
 });
 
-const growthBars = [32, 44, 51, 58, 65, 72, 79, 86, 92, 100, 111, 124];
-const guestBars = [42, 55, 48, 64, 70, 86, 92, 88, 76, 84, 96, 108];
-const ageBars = [34, 72, 95, 82, 57, 39, 26, 18];
-const linePoints = "20,155 78,132 136,118 194,94 252,88 310,62 368,52 426,38 484,24";
+const reviews = [
+  ["Google", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
+  ["Hostelworld", "Mad Monkey Koh Rong Samloem is literally paradise. Met the best people here.", "9.5/10"],
+  ["Google", "The social atmosphere is incredible. If you're traveling solo, this is the place to be.", "10/10"],
+  ["Hostelworld", "Clean, safe, and so much fun. The tours are well organized and the food is great.", "9/10"],
+  ["Google", "15 years of excellence shows. Mad Monkey knows how to host a perfect stay.", "10/10"],
+];
+
+const loyalty = [26, 31, 36, 42, 48, 54, 60, 47, 65, 72, 86, 100];
+const guests = [34, 48, 41, 57, 63, 73, 92, 88, 78, 84, 96, 90];
+const ages = [18, 34, 67, 94, 77, 52, 29, 16, 8];
 
 function Index() {
   return (
-    <main className="min-h-screen overflow-hidden bg-background text-foreground">
-      <HeroSection />
-      <StorySection />
-      <PillarSection />
-      <PerformanceSection />
-      <ImpactSection />
-      <FooterCta />
+    <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <TopNav />
+      <Hero />
+      <Intro />
+      <DataPillar />
+      <Reviews />
+      <SecurePillar />
+      <GraphSection />
+      <EthicalPillar />
+      <BottomEmail />
     </main>
   );
 }
 
-function HeroSection() {
+function TopNav() {
   return (
-    <section className="relative min-h-[92vh] bg-[var(--deep-ink)] text-[var(--hero-ink)]">
-      <img
-        src={heroImage}
-        alt="Backpackers celebrating at a tropical beach hostel at sunset"
-        width={1600}
-        height={1000}
-        className="absolute inset-0 h-full w-full object-cover opacity-70"
-      />
-      <div className="hero-mask absolute inset-0" />
-      <header className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-7 sm:px-8">
-        <a href="/" className="group flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">
-          <span className="grid h-12 w-12 place-items-center rounded-full border border-primary bg-primary text-xl font-black text-primary-foreground transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">m</span>
-          <span className="text-xl font-black uppercase leading-none tracking-normal">mad<br />monkey</span>
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background">
+      <div className="mx-auto flex h-24 max-w-[1190px] items-center justify-between px-6">
+        <a href="/" className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-ring">
+          <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-foreground text-xl font-black leading-none">☻</span>
+          <span className="text-2xl font-black lowercase leading-[0.75] tracking-normal">mad<br />monkey</span>
         </a>
-        <nav className="hidden items-center gap-7 text-xs font-black uppercase tracking-[0.18em] md:flex">
-          <a className="transition-colors hover:text-primary" href="#data">Data + Innovation</a>
-          <a className="transition-colors hover:text-primary" href="#secure">Secure</a>
-          <a className="transition-colors hover:text-primary" href="#ethical">Ethical</a>
+        <nav className="hidden items-center gap-8 text-[13px] font-black uppercase tracking-[0.18em] md:flex">
+          <a href="#data" className="hover:text-primary">Data + Innovation</a>
+          <a href="#secure" className="hover:text-primary">Secure</a>
+          <a href="#ethical" className="hover:text-primary">Ethical</a>
         </nav>
-        <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex min-h-11 items-center gap-2 border border-primary bg-primary px-5 text-xs font-black uppercase tracking-[0.16em] text-primary-foreground shadow-adventure transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lift focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">
-          Contact us
-        </a>
-      </header>
-
-      <div className="relative z-10 mx-auto grid max-w-7xl gap-8 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-[1fr_360px] lg:pt-20">
-        <div className="animate-reveal-up">
-          <span className="inline-flex bg-card px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-card-foreground">Est. 2011</span>
-          <h1 className="mt-8 max-w-5xl font-display text-[clamp(4.8rem,15vw,13rem)] uppercase leading-[0.82] tracking-normal text-balance">
-            15 Years<br />of Mad<br />Monkey
-          </h1>
-          <p className="mt-7 max-w-2xl text-xl font-semibold leading-relaxed text-[var(--sand)] sm:text-2xl">
-            Born in Cambodia, now a market-leading experience-led and socially responsible adventure hostel brand.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center gap-4">
-            <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex min-h-12 items-center gap-3 border border-primary bg-primary px-6 text-sm font-black uppercase tracking-[0.15em] text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">
-              <Play className="h-4 w-4 fill-current" /> Watch the film
-            </a>
-            <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex min-h-12 items-center gap-3 border border-[var(--hero-ink)] px-6 text-sm font-black uppercase tracking-[0.15em] transition-colors duration-300 hover:bg-card hover:text-card-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">
-              Join the story <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
+        <div className="flex items-center gap-3">
+          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden border border-foreground px-6 py-5 text-xs font-black uppercase tracking-[0.16em] hover:bg-foreground hover:text-background sm:inline-flex">Watch the Film</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="bg-foreground px-6 py-5 text-xs font-black uppercase tracking-[0.16em] text-background hover:bg-primary hover:text-primary-foreground">Contact Us</a>
         </div>
-        <aside className="self-end border border-border bg-card/90 p-5 text-card-foreground shadow-adventure backdrop-blur animate-drift">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-muted-foreground">Regional demand</p>
-          <p className="mt-2 font-display text-6xl leading-none text-primary">+12.4%</p>
-          <p className="mt-3 text-sm font-semibold leading-relaxed text-muted-foreground">Momentum across high-growth Asian youth travel corridors.</p>
-        </aside>
       </div>
-    </section>
+    </header>
   );
 }
 
-function StorySection() {
-  const reviews = [
-    "Best hostel experience in SE Asia. The staff are amazing and the vibe is unmatched.",
-    "Mad Monkey is literally paradise. Met the best people here.",
-    "The social atmosphere is incredible. If you're traveling solo, this is the place.",
-    "Clean, safe, and so much fun. The tours are well organized.",
-  ];
-
+function Hero() {
   return (
-    <section className="bg-[var(--sand)] py-20 text-foreground sm:py-28">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.85fr_1.15fr]">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">15 year legacy</p>
-          <h2 className="mt-5 max-w-3xl font-display text-6xl uppercase leading-[0.9] sm:text-8xl">Beds are only the beginning.</h2>
-        </div>
-        <div className="space-y-6 text-lg font-semibold leading-relaxed text-muted-foreground">
-          <p>As a leading adventure hostel brand, Mad Monkey is built around experiences, community, safety, and measurable impact.</p>
-          <p>We’re seeking strategic investment partnerships from aligned investors who value triple-bottom-line value creation across economic, social, and environmental outcomes.</p>
-          <div className="grid gap-4 pt-4 sm:grid-cols-3">
-            {[
-              ["24", "hostels"],
-              ["50k+", "active sign ups"],
-              ["1 in 3", "loyalty conversion"],
-            ].map(([value, label]) => (
-              <div key={label} className="border-t-4 border-primary bg-card p-5 shadow-lift transition-transform duration-300 hover:-translate-y-1">
-                <p className="font-display text-5xl uppercase leading-none text-primary">{value}</p>
-                <p className="mt-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="mt-16 overflow-hidden border-y border-border bg-card py-5">
-        <div className="flex w-max animate-ticker gap-4">
-          {[...reviews, ...reviews].map((review, index) => (
-            <div key={`${review}-${index}`} className="w-80 shrink-0 border border-border bg-background p-4 shadow-lift">
-              <p className="text-sm font-bold leading-relaxed">“{review}”</p>
-              <p className="mt-3 text-xs font-black uppercase tracking-[0.16em] text-primary">Guest review · 10/10</p>
-            </div>
-          ))}
+    <section className="relative bg-background pb-32 pt-48 sm:pb-44 sm:pt-56">
+      <div className="mx-auto max-w-[1088px] px-6">
+        <p className="mb-16 text-[13px] text-foreground/5">Mad Monkey Hero</p>
+        <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.12em] text-background">EST. 2011</span>
+        <h1 className="mt-9 max-w-[1040px] font-display text-[clamp(5.1rem,13.2vw,13.4rem)] uppercase leading-[0.78] tracking-normal">
+          15 Years of<br />Mad Monkey
+        </h1>
+        <p className="mt-12 max-w-[760px] text-[clamp(1.6rem,2.4vw,2.75rem)] font-light leading-[1.25] text-muted-foreground">
+          Born in Cambodia, today a market-leading experience-led socially responsible business.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-4">
+          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex items-center gap-5 bg-foreground px-8 py-5 text-lg font-black uppercase tracking-[0.12em] text-background hover:bg-primary hover:text-primary-foreground">Watch the Film <Play className="h-5 w-5 fill-current" /></a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-8 py-5 text-lg font-black uppercase tracking-[0.12em] hover:bg-foreground hover:text-background">Join the Story</a>
         </div>
       </div>
     </section>
   );
 }
 
-function PillarSection() {
+function Intro() {
   return (
-    <section id="data" className="bg-background py-20 sm:py-28">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_0.9fr]">
-        <div className="relative overflow-hidden border border-border bg-card shadow-adventure">
-          <img src={experienceImage} alt="Tropical hostel courtyard with backpackers and murals" width={1400} height={1000} loading="lazy" className="h-[520px] w-full object-cover transition-transform duration-700 hover:scale-105" />
-          <div className="absolute bottom-5 left-5 right-5 bg-card/90 p-5 backdrop-blur">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">Pillar 01: Data + Innovation</p>
-            <p className="mt-2 text-2xl font-black">Tech excellence with human experience.</p>
+    <section className="bg-background pb-28">
+      <div className="mx-auto max-w-[1088px] px-6">
+        <h2 className="max-w-[980px] font-display text-[clamp(3rem,6vw,6.4rem)] uppercase leading-[0.92] tracking-normal">
+          As a leading adventure hostel brand, it isn't just about beds it’s about experiences.<br />
+          <span className="text-muted-foreground/45">Our expansion isn’t just about size; it’s about impact.</span>
+        </h2>
+        <div className="mt-16 grid gap-8 text-xl font-medium leading-relaxed text-muted-foreground md:grid-cols-2">
+          <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
+          <div className="space-y-8">
+            <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
+            <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
+            <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
           </div>
-        </div>
-        <div>
-          <Sparkles className="h-10 w-10 text-primary" />
-          <h2 className="mt-6 font-display text-6xl uppercase leading-[0.9] sm:text-8xl">Data-driven operations</h2>
-          <p className="mt-6 text-lg font-semibold leading-relaxed text-muted-foreground">Gamified loyalty, direct booking conversion, and operational dashboards turn every stay into a measurable relationship.</p>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-8 inline-flex min-h-12 items-center gap-3 bg-secondary px-6 text-sm font-black uppercase tracking-[0.15em] text-secondary-foreground transition-transform duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">Request info pack <ArrowRight className="h-4 w-4" /></a>
         </div>
       </div>
     </section>
   );
 }
 
-function PerformanceSection() {
+function DataPillar() {
   return (
-    <section id="secure" className="bg-[var(--deep-ink)] py-20 text-[var(--hero-ink)] sm:py-28">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Pillar 02: Secure</p>
-            <h2 className="mt-5 font-display text-6xl uppercase leading-[0.9] sm:text-8xl">Performance & growth</h2>
+    <section id="data" className="bg-background py-24">
+      <div className="mx-auto grid max-w-[1088px] gap-14 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div>
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-muted-foreground">Pillar 01: DATA + INNOVATION</p>
+          <h2 className="mt-7 font-display text-[clamp(4rem,8vw,8.5rem)] uppercase leading-[0.84]">Data-Driven<br />Operations</h2>
+          <p className="mt-7 max-w-xl text-2xl font-light leading-snug text-muted-foreground">We combine tech excellence with human experience to drive industry-leading conversion and loyalty.</p>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2">
+            <Metric value="1 in 3" label="Guest convert to our gamified and tech powered loyalty programme - keeping their data behaviour part of an ongoing journey" />
+            <Metric value="50k+" label="ACTIVE ENGAGED SIGN UPS" />
           </div>
-          <p className="max-w-2xl text-lg font-semibold leading-relaxed text-[var(--sand)]">A proven track record of scaling adventure-focused hospitality, powered by animated operating signals and repeatable playbooks.</p>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-10 inline-flex bg-foreground px-8 py-5 text-sm font-black uppercase tracking-[0.16em] text-background hover:bg-primary hover:text-primary-foreground">Request Info Pack</a>
         </div>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          <LineChartCard />
-          <BarChartCard title="Guests per month" subtitle="2025 performance" data={guestBars} icon={<Globe2 className="h-5 w-5" />} />
-          <BarChartCard title="Age distribution" subtitle="guest demographics" data={ageBars} icon={<BarChart3 className="h-5 w-5" />} compact />
-        </div>
+        <img src={experienceImage} alt="Mad Monkey Experience" width={1400} height={1000} loading="lazy" className="h-[560px] w-full object-cover grayscale" />
       </div>
     </section>
   );
 }
 
-function LineChartCard() {
+function Metric({ value, label }: { value: string; label: string }) {
   return (
-    <article className="chart-grid border border-border bg-card p-5 text-card-foreground shadow-adventure lg:col-span-1">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">Loyalty members</p>
-          <h3 className="mt-2 text-2xl font-black">Cumulative Growth 2025–26</h3>
-        </div>
-        <ShieldCheck className="h-8 w-8 text-primary" />
-      </div>
-      <svg viewBox="0 0 520 210" role="img" aria-label="Animated upward loyalty member growth line chart" className="mt-8 h-56 w-full overflow-visible">
-        <polyline points={linePoints} fill="none" stroke="var(--color-primary)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" className="animate-line-draw" />
-        {linePoints.split(" ").map((point, index) => {
-          const [cx, cy] = point.split(",");
-          return <circle key={point} cx={cx} cy={cy} r="7" fill="var(--color-accent)" style={{ animationDelay: `${index * 90}ms` }} className="animate-reveal-up" />;
-        })}
-      </svg>
-      <div className="flex justify-between text-xs font-black uppercase tracking-[0.12em] text-muted-foreground"><span>Jan 25</span><span>60k</span><span>Jan 26</span></div>
-    </article>
-  );
-}
-
-function BarChartCard({ title, subtitle, data, icon, compact = false }: { title: string; subtitle: string; data: number[]; icon: React.ReactNode; compact?: boolean }) {
-  const max = Math.max(...data);
-  return (
-    <article className="chart-grid border border-border bg-card p-5 text-card-foreground shadow-adventure">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">{title}</p>
-          <h3 className="mt-2 text-2xl font-black capitalize">{subtitle}</h3>
-        </div>
-        <span className="text-primary">{icon}</span>
-      </div>
-      <div className="mt-8 flex h-56 items-end gap-2 border-b border-l border-border px-3 pb-3">
-        {data.map((value, index) => (
-          <div key={`${title}-${index}`} className="flex h-full flex-1 items-end">
-            <div
-              className="w-full origin-bottom bg-primary shadow-adventure animate-bar-grow transition-colors duration-300 hover:bg-accent"
-              style={{ height: `${(value / max) * (compact ? 84 : 100)}%`, animationDelay: `${index * 80}ms` }}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 flex justify-between text-xs font-black uppercase tracking-[0.12em] text-muted-foreground"><span>0k</span><span>{compact ? "18–48" : "Jan–Dec"}</span><span>{compact ? "8k" : "14k"}</span></div>
-    </article>
-  );
-}
-
-function ImpactSection() {
-  return (
-    <section id="ethical" className="relative overflow-hidden bg-[var(--sand)] py-20 sm:py-28">
-      <div className="adventure-grain absolute inset-0 text-primary" />
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Pillar 03: Ethical</p>
-          <h2 className="mt-5 font-display text-6xl uppercase leading-[0.9] sm:text-8xl">Local growth & sustainability</h2>
-          <p className="mt-6 text-lg font-semibold leading-relaxed text-muted-foreground">Transparent social responsibility is at the core: local teams, community investment, and environmental accountability.</p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <StatCard value="93%" label="Local workforce" />
-            <StatCard value="450" label="Water wells built" />
-          </div>
-        </div>
-        <div className="relative border border-border bg-card p-3 shadow-adventure">
-          <img src={impactImage} alt="Community clean water project supported by travel hospitality impact work" width={1400} height={900} loading="lazy" className="h-[560px] w-full object-cover" />
-          <div className="absolute right-7 top-7 grid h-24 w-24 place-items-center rounded-full bg-primary text-center text-xs font-black uppercase leading-tight tracking-[0.12em] text-primary-foreground animate-drift">ESG<br />Built in</div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function StatCard({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="border border-border bg-card p-6 shadow-lift transition-transform duration-300 hover:-translate-y-1">
-      <HeartHandshake className="h-7 w-7 text-primary" />
-      <p className="mt-5 font-display text-6xl uppercase leading-none text-primary">{value}</p>
-      <p className="mt-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+    <div className="border-t border-border pt-5">
+      <p className="font-display text-7xl uppercase leading-none">{value}</p>
+      <p className="mt-4 text-sm font-black uppercase tracking-[0.12em] text-muted-foreground">{label}</p>
     </div>
   );
 }
 
-function FooterCta() {
+function Reviews() {
   return (
-    <footer className="bg-[var(--deep-ink)] px-5 py-16 text-[var(--hero-ink)] sm:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Ready for the next chapter</p>
-          <h2 className="mt-3 font-display text-5xl uppercase leading-none sm:text-7xl">Join the story.</h2>
-        </div>
-        <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex min-h-12 items-center justify-center gap-3 bg-primary px-6 text-sm font-black uppercase tracking-[0.15em] text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">FOUNDERS@MADMONKEYHOSTELS.COM <ArrowRight className="h-4 w-4" /></a>
+    <section className="overflow-hidden border-y border-border bg-foreground py-6 text-background">
+      <div className="flex w-max animate-ticker gap-5">
+        {[...reviews, ...reviews, ...reviews].map(([source, quote, score], index) => (
+          <article key={`${source}-${index}`} className="w-[340px] shrink-0 border border-background/20 p-5">
+            <p className="text-xs font-black uppercase tracking-[0.15em] opacity-70">{source} Guest Review</p>
+            <p className="mt-4 text-base font-bold leading-snug">"{quote}"</p>
+            <p className="mt-4 font-display text-4xl leading-none">{score}</p>
+          </article>
+        ))}
       </div>
+    </section>
+  );
+}
+
+function SecurePillar() {
+  return (
+    <section id="secure" className="bg-background py-24">
+      <div className="mx-auto grid max-w-[1088px] gap-12 px-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+        <div>
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-muted-foreground">Pillar 02: SECURE</p>
+          <h2 className="mt-7 font-display text-[clamp(5rem,11vw,11rem)] uppercase leading-[0.78]">MADMONKEY</h2>
+          <p className="mt-6 max-w-2xl text-2xl font-light leading-snug text-muted-foreground">A proven track record of scaling adventure-focused hospitality across the region.</p>
+        </div>
+        <Metric value="75%" label="INCREASE IN ADVENTURE INTEREST" />
+      </div>
+    </section>
+  );
+}
+
+function GraphSection() {
+  return (
+    <section className="bg-secondary py-20 text-secondary-foreground">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.18em] opacity-70">Performance & Growth</p>
+            <h2 className="mt-4 font-display text-[clamp(3.5rem,7vw,7.5rem)] uppercase leading-[0.86]">Data-Driven<br />Excellence</h2>
+          </div>
+          <div className="border border-secondary-foreground/20 px-5 py-4 text-right">
+            <p className="text-xs font-black uppercase tracking-[0.16em] opacity-60">Last Updated</p>
+            <p className="mt-1 font-black uppercase tracking-[0.12em]">APRIL 2026</p>
+          </div>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <ChartCard title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} axis="Jan 25 Feb Mar Apr May Jun Jul Aug Sep Oct Nov Jan 26" scale="0k 15k 30k 45k 60k" />
+          <ChartCard title="Guests Per Month" subtitle="2025 Performance" data={guests} axis="Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec" scale="0k 3.5k 7k 10.5k 14k" />
+          <ChartCard title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} axis="18 21 24 27 30 33 36 39 42 45 48" scale="0k 2k 4k 6k 8k" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ChartCard({ title, subtitle, data, axis, scale }: { title: string; subtitle: string; data: number[]; axis: string; scale: string }) {
+  const max = Math.max(...data);
+  return (
+    <article className="border border-secondary-foreground/20 bg-background p-5 text-foreground">
+      <h3 className="text-2xl font-black">{title}</h3>
+      <p className="mt-1 text-sm font-bold text-muted-foreground">{subtitle}</p>
+      <div className="chart-grid mt-7 flex h-64 items-end gap-2 border-b border-l border-border px-3 pb-3">
+        {data.map((item, index) => (
+          <span
+            key={`${title}-${index}`}
+            className="block flex-1 origin-bottom bg-foreground animate-bar-grow"
+            style={{ height: `${(item / max) * 100}%`, animationDelay: `${index * 85}ms` }}
+          />
+        ))}
+      </div>
+      <p className="mt-4 text-[10px] font-black uppercase tracking-[0.08em] text-muted-foreground">{axis}</p>
+      <p className="mt-2 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">{scale}</p>
+    </article>
+  );
+}
+
+function EthicalPillar() {
+  return (
+    <section id="ethical" className="bg-background py-24">
+      <div className="mx-auto grid max-w-[1088px] gap-14 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div>
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-muted-foreground">Pillar 03: Ethical</p>
+          <h2 className="mt-7 font-display text-[clamp(4rem,8vw,8.5rem)] uppercase leading-[0.84]">Local Growth &<br />Sustainability</h2>
+          <p className="mt-7 max-w-xl text-2xl font-light leading-snug text-muted-foreground">Focus on the human element. Transparent social responsibility is at our core.</p>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2">
+            <Metric value="93%" label="Local Workforce" />
+            <Metric value="450" label="WATER WELLS BUILT" />
+          </div>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-10 inline-flex bg-foreground px-8 py-5 text-sm font-black uppercase tracking-[0.16em] text-background hover:bg-primary hover:text-primary-foreground">Request Info Pack</a>
+        </div>
+        <img src={impactImage} alt="Impact 1" width={1400} height={900} loading="lazy" className="h-[560px] w-full object-cover grayscale" />
+      </div>
+    </section>
+  );
+}
+
+function BottomEmail() {
+  return (
+    <footer className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-foreground py-3 text-center text-[11px] font-black uppercase tracking-[0.45em] text-background">
+      <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM">FOUNDERS@MADMONKEYHOSTELS.COM</a>
     </footer>
   );
 }
