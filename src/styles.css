@@ -189,6 +189,23 @@
       linear-gradient(to bottom, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px);
     background-size: 54px 44px;
   }
+
+  .hero-title {
+    font-stretch: condensed;
+    transform: scaleX(0.88);
+    transform-origin: left top;
+    width: 114%;
+  }
+
+  .hero-title-line {
+    display: block;
+    will-change: transform, opacity;
+    transition: transform 80ms linear, opacity 80ms linear;
+  }
+
+  .hero-title-gap {
+    margin-top: 0.48em;
+  }
 }
 
 @keyframes reveal-up {
