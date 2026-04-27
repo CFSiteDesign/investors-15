@@ -20,7 +20,6 @@ export const Route = createFileRoute("/")({
 const heroUrl = "https://i.imghippo.com/files/wei8466Qpo.jpg";
 const experienceUrl = "https://i.imghippo.com/files/idSb4836m.JPG";
 const networkUrl = "https://i.imghippo.com/files/rUB1888Pd.png";
-const impactUrl = "https://i.imghippo.com/files/Iifo4464TY.jpg";
 
 const reviews = [
   ["Google", "Guest Review", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
@@ -31,7 +30,7 @@ const reviews = [
 ];
 
 const loyalty = [7, 9.5, 13, 15.5, 17, 18.5, 20, 21.5, 23.5, 26, 31, 60];
-const guests = [11.5, 11.2, 12.7, 12.6, 12, 9.7, 9.256, 9.1, 8.6, 10.5, 11.2, 11.4];
+const guests = [12.6, 12.3, 14, 13.9, 13.2, 10.9, 10.4, 10.1, 9.6, 11.8, 12.4, 12.5];
 const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
 
 function Index() {
@@ -255,9 +254,9 @@ function Performance() {
           </div>
         </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
-          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
-          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
+          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={60} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Jan 26" y="60k,45k,30k,15k,0k" />
+          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} maxValue={14} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
+          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} maxValue={8} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
         </div>
       </div>
     </section>
