@@ -293,19 +293,19 @@ function Chart({ title, subtitle, data, x, y }: { title: string; subtitle: strin
 
 function Ethical() {
   return (
-    <section id="ethical" className="bg-background py-[120px]">
-      <div className="mx-auto grid max-w-[1088px] gap-14 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+    <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
+      <div className="mx-auto grid max-w-[1088px] gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14 lg:px-6">
         <div>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
-          <h2 className="mt-8 font-display text-[clamp(58px,8vw,124px)] uppercase leading-[0.84]">Local Growth &<br />Sustainability</h2>
-          <p className="mt-8 text-[25px] font-light leading-[1.22] text-muted-foreground">Focus on the human element. Transparent social responsibility is at our core.</p>
+          <h2 className="mt-8 font-display text-[clamp(40px,8vw,124px)] uppercase leading-[0.88] lg:leading-[0.84]">Local Growth &<br />Sustainability</h2>
+          <p className="mt-8 text-[18px] font-light leading-[1.3] text-muted-foreground lg:text-[25px] lg:leading-[1.22]">Focus on the human element. Transparent social responsibility is at our core.</p>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
             <Metric value="93%" label="Local Workforce" />
             <Metric value="450" label="WATER WELLS BUILT" />
           </div>
           <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
         </div>
-        <img src={impactUrl} alt="Impact 1" loading="lazy" className="h-[620px] w-full object-cover grayscale" />
+        <img src={impactUrl} alt="Impact 1" loading="lazy" className="h-[440px] w-full object-cover grayscale lg:h-[620px]" />
       </div>
     </section>
   );
