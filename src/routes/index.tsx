@@ -52,9 +52,9 @@ function Index() {
 function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto grid h-[98px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-8 px-6">
+      <div className="mx-auto grid h-[76px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[98px] lg:gap-8 lg:px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[58px] w-auto object-contain" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[44px] w-auto object-contain lg:h-[58px]" />
         </a>
         <nav className="hidden items-center justify-end gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Data + Innovation</a>
@@ -63,7 +63,7 @@ function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex h-[40px] items-center bg-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80">Contact Us</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
         </div>
       </div>
     </header>
@@ -72,11 +72,11 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative min-h-[980px] overflow-hidden bg-background pt-[98px]">
+    <section className="relative min-h-[780px] overflow-hidden bg-background pt-[76px] lg:min-h-[980px] lg:pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto max-w-[1088px] overflow-hidden px-6 pt-[96px] sm:pt-[104px]">
+      <div className="mx-auto max-w-[1088px] overflow-hidden px-5 pt-[72px] sm:pt-[88px] lg:px-6 lg:pt-[96px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[42px] max-w-[1030px] font-display text-[clamp(72px,9.6vw,162px)] font-black uppercase leading-[0.84] tracking-normal">
+        <h1 className="hero-title mt-[38px] max-w-[1030px] font-display text-[clamp(54px,11.4vw,214px)] font-black uppercase leading-[0.84] tracking-normal lg:mt-[42px]">
           <span className="hero-title-group hero-title-up">
             <span className="hero-title-line whitespace-nowrap">15 Years</span>
             <span className="hero-title-line whitespace-nowrap">of</span>
@@ -86,12 +86,12 @@ function Hero() {
             <span className="hero-title-line whitespace-nowrap">Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[44px] max-w-[850px] text-[clamp(20px,2.05vw,34px)] font-light leading-[1.22] text-muted-foreground">
+        <p className="hero-copy mt-[36px] max-w-[850px] text-[clamp(18px,2.05vw,34px)] font-light leading-[1.25] text-muted-foreground lg:mt-[44px]">
           Born in Cambodia, today a market-leading experience-led socially responsible business.
         </p>
         <div className="hero-copy mt-8 flex flex-wrap gap-4">
-          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-8 py-5 text-[18px] font-black uppercase tracking-[0.12em] text-background">Watch the Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-8 py-5 text-[18px] font-black uppercase tracking-[0.12em]">Join the Story</a>
+          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-background lg:px-8 lg:py-5 lg:text-[18px]">Watch the Film</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] lg:px-8 lg:py-5 lg:text-[18px]">Join the Story</a>
         </div>
       </div>
     </section>
@@ -100,13 +100,13 @@ function Hero() {
 
 function Manifesto() {
   return (
-    <section className="bg-background pb-[116px] pt-[72px]">
-      <div className="mx-auto max-w-[1088px] px-6">
-        <h2 className="max-w-[1030px] font-display text-[clamp(48px,6.2vw,98px)] uppercase leading-[0.92] tracking-normal">
+    <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
+      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
+        <h2 className="max-w-[1030px] font-display text-[clamp(34px,6.2vw,98px)] uppercase leading-[0.94] tracking-normal">
           As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
           <span className="block text-muted/70">Our expansion isn’t just about size; it’s about impact.</span>
         </h2>
-        <div className="mt-[58px] grid gap-9 text-[20px] font-light leading-[1.55] text-muted-foreground md:grid-cols-2">
+        <div className="mt-[40px] grid gap-8 text-[17px] font-light leading-[1.55] text-muted-foreground md:grid-cols-2 lg:mt-[58px] lg:gap-9 lg:text-[20px]">
           <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
           <div className="space-y-8">
             <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
@@ -121,17 +121,17 @@ function Manifesto() {
 
 function DataInnovation() {
   return (
-    <section id="data" className="border-y border-border bg-background py-[39px]">
-      <div className="mx-auto grid max-w-[1045px] grid-cols-1 px-[51px] lg:min-h-[439px] lg:grid-cols-[450px_1fr] lg:px-[51px]">
+    <section id="data" className="border-y border-border bg-background py-[32px] lg:py-[39px]">
+      <div className="mx-auto grid max-w-[1045px] grid-cols-1 px-5 sm:px-[51px] lg:min-h-[439px] lg:grid-cols-[450px_1fr]">
         <div className="relative z-10 bg-background pb-10 lg:pb-0">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
           </p>
-          <h2 className="mt-[16px] font-display text-[clamp(54px,5.7vw,62px)] uppercase leading-[1.13] tracking-normal">
+          <h2 className="mt-[16px] font-display text-[clamp(42px,8.8vw,62px)] uppercase leading-[1.13] tracking-normal">
             DATA-DRIVEN<br />OPERATIONS
           </h2>
-          <p className="mt-[21px] max-w-[405px] text-[18px] font-light leading-[1.38] text-muted-foreground">
+          <p className="mt-[21px] max-w-[405px] text-[16px] font-light leading-[1.38] text-muted-foreground sm:text-[18px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
           <div className="mt-[21px] grid max-w-[404px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
@@ -151,8 +151,8 @@ function DataInnovation() {
 function BriefMetric({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <p className="font-display text-[60px] uppercase leading-none tracking-normal">{value}</p>
-      <p className="mt-[10px] text-[13px] font-black uppercase leading-[1.5] tracking-[0.18em] text-muted-foreground">{label}</p>
+      <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
+      <p className="mt-[10px] text-[11px] font-black uppercase leading-[1.5] tracking-[0.18em] text-muted-foreground sm:text-[13px]">{label}</p>
     </div>
   );
 }
@@ -226,12 +226,12 @@ function ReviewTicker() {
 
 function Network() {
   return (
-    <section className="bg-background py-[120px]">
-      <div className="mx-auto max-w-[1088px] px-6">
+    <section className="bg-background py-[82px] lg:py-[120px]">
+      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full grayscale" />
         <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
-          <p className="font-display text-[88px] leading-none">+12.4%</p>
+          <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
         </div>
       </div>
     </section>
@@ -240,20 +240,20 @@ function Network() {
 
 function Performance() {
   return (
-    <section id="secure" className="bg-secondary py-[96px] text-secondary-foreground">
-      <div className="mx-auto max-w-[1184px] px-6">
+    <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
+      <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
-        <h2 className="mt-8 font-display text-[clamp(78px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
-        <p className="mt-6 max-w-[680px] text-[25px] font-light leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
+        <h2 className="mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
+        <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
         <div className="mt-12 max-w-[360px] border-t border-secondary-foreground pt-6">
-          <p className="font-display text-[92px] leading-none">75%</p>
+          <p className="font-display text-[62px] leading-none lg:text-[92px]">75%</p>
           <p className="mt-4 text-[13px] font-black uppercase tracking-[0.12em]">INCREASE IN ADVENTURE INTEREST</p>
         </div>
 
         <div className="mt-[104px] flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-[14px] font-black uppercase tracking-[0.16em]">Performance & Growth</p>
-            <h3 className="mt-6 font-display text-[clamp(58px,7vw,110px)] uppercase leading-[0.86]">Data-Driven<br />Excellence</h3>
+            <h3 className="mt-6 font-display text-[clamp(42px,7vw,110px)] uppercase leading-[0.9] lg:leading-[0.86]">Data-Driven<br />Excellence</h3>
           </div>
           <div className="border border-secondary-foreground px-6 py-5 text-right">
             <p className="text-[12px] font-black uppercase tracking-[0.16em] opacity-70">Last Updated</p>
@@ -293,19 +293,19 @@ function Chart({ title, subtitle, data, x, y }: { title: string; subtitle: strin
 
 function Ethical() {
   return (
-    <section id="ethical" className="bg-background py-[120px]">
-      <div className="mx-auto grid max-w-[1088px] gap-14 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+    <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
+      <div className="mx-auto grid max-w-[1088px] gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14 lg:px-6">
         <div>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
-          <h2 className="mt-8 font-display text-[clamp(58px,8vw,124px)] uppercase leading-[0.84]">Local Growth &<br />Sustainability</h2>
-          <p className="mt-8 text-[25px] font-light leading-[1.22] text-muted-foreground">Focus on the human element. Transparent social responsibility is at our core.</p>
+          <h2 className="mt-8 font-display text-[clamp(40px,8vw,124px)] uppercase leading-[0.88] lg:leading-[0.84]">Local Growth &<br />Sustainability</h2>
+          <p className="mt-8 text-[18px] font-light leading-[1.3] text-muted-foreground lg:text-[25px] lg:leading-[1.22]">Focus on the human element. Transparent social responsibility is at our core.</p>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
             <Metric value="93%" label="Local Workforce" />
             <Metric value="450" label="WATER WELLS BUILT" />
           </div>
           <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
         </div>
-        <img src={impactUrl} alt="Impact 1" loading="lazy" className="h-[620px] w-full object-cover grayscale" />
+        <img src={impactUrl} alt="Impact 1" loading="lazy" className="h-[440px] w-full object-cover grayscale lg:h-[620px]" />
       </div>
     </section>
   );
