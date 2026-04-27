@@ -102,6 +102,7 @@ function Index() {
       <DataInnovation />
       <ReviewTicker />
       <Performance />
+      <Network />
       <Ethical />
       <Footer />
       <EmailBar />
