@@ -59,7 +59,7 @@
 :root {
   --radius: 0rem;
   --font-body: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
-  --font-display: Impact, Haettenschweiler, "Arial Black", Arial Black, var(--font-body);
+  --font-display: "Arial Black", Arial, Helvetica, var(--font-body);
   --background: oklch(0.015 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.985 0 0);
@@ -190,22 +190,11 @@
     background-size: 54px 44px;
   }
 
-  .hero-title {
-    font-stretch: condensed;
-    transform: scaleX(0.88);
-    transform-origin: left top;
-    width: 114%;
-  }
-
-  .hero-title-line {
-    display: block;
-    will-change: transform, opacity;
-    transition: transform 80ms linear, opacity 80ms linear;
-  }
-
-  .hero-title-gap {
-    margin-top: 0.48em;
-  }
+  .hero-title { transform: scaleX(1.04); transform-origin: left top; width: 96%; }
+  .hero-title-group, .hero-title-line { display: block; }
+  .hero-title-up { animation: hero-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-title-down { animation: hero-drop 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-copy { animation: hero-fade 0.8s ease-out 0.62s both; }
 }
 
 @keyframes reveal-up {
@@ -231,6 +220,21 @@
 @keyframes line-draw {
   from { stroke-dashoffset: 620; }
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes hero-rise {
+  from { transform: translate3d(0, 1.78em, 0); opacity: 0.98; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@keyframes hero-drop {
+  from { transform: translate3d(0, -1.62em, 0); opacity: 0.98; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@keyframes hero-fade {
+  from { transform: translate3d(0, 22px, 0); opacity: 0; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
