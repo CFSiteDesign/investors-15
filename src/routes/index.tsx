@@ -263,14 +263,13 @@ function Performance() {
   );
 }
 
-function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; wide?: boolean }) {
+function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; maxValue: number; wide?: boolean }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const max = Math.max(...data);
   const xLabels = x.split(",");
   const yLabels = y.split(",");
   const pointPositions = data.map((value, index) => {
     const xPos = 58 + (index / (data.length - 1)) * 392;
-    const yPos = 292 - (value / max) * 238;
+    const yPos = 292 - (value / maxValue) * 238;
     return { x: xPos, y: yPos, value, label: xLabels[index] ?? String(index + 1) };
   });
   const points = pointPositions.map((point) => `${point.x},${point.y}`);
@@ -317,7 +316,7 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
             const barWidth = wide ? 10 : 30;
             const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
             const xPos = 58 + index * (barWidth + gap);
-            const height = (value / max) * 238;
+            const height = (value / maxValue) * 238;
             return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
           })
         )}
