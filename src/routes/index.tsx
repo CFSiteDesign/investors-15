@@ -76,7 +76,7 @@ function Hero() {
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
       <div className="mx-auto max-w-[1088px] overflow-hidden px-5 pt-[72px] sm:pt-[88px] lg:px-6 lg:pt-[96px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[38px] max-w-[1030px] font-display text-[clamp(54px,11.4vw,214px)] font-black uppercase leading-[0.84] tracking-normal lg:mt-[42px]">
+        <h1 className="hero-title mt-[38px] max-w-[1030px] font-display text-[clamp(46px,10.2vw,190px)] font-black uppercase leading-[0.86] tracking-normal lg:mt-[42px]">
           <span className="hero-title-group hero-title-up">
             <span className="hero-title-line whitespace-nowrap">15 Years</span>
             <span className="hero-title-line whitespace-nowrap">of</span>
@@ -86,7 +86,7 @@ function Hero() {
             <span className="hero-title-line whitespace-nowrap">Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[36px] max-w-[850px] text-[clamp(18px,2.05vw,34px)] font-light leading-[1.25] text-muted-foreground lg:mt-[44px]">
+        <p className="hero-copy mt-[34px] max-w-[760px] text-[clamp(16px,1.75vw,28px)] font-light leading-[1.28] text-muted-foreground lg:mt-[42px]">
           Born in Cambodia, today a market-leading experience-led socially responsible business.
         </p>
         <div className="hero-copy mt-8 flex flex-wrap gap-4">
@@ -128,10 +128,10 @@ function DataInnovation() {
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
           </p>
-          <h2 className="mt-[16px] font-display text-[clamp(42px,8.8vw,62px)] uppercase leading-[1.13] tracking-normal">
+          <h2 className="mt-[16px] font-display text-[clamp(36px,7.6vw,58px)] uppercase leading-[1.13] tracking-normal">
             DATA-DRIVEN<br />OPERATIONS
           </h2>
-          <p className="mt-[21px] max-w-[405px] text-[16px] font-light leading-[1.38] text-muted-foreground sm:text-[18px]">
+          <p className="mt-[21px] max-w-[405px] text-[15px] font-light leading-[1.4] text-muted-foreground sm:text-[17px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
           <div className="mt-[21px] grid max-w-[404px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
