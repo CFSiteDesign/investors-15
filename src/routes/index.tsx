@@ -343,6 +343,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   const hovered = hoveredIndex === null ? null : pointPositions[hoveredIndex];
   const formatValue = (value: number) => {
     if (title === "Loyalty Members") return Math.round(value * 1000).toLocaleString();
+    if (title === "Guest Capacity") return Math.round(value * 1000).toLocaleString();
     if (title === "Guests Per Month") return Math.round(value * 1000).toLocaleString();
     return Math.round(value * 1000).toLocaleString();
   };
