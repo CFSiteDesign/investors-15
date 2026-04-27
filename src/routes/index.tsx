@@ -29,7 +29,7 @@ const reviews = [
   ["Google", "Guest Review", "15 years of excellence shows. Mad Monkey knows how to host a perfect stay.", "10/10"],
 ];
 
-const loyalty = [8, 12, 17, 23, 29, 35, 41, 47, 53, 58, 62, 68];
+const loyalty = [7, 9, 11.5, 13.2, 14.4, 15.8, 17.1, 18.2, 20.2, 22.6, 27.1, 38.8, 52.2];
 const guests = [2.6, 4.1, 5.3, 6.4, 7.8, 8.9, 10.8, 11.6, 10.1, 9.4, 12.3, 13.4];
 const ages = [1.1, 3.4, 5.9, 7.4, 6.8, 5.2, 3.7, 2.3, 1.2, 0.7, 0.4];
 
@@ -121,21 +121,80 @@ function Manifesto() {
 
 function DataInnovation() {
   return (
-    <section id="data" className="bg-background py-[120px]">
-      <div className="mx-auto grid max-w-[1088px] gap-14 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        <div>
-          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 01: DATA + INNOVATION</p>
-          <h2 className="mt-8 font-display text-[clamp(62px,8.6vw,128px)] uppercase leading-[0.84]">Data-Driven<br />Operations</h2>
-          <p className="mt-8 text-[25px] font-light leading-[1.22] text-muted-foreground">We combine tech excellence with human experience to drive industry-leading conversion and loyalty.</p>
-          <div className="mt-14 grid gap-10 sm:grid-cols-2">
-            <Metric value="1 in 3" label="Guest convert to our gamified and tech powered loyalty programme - keeping their data behaviour part of an ongoing journey" />
-            <Metric value="50k+" label="ACTIVE ENGAGED SIGN UPS" />
+    <section id="data" className="border-y border-border bg-background py-[39px]">
+      <div className="mx-auto grid max-w-[1045px] grid-cols-1 px-[51px] lg:min-h-[439px] lg:grid-cols-[450px_1fr] lg:px-[51px]">
+        <div className="relative z-10 bg-background pb-10 lg:pb-0">
+          <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
+            <span className="text-[19px] leading-none text-foreground">↯</span>
+            PILLAR 01: PROVEN
+          </p>
+          <h2 className="mt-[16px] font-display text-[clamp(54px,5.7vw,62px)] uppercase leading-[1.13] tracking-normal">
+            DATA-DRIVEN<br />OPERATIONS
+          </h2>
+          <p className="mt-[21px] max-w-[405px] text-[18px] font-light leading-[1.38] text-muted-foreground">
+            We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
+          </p>
+          <div className="mt-[21px] grid max-w-[404px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
+            <BriefMetric value="1 in 3" label="GUEST CONVERT TO OUR GAMIFIED AND TECH POWERED LOYALTY PROGRAMME - KEEPING THEIR DATA BEHAVIOUR PART OF AN ONGOING JOURNEY" />
+            <BriefMetric value="55k+" label="ACTIVELY ENGAGED LOYALTY MEMBERS. LAUNCHED IN 2025, THE PROGRAM NOW DRIVES OVER 40% OF ALL BOOKINGS." />
           </div>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
         </div>
-        <img src={experienceUrl} alt="Mad Monkey Experience" loading="lazy" className="h-[620px] w-full object-cover grayscale" />
+        <div className="relative min-h-[408px] border border-border bg-card/5 lg:ml-[27px] lg:mt-[9px]">
+          <div className="absolute left-0 right-0 top-[23px] h-px bg-border" />
+          <LoyaltyChart />
+        </div>
       </div>
     </section>
+  );
+}
+
+function BriefMetric({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="font-display text-[60px] uppercase leading-none tracking-normal">{value}</p>
+      <p className="mt-[10px] text-[13px] font-black uppercase leading-[1.5] tracking-[0.18em] text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
+function LoyaltyChart() {
+  const points = loyalty.map((value, index) => {
+    const x = 55 + index * 32.5;
+    const y = 330 - (value / 60) * 250;
+    return `${x},${y}`;
+  });
+  const line = points.join(" ");
+  const area = `55,330 ${line} 445,330`;
+
+  return (
+    <article className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-[21px] font-black uppercase leading-none tracking-normal">LOYALTY MEMBERS</h3>
+          <p className="mt-[9px] text-[12px] font-black uppercase leading-none tracking-[0.22em] text-muted-foreground">CUMULATIVE GROWTH 2025-26</p>
+        </div>
+        <span className="grid size-[32px] place-items-center rounded-full bg-muted/25 text-muted-foreground" aria-hidden="true">⌁</span>
+      </div>
+      <svg viewBox="0 0 480 330" className="mt-[22px] h-[285px] w-full overflow-visible" role="img" aria-label="Loyalty members cumulative growth line chart">
+        <defs>
+          <linearGradient id="loyaltyFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {[80, 142, 205, 267, 330].map((y) => (
+          <line key={y} x1="55" x2="445" y1={y} y2={y} className="stroke-border/50" strokeDasharray="3 4" />
+        ))}
+        {['60k', '45k', '30k', '15k', '0k'].map((label, index) => (
+          <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
+        ))}
+        <polygon points={area} className="fill-primary text-primary" fill="url(#loyaltyFill)" />
+        <polyline points={line} fill="none" className="stroke-primary" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Jan 26'].map((label, index) => (
+          <text key={label} x={55 + index * 35.5} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
+        ))}
+      </svg>
+    </article>
   );
 }
 
