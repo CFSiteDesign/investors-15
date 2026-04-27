@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
@@ -200,6 +201,30 @@ function Metric({ value, label }: { value: string; label: string }) {
   );
 }
 
+function useInView(ref: React.RefObject<Element | null>) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || isVisible) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -15% 0px", threshold: 0.25 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref, isVisible]);
+
+  return isVisible;
+}
+
 function ReviewTicker() {
   return (
     <section className="overflow-hidden border-y border-border bg-background py-8">
@@ -264,16 +289,18 @@ function Performance() {
 }
 
 function Chart({ title, subtitle, data, x, y }: { title: string; subtitle: string; data: number[]; x: string; y: string }) {
+  const chartRef = useRef<HTMLElement | null>(null);
+  const isVisible = useInView(chartRef);
   const max = Math.max(...data);
   return (
-    <article className="bg-background p-6 text-foreground">
+    <article ref={chartRef} className="bg-background p-6 text-foreground">
       <h4 className="text-[22px] font-black">{title}</h4>
       <p className="mt-1 text-[14px] font-semibold text-muted-foreground">{subtitle}</p>
       <div className="chart-grid mt-8 flex h-[260px] items-end gap-2 border-b border-l border-border px-3 pb-3">
         {data.map((value, index) => (
           <span
             key={`${title}-${index}`}
-            className="block flex-1 origin-bottom animate-bar-grow bg-gradient-to-t from-graph-blue to-graph-purple"
+            className={`block flex-1 origin-bottom bg-gradient-to-t from-graph-blue to-graph-purple ${isVisible ? "animate-bar-grow" : "scale-y-0 opacity-30"}`}
             style={{ height: `${(value / max) * 100}%`, animationDelay: `${index * 80}ms` }}
           />
         ))}
