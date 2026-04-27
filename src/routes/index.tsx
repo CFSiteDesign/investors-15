@@ -183,7 +183,7 @@ function DataInnovation() {
 
 function BriefMetric({ value, label }: { value: string; label: string }) {
   return (
-    <div>
+    <div className="premium-metric">
       <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
       <p className="mt-[10px] text-[12px] font-black uppercase leading-[1.58] tracking-[0.12em] text-muted-foreground sm:text-[13px]">{label}</p>
     </div>
@@ -234,7 +234,7 @@ function LoyaltyChart() {
 
 function Metric({ value, label }: { value: string; label: string }) {
   return (
-    <div className="border-t border-border pt-6">
+    <div className="premium-metric border-t border-border pt-6">
       <p className="font-display text-[clamp(54px,6vw,86px)] uppercase leading-none">{value}</p>
       <p className="mt-4 text-[13px] font-black uppercase leading-[1.35] tracking-[0.12em] text-muted-foreground">{label}</p>
     </div>
