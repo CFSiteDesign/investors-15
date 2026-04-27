@@ -32,6 +32,7 @@ const reviews = [
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guests = [12.6, 12.3, 14, 13.9, 13.2, 10.9, 10.4, 10.1, 9.6, 11.8, 12.4, 12.5];
 const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
+const guestCapacity = [622.052, 661.718, 940.781, 1037.176];
 
 function useScrollReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -319,9 +320,9 @@ function Performance() {
         </Reveal>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
           <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
-          <Chart type="bar" title="Guests Per Month" subtitle="2025 Performance" data={guests} maxValue={14} x="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" y="14k,10.5k,7k,3.5k,0k" />
-          <Chart type="bar" wide title="Age Distribution" subtitle="2025 Guest Demographics" data={ages} maxValue={8} x="18,21,24,27,30,33,36,39,42,45,48" y="8k,6k,4k,2k,0k" />
+          <Chart type="bar" title="Guest Capacity" subtitle="Annual capacity growth" data={guestCapacity} maxValue={1100} x="2022,2023,2024,2025" y="1.1m,825k,550k,275k,0" />
         </div>
+        <p className="mt-8 max-w-[620px] text-[15px] font-black uppercase leading-[1.5] tracking-[0.08em] text-secondary-foreground/80">With planned expansion to 3x capacity globally.</p>
       </div>
     </section>
   );
@@ -342,6 +343,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   const hovered = hoveredIndex === null ? null : pointPositions[hoveredIndex];
   const formatValue = (value: number) => {
     if (title === "Loyalty Members") return Math.round(value * 1000).toLocaleString();
+    if (title === "Guest Capacity") return Math.round(value * 1000).toLocaleString();
     if (title === "Guests Per Month") return Math.round(value * 1000).toLocaleString();
     return Math.round(value * 1000).toLocaleString();
   };
