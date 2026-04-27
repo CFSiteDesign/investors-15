@@ -118,7 +118,7 @@ function Manifesto() {
 
 function DataInnovation() {
   return (
-    <section id="data" className="border-y border-border bg-background py-[32px] lg:py-[39px]">
+    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
       <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
         <div className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
