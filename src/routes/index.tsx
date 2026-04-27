@@ -365,10 +365,6 @@ function Footer() {
       <div className="mb-8 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <img src={madMonkeyLogo} alt="Mad Monkey Hostels" loading="lazy" className="mb-8 h-12 w-auto object-contain md:h-16" />
-          <div className="mb-4 flex gap-4">
-            <a href="#" aria-label="Facebook" className="grid size-10 place-items-center border border-border text-[16px] font-black transition-colors hover:bg-foreground hover:text-background">f</a>
-            <a href="#" aria-label="Instagram" className="grid size-10 place-items-center border border-border text-[15px] font-black transition-colors hover:bg-foreground hover:text-background">◎</a>
-          </div>
           <div className="space-y-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Navigation</p>
             <ul className="grid grid-cols-2 gap-4 text-[14px] font-black uppercase tracking-[0.16em]">
