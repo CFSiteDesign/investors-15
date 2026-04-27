@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
@@ -199,30 +199,6 @@ function Metric({ value, label }: { value: string; label: string }) {
       <p className="mt-4 text-[13px] font-black uppercase leading-[1.35] tracking-[0.12em] text-muted-foreground">{label}</p>
     </div>
   );
-}
-
-function useInView(ref: React.RefObject<Element | null>) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || isVisible) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -15% 0px", threshold: 0.25 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [ref, isVisible]);
-
-  return isVisible;
 }
 
 function ReviewTicker() {
