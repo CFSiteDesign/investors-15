@@ -252,7 +252,7 @@
   }
   .hero-title-center-reveal {
     opacity: 0;
-    transform: translate3d(0, 0.12em, 0) scaleX(0.92);
+    transform: scaleX(0.72);
     transform-origin: center;
     animation: hero-center-text 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
   }
@@ -293,9 +293,9 @@
 }
 
 @keyframes hero-center-text {
-  from { opacity: 0; transform: translate3d(0, 0.12em, 0) scaleX(0.92); filter: blur(10px); }
+  from { opacity: 0; transform: scaleX(0.72); filter: blur(10px); }
   36% { opacity: 1; }
-  to { opacity: 1; transform: translate3d(0, 0, 0) scaleX(1); filter: blur(0); }
+  to { opacity: 1; transform: scaleX(1); filter: blur(0); }
 }
 
 @keyframes hero-fade {
