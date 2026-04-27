@@ -176,7 +176,7 @@ function DataInnovation() {
         <div className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
-            PILLAR 01: PROVEN
+            PILLAR: PROVEN
           </p>
           <h2 className="mt-[16px] max-w-[410px] font-display text-[clamp(34px,7vw,56px)] uppercase leading-[1.08] tracking-normal text-balance">
             DATA-DRIVEN OPERATIONS
@@ -185,8 +185,8 @@ function DataInnovation() {
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
           <div className="mt-[28px] grid max-w-[620px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
-            <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
-            <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
+            <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
+            <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
           </div>
         </div>
       </div>
