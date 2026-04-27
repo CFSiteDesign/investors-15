@@ -262,11 +262,15 @@ function Network() {
   return (
     <section className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full grayscale" />
-        <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
-          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
-          <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
-        </div>
+        <Reveal>
+          <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="premium-image h-auto w-full grayscale" />
+        </Reveal>
+        <Reveal delay={110}>
+          <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
+            <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
+            <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
