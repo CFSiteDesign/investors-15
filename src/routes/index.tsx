@@ -253,7 +253,7 @@ function Performance() {
         <div className="mt-[104px] flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-[14px] font-black uppercase tracking-[0.16em]">Performance & Growth</p>
-            <h3 className="mt-6 font-display text-[clamp(42px,7vw,110px)] uppercase leading-[0.9] lg:leading-[0.86]">Data-Driven<br />Excellence</h3>
+            <h3 className="mt-6 max-w-[680px] font-display text-[clamp(38px,6.2vw,92px)] uppercase leading-[1] text-balance">Data-Driven Excellence</h3>
           </div>
           <div className="border border-secondary-foreground px-6 py-5 text-right">
             <p className="text-[12px] font-black uppercase tracking-[0.16em] opacity-70">Last Updated</p>
@@ -297,8 +297,8 @@ function Ethical() {
       <div className="mx-auto grid max-w-[1088px] gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14 lg:px-6">
         <div>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
-          <h2 className="mt-8 font-display text-[clamp(40px,8vw,124px)] uppercase leading-[0.88] lg:leading-[0.84]">Local Growth &<br />Sustainability</h2>
-          <p className="mt-8 text-[18px] font-light leading-[1.3] text-muted-foreground lg:text-[25px] lg:leading-[1.22]">Focus on the human element. Transparent social responsibility is at our core.</p>
+          <h2 className="mt-8 max-w-[620px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth & Sustainability</h2>
+          <p className="mt-8 max-w-[560px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Focus on the human element. Transparent social responsibility is at our core.</p>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
             <Metric value="93%" label="Local Workforce" />
             <Metric value="450" label="WATER WELLS BUILT" />
