@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 
@@ -72,53 +71,31 @@ function Header() {
 }
 
 function Hero() {
-  const scrollProgress = useHeroScrollProgress();
-
   return (
-    <section className="relative min-h-[168vh] overflow-clip bg-background pt-[98px]">
+    <section className="relative min-h-[980px] overflow-hidden bg-background pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="sticky top-[98px] mx-auto h-[calc(100vh-98px)] max-w-[1088px] overflow-hidden px-6 pt-[96px]">
+      <div className="mx-auto max-w-[1088px] overflow-hidden px-6 pt-[96px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[34px] max-w-[1030px] font-display text-[clamp(78px,13.2vw,190px)] uppercase leading-[0.86] tracking-normal">
-          <span className="hero-title-line" style={{ transform: `translate3d(0, ${scrollProgress * -8}px, 0)` }}>15 Years</span>
-          <span className="hero-title-line" style={{ transform: `translate3d(0, ${scrollProgress * 10}px, 0)` }}>of</span>
-          <span className="hero-title-line hero-title-gap" style={{ transform: `translate3d(0, ${scrollProgress * 92}px, 0)` }}>Mad</span>
-          <span className="hero-title-line" style={{ transform: `translate3d(0, ${scrollProgress * 138}px, 0)`, opacity: 1 - scrollProgress * 0.08 }}>Monkey</span>
+        <h1 className="hero-title mt-[42px] max-w-[1030px] font-display text-[clamp(78px,13vw,182px)] font-black uppercase leading-[0.84] tracking-normal">
+          <span className="hero-title-group hero-title-up">
+            <span className="hero-title-line">15 Years</span>
+            <span className="hero-title-line">of</span>
+          </span>
+          <span className="hero-title-group hero-title-down">
+            <span className="hero-title-line">Mad</span>
+            <span className="hero-title-line">Monkey</span>
+          </span>
         </h1>
-        <p className="mt-[28px] max-w-[710px] text-[clamp(24px,2.5vw,42px)] font-light leading-[1.22] text-muted-foreground" style={{ transform: `translate3d(0, ${scrollProgress * 64}px, 0)`, opacity: 1 - scrollProgress * 0.55 }}>
+        <p className="hero-copy mt-[44px] max-w-[710px] text-[clamp(24px,2.5vw,42px)] font-light leading-[1.22] text-muted-foreground">
           Born in Cambodia, today a market-leading experience-led socially responsible business.
         </p>
-        <div className="mt-8 flex flex-wrap gap-4" style={{ transform: `translate3d(0, ${scrollProgress * 80}px, 0)`, opacity: 1 - scrollProgress * 0.8 }}>
+        <div className="hero-copy mt-8 flex flex-wrap gap-4">
           <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-8 py-5 text-[18px] font-black uppercase tracking-[0.12em] text-background">Watch the Film</a>
           <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-8 py-5 text-[18px] font-black uppercase tracking-[0.12em]">Join the Story</a>
         </div>
       </div>
     </section>
   );
-}
-
-function useHeroScrollProgress() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const next = Math.min(Math.max(window.scrollY / 520, 0), 1);
-        setProgress(next);
-      });
-    };
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", update);
-    };
-  }, []);
-
-  return progress;
 }
 
 function Manifesto() {
