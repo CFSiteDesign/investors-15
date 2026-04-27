@@ -288,25 +288,57 @@ function Performance() {
   );
 }
 
-function Chart({ title, subtitle, data, x, y }: { title: string; subtitle: string; data: number[]; x: string; y: string }) {
-  const chartRef = useRef<HTMLElement | null>(null);
-  const isVisible = useInView(chartRef);
+function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; wide?: boolean }) {
   const max = Math.max(...data);
+  const xLabels = x.split(",");
+  const yLabels = y.split(",");
+  const points = data.map((value, index) => {
+    const xPos = 58 + (index / (data.length - 1)) * 392;
+    const yPos = 292 - (value / max) * 238;
+    return `${xPos},${yPos}`;
+  });
+  const area = `58,292 ${points.join(" ")} 450,292`;
+
   return (
-    <article ref={chartRef} className="bg-background p-6 text-foreground">
-      <h4 className="text-[22px] font-black">{title}</h4>
-      <p className="mt-1 text-[14px] font-semibold text-muted-foreground">{subtitle}</p>
-      <div className="chart-grid mt-8 flex h-[260px] items-end gap-2 border-b border-l border-border px-3 pb-3">
-        {data.map((value, index) => (
-          <span
-            key={`${title}-${index}`}
-            className={`block flex-1 origin-bottom bg-gradient-to-t from-graph-blue to-graph-purple ${isVisible ? "animate-bar-grow" : "scale-y-0 opacity-30"}`}
-            style={{ height: `${(value / max) * 100}%`, animationDelay: `${index * 80}ms` }}
-          />
-        ))}
+    <article className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h4 className="text-[23px] font-black uppercase leading-none">{title}</h4>
+          <p className="mt-3 text-[13px] font-black uppercase leading-none tracking-[0.22em] text-muted-foreground">{subtitle}</p>
+        </div>
+        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted/35 text-muted-foreground" aria-hidden="true">⌁</span>
       </div>
-      <p className="mt-4 text-[10px] font-black uppercase tracking-[0.04em] text-muted-foreground">{x}</p>
-      <p className="mt-2 text-[10px] font-black uppercase tracking-[0.08em] text-muted-foreground">{y}</p>
+      <svg viewBox="0 0 500 360" className="mt-8 h-[330px] w-full overflow-visible" role="img" aria-label={`${title} chart`}>
+        <defs>
+          <linearGradient id={`${title.replace(/\s+/g, "-")}-fill`} x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-graph-purple)" stopOpacity="0.72" />
+            <stop offset="100%" stopColor="var(--color-graph-blue)" stopOpacity="0.04" />
+          </linearGradient>
+        </defs>
+        {[54, 113.5, 173, 232.5, 292].map((lineY) => (
+          <line key={lineY} x1="58" x2="450" y1={lineY} y2={lineY} className="stroke-border/50" strokeDasharray="3 5" />
+        ))}
+        {yLabels.map((label, index) => (
+          <text key={label} x="18" y={58 + index * 59.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
+        ))}
+        {type === "line" ? (
+          <>
+            <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
+            <polyline points={points.join(" ")} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+          </>
+        ) : (
+          data.map((value, index) => {
+            const barWidth = wide ? 10 : 30;
+            const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
+            const xPos = 58 + index * (barWidth + gap);
+            const height = (value / max) * 238;
+            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} />;
+          })
+        )}
+        {xLabels.map((label, index) => (
+          <text key={`${label}-${index}`} x={58 + (index / (xLabels.length - 1)) * 392} y="330" className="fill-muted-foreground text-[12px] font-bold" textAnchor="middle">{label}</text>
+        ))}
+      </svg>
     </article>
   );
 }
