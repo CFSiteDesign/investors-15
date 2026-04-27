@@ -41,7 +41,6 @@ function Index() {
       <Manifesto />
       <DataInnovation />
       <ReviewTicker />
-      <Network />
       <Performance />
       <Ethical />
       <EmailBar />
