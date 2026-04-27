@@ -59,10 +59,28 @@ function useScrollReveal<T extends HTMLElement>() {
 }
 
 function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
-  const { ref, hasEntered } = useScrollReveal<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          element.classList.add("premium-reveal-in");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div ref={ref} className={`premium-reveal ${hasEntered ? "premium-reveal-in" : ""} ${className}`} style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}>
+    <div ref={ref} className={`premium-reveal ${className}`} style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}>
       {children}
     </div>
   );
@@ -137,20 +155,20 @@ function Manifesto() {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <Reveal>
+        <div>
           <h2 className="max-w-[940px] font-display text-[clamp(26px,4.4vw,68px)] uppercase leading-[1.04] tracking-normal text-balance">
             As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
             <span className="block text-muted-foreground">Our expansion isn’t just about size; it’s about impact.</span>
           </h2>
-        </Reveal>
-        <Reveal delay={120} className="mt-[36px] max-w-[760px] lg:mt-[52px]">
+        </div>
+        <div className="mt-[36px] max-w-[760px] lg:mt-[52px]">
           <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
             <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
             <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
             <p>Mad Monkey boasts a 15 year legacy of delivering consistent triple-bottom-line value alongside an exceptional customer experience. Our adept management team has skillfully bootstrapped the company through various stages of expansion, culminating in securing Series A and B funding with our esteemed partner, EXS Capital.</p>
             <p>Leveraging this investment, we’ve significantly expanded our footprint, growing from seven to 24 hostels. This expansion cements our status as a dominant force in Asia’s rapidly evolving market and positions us as a leading player globally.</p>
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -160,7 +178,7 @@ function DataInnovation() {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
       <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
-        <Reveal className="relative z-10 max-w-[760px] bg-background">
+        <div className="relative z-10 max-w-[760px] bg-background">
           <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
@@ -175,7 +193,7 @@ function DataInnovation() {
             <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -282,7 +300,7 @@ function Performance() {
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar 02: SECURE</p>
-          <h2 className="premium-headline mt-8 font-display text-[clamp(50px,11vw,170px)] uppercase leading-[0.78]">MADMONKEY</h2>
+          <h2 className="premium-headline mt-8 max-w-full font-display text-[clamp(50px,9.4vw,138px)] uppercase leading-[0.84]">MAD MONKEY</h2>
           <p className="mt-6 max-w-[680px] text-[18px] font-light leading-[1.3] lg:text-[25px] lg:leading-[1.22]">A proven track record of scaling adventure-focused hospitality across the region.</p>
         </Reveal>
         <Reveal delay={140}>
