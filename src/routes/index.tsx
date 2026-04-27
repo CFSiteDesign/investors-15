@@ -30,8 +30,8 @@ const reviews = [
   ["Google", "Guest Review", "15 years of excellence shows. Mad Monkey knows how to host a perfect stay.", "10/10"],
 ];
 
-const loyalty = [7, 9, 11.5, 13.2, 14.4, 15.8, 17.1, 18.2, 20.2, 22.6, 27.1, 38.8, 52.2];
-const guests = [11.2, 10.9, 12.4, 12.3, 11.7, 9.7, 9.3, 9.1, 8.6, 10.5, 11.0, 11.1];
+const loyalty = [7, 9.5, 13, 15.5, 17, 18.5, 20, 21.5, 23.5, 26, 31, 60];
+const guests = [11.5, 11.2, 12.7, 12.6, 12, 9.7, 9.256, 9.1, 8.6, 10.5, 11.2, 11.4];
 const ages = [0.2, 1.8, 5.6, 4.2, 4.8, 6.8, 7.2, 6.6, 6.1, 5.4, 4.5, 3.9, 3.4, 2.7, 2.1, 1.8, 1.5, 1.2, 1.0, 0.8, 0.65, 0.55, 0.42, 0.31, 0.22, 0.16, 0.12, 0.08, 0.05, 0.03, 0.02];
 
 function Index() {
@@ -289,15 +289,23 @@ function Performance() {
 }
 
 function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; wide?: boolean }) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const max = Math.max(...data);
   const xLabels = x.split(",");
   const yLabels = y.split(",");
-  const points = data.map((value, index) => {
+  const pointPositions = data.map((value, index) => {
     const xPos = 58 + (index / (data.length - 1)) * 392;
     const yPos = 292 - (value / max) * 238;
-    return `${xPos},${yPos}`;
+    return { x: xPos, y: yPos, value, label: xLabels[index] ?? String(index + 1) };
   });
+  const points = pointPositions.map((point) => `${point.x},${point.y}`);
   const area = `58,292 ${points.join(" ")} 450,292`;
+  const hovered = hoveredIndex === null ? null : pointPositions[hoveredIndex];
+  const formatValue = (value: number) => {
+    if (title === "Loyalty Members") return Math.round(value * 1000).toLocaleString();
+    if (title === "Guests Per Month") return Math.round(value * 1000).toLocaleString();
+    return Math.round(value * 1000).toLocaleString();
+  };
 
   return (
     <article className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
@@ -325,6 +333,9 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
           <>
             <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
             <polyline points={points.join(" ")} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+            {pointPositions.map((point, index) => (
+              <circle key={`${title}-hit-${index}`} cx={point.x} cy={point.y} r="12" className="fill-transparent" onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />
+            ))}
           </>
         ) : (
           data.map((value, index) => {
@@ -332,9 +343,18 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
             const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
             const xPos = 58 + index * (barWidth + gap);
             const height = (value / max) * 238;
-            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} />;
+            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
           })
         )}
+        {hovered ? (
+          <g className="pointer-events-none">
+            {type === "line" ? <line x1={hovered.x} x2={hovered.x} y1="54" y2="292" className="stroke-foreground/70" /> : null}
+            {type === "line" ? <circle cx={hovered.x} cy={hovered.y} r="5" className="fill-graph-purple stroke-foreground" strokeWidth="2" /> : null}
+            <rect x={Math.min(hovered.x + 10, 360)} y={Math.max(hovered.y - 50, 66)} width="112" height="48" className="fill-background stroke-border" />
+            <text x={Math.min(hovered.x + 20, 370)} y={Math.max(hovered.y - 29, 87)} className="fill-muted-foreground text-[11px] font-bold uppercase">{hovered.label}</text>
+            <text x={Math.min(hovered.x + 20, 370)} y={Math.max(hovered.y - 8, 108)} className="fill-foreground text-[13px] font-black">value : {formatValue(hovered.value)}</text>
+          </g>
+        ) : null}
         {xLabels.map((label, index) => (
           <text key={`${label}-${index}`} x={58 + (index / (xLabels.length - 1)) * 392} y="330" className="fill-muted-foreground text-[12px] font-bold" textAnchor="middle">{label}</text>
         ))}
