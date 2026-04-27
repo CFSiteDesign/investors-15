@@ -422,18 +422,18 @@ function Ethical() {
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
-          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar 03: Ethical</p>
-          <h2 className="mt-8 max-w-[760px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">Local Growth&nbsp;&amp; Sustainability</h2>
-          <p className="mt-8 max-w-[560px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Focus on the human element. Transparent social responsibility is at our core.</p>
+          <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar: Integrity</p>
+          <h2 className="mt-8 max-w-[840px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">A Leading Force in Sustainability</h2>
+          <p className="mt-8 max-w-[680px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Local growth and sustainability are leading forces in all our operations, ensuring we invest back into all communities.</p>
         </Reveal>
         <Reveal delay={120}>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
-            <Metric value="93%" label="Local Workforce" />
-            <Metric value="450" label="WATER WELLS BUILT" />
+            <Metric value="93%" label="Local workforce, demonstrating strength in investing back into communities." />
+            <Metric value="300+" label="Community driven projects annually from beach clean-ups to water wells." />
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Request Info Pack</a>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</a>
         </Reveal>
       </div>
     </section>
