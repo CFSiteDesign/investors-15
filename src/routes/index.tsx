@@ -289,15 +289,23 @@ function Performance() {
 }
 
 function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; wide?: boolean }) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const max = Math.max(...data);
   const xLabels = x.split(",");
   const yLabels = y.split(",");
-  const points = data.map((value, index) => {
+  const pointPositions = data.map((value, index) => {
     const xPos = 58 + (index / (data.length - 1)) * 392;
     const yPos = 292 - (value / max) * 238;
-    return `${xPos},${yPos}`;
+    return { x: xPos, y: yPos, value, label: xLabels[index] ?? String(index + 1) };
   });
+  const points = pointPositions.map((point) => `${point.x},${point.y}`);
   const area = `58,292 ${points.join(" ")} 450,292`;
+  const hovered = hoveredIndex === null ? null : pointPositions[hoveredIndex];
+  const formatValue = (value: number) => {
+    if (title === "Loyalty Members") return Math.round(value * 1000).toLocaleString();
+    if (title === "Guests Per Month") return Math.round(value * 1000).toLocaleString();
+    return Math.round(value * 1000).toLocaleString();
+  };
 
   return (
     <article className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
@@ -325,6 +333,9 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
           <>
             <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
             <polyline points={points.join(" ")} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+            {pointPositions.map((point, index) => (
+              <circle key={`${title}-hit-${index}`} cx={point.x} cy={point.y} r="12" className="fill-transparent" onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />
+            ))}
           </>
         ) : (
           data.map((value, index) => {
@@ -332,9 +343,18 @@ function Chart({ title, subtitle, data, x, y, type, wide = false }: { title: str
             const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
             const xPos = 58 + index * (barWidth + gap);
             const height = (value / max) * 238;
-            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} />;
+            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
           })
         )}
+        {hovered ? (
+          <g className="pointer-events-none">
+            {type === "line" ? <line x1={hovered.x} x2={hovered.x} y1="54" y2="292" className="stroke-foreground/70" /> : null}
+            {type === "line" ? <circle cx={hovered.x} cy={hovered.y} r="5" className="fill-graph-purple stroke-foreground" strokeWidth="2" /> : null}
+            <rect x={Math.min(hovered.x + 10, 360)} y={Math.max(hovered.y - 50, 66)} width="112" height="48" className="fill-background stroke-border" />
+            <text x={Math.min(hovered.x + 20, 370)} y={Math.max(hovered.y - 29, 87)} className="fill-muted-foreground text-[11px] font-bold uppercase">{hovered.label}</text>
+            <text x={Math.min(hovered.x + 20, 370)} y={Math.max(hovered.y - 8, 108)} className="fill-foreground text-[13px] font-black">value : {formatValue(hovered.value)}</text>
+          </g>
+        ) : null}
         {xLabels.map((label, index) => (
           <text key={`${label}-${index}`} x={58 + (index / (xLabels.length - 1)) * 392} y="330" className="fill-muted-foreground text-[12px] font-bold" textAnchor="middle">{label}</text>
         ))}
