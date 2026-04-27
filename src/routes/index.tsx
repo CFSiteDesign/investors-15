@@ -102,11 +102,11 @@ function Manifesto() {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <h2 className="max-w-[1030px] font-display text-[clamp(28px,5vw,78px)] uppercase leading-[0.98] tracking-normal">
+        <h2 className="max-w-[940px] font-display text-[clamp(26px,4.4vw,68px)] uppercase leading-[1.04] tracking-normal text-balance">
           As a leading adventure hostel brand, it isn't just about beds it’s about experiences.
           <span className="block text-muted-foreground">Our expansion isn’t just about size; it’s about impact.</span>
         </h2>
-        <div className="mt-[36px] grid gap-8 text-[15px] font-light leading-[1.55] text-muted-foreground md:grid-cols-2 lg:mt-[52px] lg:gap-9 lg:text-[18px]">
+        <div className="mt-[36px] grid max-w-[960px] gap-8 text-[15px] font-light leading-[1.65] text-muted-foreground md:grid-cols-2 lg:mt-[52px] lg:gap-10 lg:text-[17px]">
           <p>We’re seeking strategic investment partnerships from aligned investors who strongly value triple-bottom-line value creation, and are passionate about making a difference.</p>
           <div className="space-y-8">
             <p>Our commitment to Environmental and Social Governance (ESG) isn’t just talk — it’s woven into our business model, ensuring we create value at every level: economic, social, and environmental.</p>
@@ -128,15 +128,15 @@ function DataInnovation() {
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR 01: PROVEN
           </p>
-          <h2 className="mt-[16px] font-display text-[clamp(36px,7.6vw,58px)] uppercase leading-[1.13] tracking-normal">
-            DATA-DRIVEN<br />OPERATIONS
+          <h2 className="mt-[16px] max-w-[410px] font-display text-[clamp(34px,7vw,56px)] uppercase leading-[1.08] tracking-normal text-balance">
+            DATA-DRIVEN OPERATIONS
           </h2>
-          <p className="mt-[21px] max-w-[405px] text-[15px] font-light leading-[1.4] text-muted-foreground sm:text-[17px]">
+          <p className="mt-[21px] max-w-[405px] text-[15px] font-light leading-[1.52] text-muted-foreground sm:text-[16px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
           </p>
           <div className="mt-[21px] grid max-w-[404px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
-            <BriefMetric value="1 in 3" label="GUEST CONVERT TO OUR GAMIFIED AND TECH POWERED LOYALTY PROGRAMME - KEEPING THEIR DATA BEHAVIOUR PART OF AN ONGOING JOURNEY" />
-            <BriefMetric value="55k+" label="ACTIVELY ENGAGED LOYALTY MEMBERS. LAUNCHED IN 2025, THE PROGRAM NOW DRIVES OVER 40% OF ALL BOOKINGS." />
+            <BriefMetric value="1 in 3" label="Guests convert to our gamified, tech-powered loyalty programme — keeping their behaviour data part of an ongoing journey." />
+            <BriefMetric value="55k+" label="Actively engaged loyalty members. Launched in 2025, the program now drives over 40% of all bookings." />
           </div>
         </div>
         <div className="relative min-h-[408px] border border-border bg-card/5 lg:ml-[27px] lg:mt-[9px]">
@@ -152,7 +152,7 @@ function BriefMetric({ value, label }: { value: string; label: string }) {
   return (
     <div>
       <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
-      <p className="mt-[10px] text-[11px] font-black uppercase leading-[1.5] tracking-[0.18em] text-muted-foreground sm:text-[13px]">{label}</p>
+      <p className="mt-[10px] text-[12px] font-black uppercase leading-[1.58] tracking-[0.12em] text-muted-foreground sm:text-[13px]">{label}</p>
     </div>
   );
 }
