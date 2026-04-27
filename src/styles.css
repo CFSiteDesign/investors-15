@@ -190,7 +190,7 @@
     background-size: 54px 44px;
   }
 
-  .hero-title { transform: scaleX(1.04); transform-origin: left top; width: 96%; }
+  .hero-title { transform: scaleX(1.04); transform-origin: left top; width: min-content; }
   .hero-title-group, .hero-title-line { display: block; }
   .hero-title-up { animation: hero-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
   .hero-title-down { animation: hero-drop 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }

@@ -74,19 +74,19 @@ function Hero() {
   return (
     <section className="relative min-h-[980px] overflow-hidden bg-background pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto max-w-[1088px] overflow-hidden px-6 pt-[96px]">
+      <div className="mx-auto max-w-[1088px] overflow-hidden px-6 pt-[96px] sm:pt-[104px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[42px] max-w-[1030px] font-display text-[clamp(78px,13vw,182px)] font-black uppercase leading-[0.84] tracking-normal">
+        <h1 className="hero-title mt-[42px] max-w-[1030px] font-display text-[clamp(72px,9.6vw,162px)] font-black uppercase leading-[0.84] tracking-normal">
           <span className="hero-title-group hero-title-up">
-            <span className="hero-title-line">15 Years</span>
-            <span className="hero-title-line">of</span>
+            <span className="hero-title-line whitespace-nowrap">15 Years</span>
+            <span className="hero-title-line whitespace-nowrap">of</span>
           </span>
           <span className="hero-title-group hero-title-down">
-            <span className="hero-title-line">Mad</span>
-            <span className="hero-title-line">Monkey</span>
+            <span className="hero-title-line whitespace-nowrap">Mad</span>
+            <span className="hero-title-line whitespace-nowrap">Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[44px] max-w-[710px] text-[clamp(24px,2.5vw,42px)] font-light leading-[1.22] text-muted-foreground">
+        <p className="hero-copy mt-[44px] max-w-[850px] text-[clamp(20px,2.05vw,34px)] font-light leading-[1.22] text-muted-foreground">
           Born in Cambodia, today a market-leading experience-led socially responsible business.
         </p>
         <div className="hero-copy mt-8 flex flex-wrap gap-4">
