@@ -291,6 +291,7 @@ function Performance() {
 }
 
 function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { title: string; subtitle: string; data: number[]; x: string; y: string; type: "line" | "bar"; maxValue: number; wide?: boolean }) {
+  const { ref, hasEntered } = useScrollReveal<HTMLElement>();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const xLabels = x.split(",");
   const yLabels = y.split(",");
@@ -309,7 +310,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   };
 
   return (
-    <article className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
+    <article ref={ref} className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <h4 className="text-[23px] font-black uppercase leading-none">{title}</h4>
@@ -333,7 +334,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
         {type === "line" ? (
           <>
             <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
-            <polyline points={points.join(" ")} fill="none" className="animate-line-draw stroke-graph-purple" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset="620" />
+            <polyline points={points.join(" ")} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
             {pointPositions.map((point, index) => (
               <circle key={`${title}-hit-${index}`} cx={point.x} cy={point.y} r="12" className="fill-transparent" onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />
             ))}
@@ -344,7 +345,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
             const gap = (392 - data.length * barWidth) / Math.max(data.length - 1, 1);
             const xPos = 58 + index * (barWidth + gap);
             const height = (value / maxValue) * 238;
-            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className="animate-bar-grow fill-graph-purple odd:fill-graph-blue" style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: `${index * 55}ms` }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
+            return <rect key={`${title}-${index}`} x={xPos} y={292 - height} width={barWidth} height={height} rx="2" className={`${hasEntered ? "animate-bar-grow" : "chart-bar-hidden"} fill-graph-purple odd:fill-graph-blue`} style={{ transformOrigin: `${xPos + barWidth / 2}px 292px`, animationDelay: hasEntered ? `${index * 55}ms` : "0ms" }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />;
           })
         )}
         {hovered ? (
