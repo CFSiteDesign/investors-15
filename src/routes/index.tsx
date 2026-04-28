@@ -455,8 +455,9 @@ function Ethical() {
 
 function ContactForm() {
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const result = contactSchema.safeParse({ name: form.get("name"), email: form.get("email") });
@@ -468,9 +469,21 @@ function ContactForm() {
     }
 
     setErrors({});
-    const subject = encodeURIComponent("Mad Monkey Investor Info Request");
-    const body = encodeURIComponent(`Name: ${result.data.name}\nEmail: ${result.data.email}`);
-    window.location.href = `${foundersMailto}?subject=${subject}&body=${body}`;
+    setStatus("sending");
+
+    try {
+      const response = await fetch("/api/public/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
+      });
+
+      if (!response.ok) throw new Error("Request failed");
+      setStatus("sent");
+      event.currentTarget.reset();
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -485,7 +498,9 @@ function ContactForm() {
         <input name="email" type="email" maxLength={255} className="mt-3 h-[54px] w-full border border-border bg-background px-4 text-[15px] font-bold text-foreground outline-none focus:border-foreground" />
         {errors.email ? <span className="mt-2 block text-[12px] font-bold text-destructive">{errors.email}</span> : null}
       </label>
-      <button type="submit" className="mt-[29px] h-[54px] bg-foreground px-7 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80">Request Info</button>
+      <button type="submit" disabled={status === "sending"} className="mt-[29px] h-[54px] bg-foreground px-7 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80 disabled:pointer-events-none disabled:opacity-60">{status === "sending" ? "Sending" : "Request Info"}</button>
+      {status === "sent" ? <p className="text-[12px] font-black uppercase tracking-[0.12em] text-muted-foreground md:col-span-3">Request sent.</p> : null}
+      {status === "error" ? <p className="text-[12px] font-black uppercase tracking-[0.12em] text-destructive md:col-span-3">Request failed. Please try again.</p> : null}
     </form>
   );
 }
