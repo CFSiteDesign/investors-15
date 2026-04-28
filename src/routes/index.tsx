@@ -285,12 +285,6 @@ function Network() {
         <Reveal>
           <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="premium-image h-auto w-full grayscale" />
         </Reveal>
-        <Reveal delay={110}>
-          <div className="mt-8 flex items-end justify-between border-t border-border pt-8">
-            <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Regional Demand</p>
-            <p className="font-display text-[58px] leading-none lg:text-[88px]">+12.4%</p>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
