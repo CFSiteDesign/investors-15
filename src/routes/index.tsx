@@ -141,11 +141,10 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative min-h-[620px] overflow-hidden bg-background pt-[76px] lg:min-h-[760px] lg:pt-[98px]">
+    <section className="relative min-h-[calc(100svh-32px)] overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto max-w-[1088px] overflow-hidden px-5 pt-[72px] sm:pt-[88px] lg:px-6 lg:pt-[96px]">
-        <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[38px] max-w-[980px] font-display text-[clamp(40px,7.4vw,118px)] font-black uppercase leading-[0.9] tracking-normal lg:mt-[42px]">
+      <div className="mx-auto max-w-[1320px] overflow-hidden px-5 pt-[104px] sm:pt-[128px] lg:px-6 lg:pt-[126px]">
+        <h1 className="hero-title max-w-[1240px] font-display text-[clamp(58px,10.8vw,174px)] font-black uppercase leading-[0.82] tracking-normal">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">15 Years Of</span>
           </span>
@@ -153,7 +152,7 @@ function Hero() {
             <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">Mad Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[34px] max-w-[920px] text-[clamp(16px,1.75vw,28px)] font-light leading-[1.28] text-muted-foreground lg:mt-[42px]">
+        <p className="hero-copy mt-[40px] max-w-[1060px] text-[clamp(20px,2.3vw,36px)] font-light leading-[1.18] text-muted-foreground lg:mt-[52px]">
           Founded by backpackers for backpackers, we are Southeast Asia’s market-leading, socially responsible travel platform headquartered in Singapore and operating across Southeast Asia.
         </p>
       </div>
