@@ -152,8 +152,8 @@ function Hero() {
   return (
     <section className="relative min-h-[calc(100svh-32px)] overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto max-w-[1320px] overflow-hidden px-5 pt-[104px] sm:pt-[128px] lg:px-6 lg:pt-[126px]">
-        <h1 className="hero-title max-w-[1240px] font-display text-[clamp(58px,10.8vw,174px)] font-black uppercase leading-[0.82] tracking-normal">
+      <div className="mx-auto max-w-[1420px] overflow-hidden px-5 pt-[104px] sm:pt-[128px] lg:px-6 lg:pt-[126px]">
+        <h1 className="hero-title max-w-full font-display text-[clamp(54px,9.2vw,148px)] font-black uppercase leading-[0.84] tracking-normal">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">15 Years Of</span>
           </span>
