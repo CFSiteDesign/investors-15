@@ -169,7 +169,7 @@ function Hero() {
   );
 }
 
-function Manifesto() {
+function Manifesto({ onContactClick }: { onContactClick: () => void }) {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
@@ -183,14 +183,14 @@ function Manifesto() {
           <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
             <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
-          <a href={foundersMailto} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
+          <button type="button" onClick={onContactClick} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</button>
         </div>
       </div>
     </section>
   );
 }
 
-function DataInnovation() {
+function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
       <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
@@ -209,7 +209,7 @@ function DataInnovation() {
             <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
           </div>
-          <a href={foundersMailto} className="mt-9 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:px-7">Request Info</a>
+          <button type="button" onClick={onContactClick} className="mt-9 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:px-7">Request Info</button>
         </div>
       </div>
     </section>
