@@ -501,9 +501,9 @@ function Footer() {
 
 function EmailBar({ onContactClick }: { onContactClick: () => void }) {
   return (
-    <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[11px] font-black uppercase tracking-[0.42em] text-background">
-      <div className="mx-auto flex h-[32px] max-w-[1184px] items-center justify-end px-6">
-        <button type="button" onClick={onContactClick}>FOUNDERS@MADMONKEYHOSTELS.COM</button>
+    <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[9px] font-black uppercase tracking-[0.16em] text-background sm:text-[11px] sm:tracking-[0.42em]">
+      <div className="mx-auto flex h-[34px] max-w-[1184px] items-center justify-center px-3 sm:h-[32px] sm:justify-end sm:px-6">
+        <button type="button" onClick={onContactClick} className="max-w-full truncate">FOUNDERS@MADMONKEYHOSTELS.COM</button>
       </div>
     </footer>
   );
