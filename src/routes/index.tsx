@@ -119,9 +119,9 @@ function Index() {
 function ContactModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-[70] grid place-items-center bg-background/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Contact founders">
-      <div className="relative h-[min(620px,92vh)] w-full max-w-[980px] border border-border bg-background shadow-2xl">
+      <div className="relative w-[min(820px,calc(100vw-32px))] border border-border bg-background shadow-2xl">
         <button type="button" onClick={onClose} className="absolute right-3 top-3 z-10 grid size-10 place-items-center border border-border bg-background text-[18px] font-black text-foreground transition-colors hover:bg-foreground hover:text-background" aria-label="Close contact form">×</button>
-        <iframe src="/contact-form" title="Contact form" className="h-full w-full" />
+        <iframe src="/contact-form" title="Contact form" className="h-[380px] w-full sm:h-[240px]" />
       </div>
     </div>
   );
