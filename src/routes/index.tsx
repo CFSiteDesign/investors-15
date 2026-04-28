@@ -178,6 +178,7 @@ function Manifesto() {
           <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
             <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
+          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
         </div>
       </div>
     </section>
@@ -201,7 +202,11 @@ function DataInnovation() {
           </p>
           <div className="mt-[28px] grid max-w-[620px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
             <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
-            <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
+            <BriefMetric
+              value="55k+"
+              label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings."
+              ctaLabel="Request Info"
+            />
           </div>
         </div>
       </div>
@@ -209,11 +214,16 @@ function DataInnovation() {
   );
 }
 
-function BriefMetric({ value, label }: { value: string; label: string }) {
+function BriefMetric({ value, label, ctaLabel }: { value: string; label: string; ctaLabel?: string }) {
   return (
     <div className="premium-metric">
       <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
       <p className="mt-[10px] text-[12px] font-black uppercase leading-[1.58] tracking-[0.12em] text-muted-foreground sm:text-[13px]">{label}</p>
+      {ctaLabel ? (
+        <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-5 inline-flex border border-foreground px-5 py-3 text-[11px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:text-[12px]">
+          {ctaLabel}
+        </a>
+      ) : null}
     </div>
   );
 }
