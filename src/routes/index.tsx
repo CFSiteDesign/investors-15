@@ -192,24 +192,28 @@ function Manifesto({ onContactClick }: { onContactClick: () => void }) {
 
 function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
   return (
-    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
-      <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
-        <div className="relative z-10 max-w-[760px] bg-background">
-          <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
+    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[76px]">
+      <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
+        <div className="relative z-10 grid gap-10 bg-background lg:grid-cols-[minmax(380px,520px)_minmax(520px,1fr)] lg:items-end lg:gap-20">
+          <div>
+            <p className="flex items-center gap-2 text-[12px] font-black uppercase leading-none tracking-[0.18em] text-muted-foreground">
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR: PROVEN
-          </p>
-          <h2 className="mt-[16px] max-w-[410px] font-display text-[clamp(34px,7vw,56px)] uppercase leading-[1.08] tracking-normal text-balance">
+            </p>
+            <h2 className="mt-[18px] max-w-[520px] font-display text-[clamp(34px,5vw,72px)] uppercase leading-[1.02] tracking-normal text-balance">
             DATA-DRIVEN OPERATIONS
-          </h2>
-          <p className="mt-[21px] max-w-[520px] text-[15px] font-light leading-[1.52] text-muted-foreground sm:text-[16px]">
+            </h2>
+            <p className="mt-[24px] max-w-[520px] text-[16px] font-light leading-[1.58] text-muted-foreground lg:text-[18px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
-          </p>
-          <div className="mt-[28px] grid max-w-[620px] grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[40px]">
+            </p>
+          </div>
+          <div>
+            <div className="grid max-w-[760px] grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-[56px]">
             <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
+            </div>
+            <button type="button" onClick={onContactClick} className="mt-9 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:px-7 lg:mt-12">Request Info</button>
           </div>
-          <button type="button" onClick={onContactClick} className="mt-9 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:px-7">Request Info</button>
         </div>
       </div>
     </section>
