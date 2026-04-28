@@ -375,7 +375,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   };
 
   return (
-    <article ref={ref} className={`border border-border bg-background px-7 py-6 text-foreground ${wide ? "lg:col-span-2" : ""}`}>
+    <article ref={ref} className={`chart-reveal-card border border-border bg-background px-7 py-6 text-foreground ${hasEntered ? "chart-reveal-card-in" : ""} ${wide ? "lg:col-span-2" : ""}`}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <h4 className="text-[23px] font-black uppercase leading-none">{title}</h4>
@@ -390,16 +390,19 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
             <stop offset="100%" stopColor="var(--color-graph-blue)" stopOpacity="0.04" />
           </linearGradient>
         </defs>
-        {[54, 113.5, 173, 232.5, 292].map((lineY) => (
-          <line key={lineY} x1="58" x2="450" y1={lineY} y2={lineY} className="stroke-border/50" strokeDasharray="3 5" />
+        {[54, 113.5, 173, 232.5, 292].map((lineY, index) => (
+          <line key={lineY} x1="58" x2="450" y1={lineY} y2={lineY} className={`chart-grid-line stroke-border/50 ${hasEntered ? "chart-grid-line-in" : ""}`} strokeDasharray="3 5" style={{ transitionDelay: hasEntered ? `${index * 70}ms` : "0ms" }} />
         ))}
         {yLabels.map((label, index) => (
           <text key={label} x="18" y={58 + index * 59.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
         {type === "line" ? (
           <>
-            <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} />
+            <polygon points={area} fill={`url(#${title.replace(/\s+/g, "-")}-fill)`} className={`chart-area-fill ${hasEntered ? "chart-area-fill-in" : ""}`} />
             <polyline points={points.join(" ")} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
+            {pointPositions.map((point, index) => (
+              <circle key={`${title}-point-${index}`} cx={point.x} cy={point.y} r="3.5" className={`chart-point fill-graph-purple stroke-background ${hasEntered ? "chart-point-in" : ""}`} strokeWidth="2" style={{ transitionDelay: hasEntered ? `${620 + index * 45}ms` : "0ms" }} />
+            ))}
             {pointPositions.map((point, index) => (
               <circle key={`${title}-hit-${index}`} cx={point.x} cy={point.y} r="12" className="fill-transparent" onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} />
             ))}
