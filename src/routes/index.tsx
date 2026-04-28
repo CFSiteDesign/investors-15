@@ -153,7 +153,7 @@ function Hero() {
             <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">Mad Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[34px] max-w-[760px] text-[clamp(16px,1.75vw,28px)] font-light leading-[1.28] text-muted-foreground lg:mt-[42px]">
+        <p className="hero-copy mt-[34px] max-w-[920px] text-[clamp(16px,1.75vw,28px)] font-light leading-[1.28] text-muted-foreground lg:mt-[42px]">
           Founded by backpackers for backpackers, we are Southeast Asia’s market-leading, socially responsible travel platform headquartered in Singapore and operating across Southeast Asia.
         </p>
       </div>
