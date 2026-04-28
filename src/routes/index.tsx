@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 
+import { ContactForm } from "@/components/InvestorContactForm";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
 import globalNetworkImage from "../assets/mad-monkey-global-network.png";
@@ -43,11 +43,6 @@ const mapPins = [
   { left: "55%", top: "66.8%" },
   { left: "84.6%", top: "84.6%" },
 ];
-
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
-  email: z.string().trim().email("Enter a valid email address").max(255, "Email must be less than 255 characters"),
-});
 
 function useScrollReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
