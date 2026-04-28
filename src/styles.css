@@ -231,6 +231,37 @@
     transform: scale(1.015);
   }
 
+  .map-pin-pulse {
+    position: absolute;
+    width: clamp(12px, 1.45vw, 22px);
+    aspect-ratio: 1;
+    border-radius: 999px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    background: color-mix(in oklab, var(--graph-blue) 74%, var(--foreground));
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--foreground) 72%, transparent),
+      0 0 22px color-mix(in oklab, var(--graph-blue) 54%, transparent);
+    animation: map-pin-luxury-pulse 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .map-pin-pulse::before,
+  .map-pin-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -48%;
+    border-radius: inherit;
+    border: 1px solid color-mix(in oklab, var(--foreground) 62%, transparent);
+    opacity: 0;
+    animation: map-pin-ring 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .map-pin-pulse::after {
+    inset: -84%;
+    animation-delay: 0.5s;
+    border-color: color-mix(in oklab, var(--graph-blue) 48%, transparent);
+  }
+
   .premium-metric {
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
   }
@@ -300,6 +331,18 @@
 @keyframes line-draw {
   from { stroke-dashoffset: 620; }
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes map-pin-luxury-pulse {
+  0%, 100% { opacity: 0.82; transform: translate(-50%, -50%) scale(0.92); }
+  45% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  70% { opacity: 0.74; transform: translate(-50%, -50%) scale(0.96); }
+}
+
+@keyframes map-pin-ring {
+  0% { opacity: 0; transform: scale(0.62); }
+  18% { opacity: 0.34; }
+  68%, 100% { opacity: 0; transform: scale(2.45); }
 }
 
 @keyframes hero-up-mask {
