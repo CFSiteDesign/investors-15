@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 
+import { ContactForm } from "@/components/InvestorContactForm";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
 import globalNetworkImage from "../assets/mad-monkey-global-network.png";
@@ -43,11 +43,6 @@ const mapPins = [
   { left: "55%", top: "66.8%" },
   { left: "84.6%", top: "84.6%" },
 ];
-
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
-  email: z.string().trim().email("Enter a valid email address").max(255, "Email must be less than 255 characters"),
-});
 
 function useScrollReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -103,22 +98,36 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 }
 
 function Index() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Header />
+      <Header onContactClick={() => setIsContactOpen(true)} />
       <Hero />
-      <Manifesto />
-      <DataInnovation />
+      <Manifesto onContactClick={() => setIsContactOpen(true)} />
+      <DataInnovation onContactClick={() => setIsContactOpen(true)} />
       <ReviewTicker />
       <Performance />
-      <Ethical />
+      <Ethical onContactClick={() => setIsContactOpen(true)} />
       <Footer />
-      <EmailBar />
+      <EmailBar onContactClick={() => setIsContactOpen(true)} />
+      {isContactOpen ? <ContactModal onClose={() => setIsContactOpen(false)} /> : null}
     </main>
   );
 }
 
-function Header() {
+function ContactModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[70] grid place-items-center bg-background/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Contact founders">
+      <div className="relative h-[min(620px,92vh)] w-full max-w-[980px] border border-border bg-background shadow-2xl">
+        <button type="button" onClick={onClose} className="absolute right-3 top-3 z-10 grid size-10 place-items-center border border-border bg-background text-[18px] font-black text-foreground transition-colors hover:bg-foreground hover:text-background" aria-label="Close contact form">×</button>
+        <iframe src="/contact-form" title="Contact form" className="h-full w-full" />
+      </div>
+    </div>
+  );
+}
+
+function Header({ onContactClick }: { onContactClick: () => void }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
       <div className="mx-auto grid h-[76px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[98px] lg:gap-8 lg:px-6">
@@ -131,8 +140,8 @@ function Header() {
           <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
         <div className="flex items-center gap-3">
-          <a href={foundersMailto} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
-          <a href={foundersMailto} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
+          <button type="button" onClick={onContactClick} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</button>
+          <button type="button" onClick={onContactClick} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</button>
         </div>
       </div>
     </header>
@@ -160,7 +169,7 @@ function Hero() {
   );
 }
 
-function Manifesto() {
+function Manifesto({ onContactClick }: { onContactClick: () => void }) {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
@@ -174,14 +183,14 @@ function Manifesto() {
           <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
             <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
-          <a href={foundersMailto} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
+          <button type="button" onClick={onContactClick} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</button>
         </div>
       </div>
     </section>
   );
 }
 
-function DataInnovation() {
+function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[32px] lg:scroll-mt-[118px] lg:py-[39px]">
       <div className="mx-auto max-w-[1045px] px-5 sm:px-[51px]">
@@ -200,7 +209,7 @@ function DataInnovation() {
             <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
             <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
           </div>
-          <a href={foundersMailto} className="mt-9 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:px-7">Request Info</a>
+          <button type="button" onClick={onContactClick} className="mt-9 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:px-7">Request Info</button>
         </div>
       </div>
     </section>
@@ -417,7 +426,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   );
 }
 
-function Ethical() {
+function Ethical({ onContactClick }: { onContactClick: () => void }) {
   return (
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
@@ -433,62 +442,10 @@ function Ethical() {
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <a href={foundersMailto} className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</a>
+          <button type="button" onClick={onContactClick} className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</button>
         </Reveal>
       </div>
     </section>
-  );
-}
-
-function ContactForm() {
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const result = contactSchema.safeParse({ name: form.get("name"), email: form.get("email") });
-
-    if (!result.success) {
-      const fields = result.error.flatten().fieldErrors;
-      setErrors({ name: fields.name?.[0], email: fields.email?.[0] });
-      return;
-    }
-
-    setErrors({});
-    setStatus("sending");
-
-    try {
-      const response = await fetch("/api/public/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(result.data),
-      });
-
-      if (!response.ok) throw new Error("Request failed");
-      setStatus("sent");
-      event.currentTarget.reset();
-    } catch {
-      setStatus("error");
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} noValidate className="mt-10 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-start">
-      <label className="block">
-        <span className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Name</span>
-        <input name="name" type="text" maxLength={100} className="mt-3 h-[54px] w-full border border-border bg-background px-4 text-[15px] font-bold text-foreground outline-none focus:border-foreground" />
-        {errors.name ? <span className="mt-2 block text-[12px] font-bold text-destructive">{errors.name}</span> : null}
-      </label>
-      <label className="block">
-        <span className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Email</span>
-        <input name="email" type="email" maxLength={255} className="mt-3 h-[54px] w-full border border-border bg-background px-4 text-[15px] font-bold text-foreground outline-none focus:border-foreground" />
-        {errors.email ? <span className="mt-2 block text-[12px] font-bold text-destructive">{errors.email}</span> : null}
-      </label>
-      <button type="submit" disabled={status === "sending"} className="mt-[29px] h-[54px] bg-foreground px-7 text-[12px] font-black uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-80 disabled:pointer-events-none disabled:opacity-60">{status === "sending" ? "Sending" : "Request Info"}</button>
-      {status === "sent" ? <p className="text-[12px] font-black uppercase tracking-[0.12em] text-muted-foreground md:col-span-3">Request sent.</p> : null}
-      {status === "error" ? <p className="text-[12px] font-black uppercase tracking-[0.12em] text-destructive md:col-span-3">Request failed. Please try again.</p> : null}
-    </form>
   );
 }
 
@@ -533,11 +490,11 @@ function Footer() {
   );
 }
 
-function EmailBar() {
+function EmailBar({ onContactClick }: { onContactClick: () => void }) {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[11px] font-black uppercase tracking-[0.42em] text-background">
       <div className="mx-auto flex h-[32px] max-w-[1184px] items-center justify-end px-6">
-        <a href={foundersMailto}>FOUNDERS@MADMONKEYHOSTELS.COM</a>
+        <button type="button" onClick={onContactClick}>FOUNDERS@MADMONKEYHOSTELS.COM</button>
       </div>
     </footer>
   );
