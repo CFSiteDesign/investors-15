@@ -201,6 +201,57 @@
     opacity: 0.35;
   }
 
+  .chart-reveal-card {
+    opacity: 0;
+    transform: translate3d(0, 38px, 0);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .chart-reveal-card-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .chart-grid-line {
+    opacity: 0;
+    transform: scaleX(0);
+    transform-box: fill-box;
+    transform-origin: left center;
+    transition: opacity 0.55s ease-out, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .chart-grid-line-in {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .chart-area-fill {
+    opacity: 0;
+    transform: scaleY(0.72);
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    transition: opacity 0.85s ease-out 0.35s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+  }
+
+  .chart-area-fill-in {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .chart-point {
+    opacity: 0;
+    transform: scale(0.2);
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity 0.35s ease-out, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .chart-point-in {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   .premium-reveal {
     opacity: 0;
     filter: blur(14px);
