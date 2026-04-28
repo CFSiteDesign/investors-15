@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
+import globalNetworkImage from "../assets/mad-monkey-global-network.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,7 +22,6 @@ export const Route = createFileRoute("/")({
 
 const heroUrl = "https://i.imghippo.com/files/wei8466Qpo.jpg";
 const experienceUrl = "https://i.imghippo.com/files/idSb4836m.JPG";
-const networkUrl = "https://i.imghippo.com/files/rUB1888Pd.png";
 
 const reviews = [
   ["Google", "Guest Review", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
@@ -283,7 +283,7 @@ function Network() {
     <section className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
-          <img src={networkUrl} alt="Mad Monkey Global Network" loading="lazy" className="premium-image h-auto w-full grayscale" />
+          <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="premium-image h-auto w-full" />
         </Reveal>
       </div>
     </section>
