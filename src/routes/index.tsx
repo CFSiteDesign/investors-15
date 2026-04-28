@@ -161,7 +161,7 @@ function Manifesto() {
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <div>
-          <h2 className="max-w-[940px] font-display text-[clamp(26px,4.4vw,68px)] uppercase leading-[1.04] tracking-normal text-balance">
+          <h2 className="max-w-[900px] font-display text-[clamp(22px,3.2vw,46px)] uppercase leading-[1.12] tracking-normal text-balance">
             While Southeast Asia is among the world's fastest-growing travel markets, it remains highly fragmented and underserved by branded operators.
             <span className="block text-muted-foreground">Mad Monkey provides a proven, scalable model for adventure-led hospitality across the region.</span>
           </h2>
