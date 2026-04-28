@@ -238,10 +238,7 @@
     border-radius: 999px;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    background: color-mix(in oklab, var(--graph-blue) 74%, var(--foreground));
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--foreground) 72%, transparent),
-      0 0 22px color-mix(in oklab, var(--graph-blue) 54%, transparent);
+    background: transparent;
     animation: map-pin-luxury-pulse 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
   }
 
