@@ -98,22 +98,36 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 }
 
 function Index() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Header />
+      <Header onContactClick={() => setIsContactOpen(true)} />
       <Hero />
-      <Manifesto />
-      <DataInnovation />
+      <Manifesto onContactClick={() => setIsContactOpen(true)} />
+      <DataInnovation onContactClick={() => setIsContactOpen(true)} />
       <ReviewTicker />
       <Performance />
-      <Ethical />
+      <Ethical onContactClick={() => setIsContactOpen(true)} />
       <Footer />
-      <EmailBar />
+      <EmailBar onContactClick={() => setIsContactOpen(true)} />
+      {isContactOpen ? <ContactModal onClose={() => setIsContactOpen(false)} /> : null}
     </main>
   );
 }
 
-function Header() {
+function ContactModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[70] grid place-items-center bg-background/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Contact founders">
+      <div className="relative h-[min(620px,92vh)] w-full max-w-[980px] border border-border bg-background shadow-2xl">
+        <button type="button" onClick={onClose} className="absolute right-3 top-3 z-10 grid size-10 place-items-center border border-border bg-background text-[18px] font-black text-foreground transition-colors hover:bg-foreground hover:text-background" aria-label="Close contact form">×</button>
+        <iframe src="/contact-form" title="Contact form" className="h-full w-full" />
+      </div>
+    </div>
+  );
+}
+
+function Header({ onContactClick }: { onContactClick: () => void }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
       <div className="mx-auto grid h-[76px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[98px] lg:gap-8 lg:px-6">
@@ -126,8 +140,8 @@ function Header() {
           <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
         <div className="flex items-center gap-3">
-          <a href={foundersMailto} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
-          <a href={foundersMailto} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
+          <button type="button" onClick={onContactClick} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</button>
+          <button type="button" onClick={onContactClick} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</button>
         </div>
       </div>
     </header>
