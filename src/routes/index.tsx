@@ -153,12 +153,12 @@ function Hero() {
     <section className="relative flex min-h-[calc(100svh-32px)] flex-col overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
       <div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col justify-center overflow-hidden px-5 pb-[56px] pt-[32px] sm:pt-[40px] lg:px-6 lg:pb-[72px]">
-        <h1 className="hero-title max-w-full font-display text-[clamp(54px,9.2vw,148px)] font-black uppercase leading-[0.84] tracking-normal">
+        <h1 className="hero-title max-w-full font-display text-[clamp(42px,13vw,54px)] font-black uppercase leading-[0.88] tracking-normal sm:text-[clamp(54px,9.2vw,148px)] sm:leading-[0.84]">
           <span className="hero-title-mask hero-title-mask-up">
-            <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">15 Years Of</span>
+            <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">15 Years Of</span>
           </span>
           <span className="hero-title-mask hero-title-mask-down hero-title-mask-second">
-            <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">Mad Monkey</span>
+            <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">Mad Monkey</span>
           </span>
         </h1>
         <p className="hero-copy mt-[40px] max-w-[1060px] text-[clamp(20px,2.3vw,36px)] font-light leading-[1.18] text-muted-foreground lg:mt-[52px]">
@@ -451,7 +451,7 @@ function Ethical({ onContactClick }: { onContactClick: () => void }) {
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <button type="button" onClick={onContactClick} className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</button>
+          <button type="button" onClick={onContactClick} className="mt-12 inline-flex w-full justify-center bg-foreground px-4 py-5 text-center text-[11px] font-black uppercase leading-snug tracking-[0.12em] text-background [overflow-wrap:anywhere] sm:w-auto sm:px-8 sm:text-[14px] sm:tracking-[0.16em]">Contact Founders@madmonkeyhostels.com</button>
         </Reveal>
       </div>
     </section>
