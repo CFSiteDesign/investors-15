@@ -101,7 +101,6 @@ function Index() {
       <DataInnovation />
       <ReviewTicker />
       <Performance />
-      <Network />
       <Ethical />
       <Footer />
       <EmailBar />
@@ -278,18 +277,6 @@ function ReviewTicker() {
   );
 }
 
-function Network() {
-  return (
-    <section className="bg-background py-[82px] lg:py-[120px]">
-      <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
-        <Reveal>
-          <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="premium-image h-auto w-full" />
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 function Performance() {
   return (
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
@@ -329,6 +316,9 @@ function Performance() {
           <Chart type="bar" title="Guest Capacity" subtitle="Annual capacity growth" data={guestCapacity} maxValue={1100} x="2022,2023,2024,2025" y="1.1m,825k,550k,275k,0" />
         </div>
         <p className="mt-8 max-w-[620px] text-[15px] font-black uppercase leading-[1.5] tracking-[0.08em] text-secondary-foreground/80">With planned expansion to 3x capacity globally.</p>
+        <Reveal delay={160} className="mt-14 lg:mt-16">
+          <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full border border-secondary-foreground/20" />
+        </Reveal>
       </div>
     </section>
   );
