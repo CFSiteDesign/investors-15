@@ -244,26 +244,35 @@
   .hero-title-mask {
     display: block;
     overflow: hidden;
-    clip-path: inset(0 50% 0 50%);
-    animation: hero-center-mask 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
   }
   .hero-title-mask-up {
-    transform-origin: center bottom;
+    clip-path: inset(100% 0 0 0);
+    animation: hero-up-mask 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
   }
   .hero-title-mask-down {
-    transform-origin: center top;
+    clip-path: inset(0 0 100% 0);
+    animation: hero-down-mask 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
   }
   .hero-title-mask-second {
-    animation-delay: 0.18s;
+    animation-delay: 0.12s;
   }
   .hero-title-center-reveal {
     opacity: 0;
-    transform: scaleX(0.74);
-    transform-origin: center;
-    animation: hero-center-text 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+    animation-duration: 1.15s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-delay: 0.12s;
+    animation-fill-mode: both;
+  }
+  .hero-title-mask-up .hero-title-center-reveal {
+    transform: translate3d(0, 0.92em, 0);
+    animation-name: hero-line-float-up;
+  }
+  .hero-title-mask-down .hero-title-center-reveal {
+    transform: translate3d(0, -0.92em, 0);
+    animation-name: hero-line-float-down;
   }
   .hero-title-mask-second .hero-title-center-reveal {
-    animation-delay: 0.18s;
+    animation-delay: 0.12s;
   }
   .hero-copy { animation: hero-fade 0.8s ease-out 0.62s both; }
 }
@@ -293,15 +302,26 @@
   to { stroke-dashoffset: 0; }
 }
 
-@keyframes hero-center-mask {
-  from { clip-path: inset(0 50% 0 50%); }
+@keyframes hero-up-mask {
+  from { clip-path: inset(100% 0 0 0); }
   to { clip-path: inset(0 0 0 0); }
 }
 
-@keyframes hero-center-text {
-  from { opacity: 0; transform: scaleX(0.74); filter: blur(10px); }
+@keyframes hero-down-mask {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hero-line-float-up {
+  from { opacity: 0; transform: translate3d(0, 0.92em, 0); filter: blur(8px); }
   36% { opacity: 1; }
-  to { opacity: 1; transform: scaleX(1); filter: blur(0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+
+@keyframes hero-line-float-down {
+  from { opacity: 0; transform: translate3d(0, -0.92em, 0); filter: blur(8px); }
+  36% { opacity: 1; }
+  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
 }
 
 @keyframes hero-fade {

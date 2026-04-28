@@ -136,7 +136,7 @@ function Hero() {
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
       <div className="mx-auto max-w-[1088px] overflow-hidden px-5 pt-[72px] sm:pt-[88px] lg:px-6 lg:pt-[96px]">
         <span className="inline-flex bg-foreground px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-background">EST. 2011</span>
-        <h1 className="hero-title mt-[38px] max-w-[960px] font-display text-[clamp(42px,8.6vw,142px)] font-black uppercase leading-[0.9] tracking-normal lg:mt-[42px]">
+        <h1 className="hero-title mt-[38px] max-w-[980px] font-display text-[clamp(40px,7.4vw,118px)] font-black uppercase leading-[0.9] tracking-normal lg:mt-[42px]">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">15 Years Of</span>
           </span>
