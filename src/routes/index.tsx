@@ -33,6 +33,15 @@ const reviews = [
 
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guestCapacity = [622.052, 661.718, 940.781, 1037.176];
+const mapPins = [
+  { left: "40.6%", top: "12%" },
+  { left: "39%", top: "21.3%" },
+  { left: "45%", top: "17.7%" },
+  { left: "43.4%", top: "27.2%" },
+  { left: "63.7%", top: "29.4%" },
+  { left: "55%", top: "67%" },
+  { left: "83.6%", top: "85.4%" },
+];
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -317,7 +326,17 @@ function Performance() {
         </div>
         <p className="mt-8 max-w-[620px] text-[15px] font-black uppercase leading-[1.5] tracking-[0.08em] text-secondary-foreground/80">With planned expansion to 3x capacity globally.</p>
         <Reveal delay={160} className="mt-14 lg:mt-16">
-          <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full border border-secondary-foreground/20" />
+          <div className="relative overflow-hidden border border-secondary-foreground/20">
+            <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full" />
+            {mapPins.map((pin, index) => (
+              <span
+                key={`${pin.left}-${pin.top}`}
+                className="map-pin-pulse"
+                style={{ left: pin.left, top: pin.top, animationDelay: `${index * 220}ms` }}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
         </Reveal>
       </div>
     </section>
