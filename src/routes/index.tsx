@@ -22,6 +22,7 @@ export const Route = createFileRoute("/")({
 
 const heroUrl = "https://i.imghippo.com/files/wei8466Qpo.jpg";
 const experienceUrl = "https://i.imghippo.com/files/idSb4836m.JPG";
+const foundersMailto = "mailto:founders@madmonkeyhostels.com";
 
 const reviews = [
   ["Google", "Guest Review", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
@@ -130,8 +131,8 @@ function Header() {
           <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
         <div className="flex items-center gap-3">
-          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
+          <a href={foundersMailto} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</a>
+          <a href={foundersMailto} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
         </div>
       </div>
     </header>
@@ -156,8 +157,8 @@ function Hero() {
           Founded by backpackers for backpackers, we are Southeast Asia’s market-leading, socially responsible travel platform headquartered in Singapore and operating across Southeast Asia.
         </p>
         <div className="hero-copy mt-8 flex flex-wrap gap-4">
-          <a href="https://www.youtube.com/watch?v=nmfMDvkykGg" className="inline-flex bg-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-background lg:px-8 lg:py-5 lg:text-[18px]">Watch the Film</a>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
+          <a href={foundersMailto} className="inline-flex bg-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-background lg:px-8 lg:py-5 lg:text-[18px]">Watch the Film</a>
+          <a href={foundersMailto} className="inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
         </div>
       </div>
     </section>
@@ -178,7 +179,7 @@ function Manifesto() {
           <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
             <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
+          <a href={foundersMailto} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</a>
         </div>
       </div>
     </section>
