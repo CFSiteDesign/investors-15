@@ -208,10 +208,12 @@ function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
             </p>
           </div>
           <div>
-            <div className="grid max-w-[900px] grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[1fr_auto_1fr] lg:items-end lg:gap-[42px]">
+            <div className="grid max-w-[760px] grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-[56px]">
               <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
-              <button type="button" onClick={onContactClick} className="inline-flex w-fit border border-foreground bg-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 sm:px-7 lg:mb-[2px]">Request Info</button>
               <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
+            </div>
+            <div className="mt-10 flex justify-start lg:mt-12 lg:justify-center">
+              <button type="button" onClick={onContactClick} className="inline-flex border border-foreground bg-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 sm:px-7">Request Info</button>
             </div>
           </div>
         </div>
