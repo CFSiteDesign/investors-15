@@ -150,9 +150,9 @@ function Header({ onContactClick }: { onContactClick: () => void }) {
 
 function Hero() {
   return (
-    <section className="relative min-h-[calc(100svh-32px)] overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
+    <section className="relative flex min-h-[calc(100svh-32px)] flex-col overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto max-w-[1420px] overflow-hidden px-5 pt-[104px] sm:pt-[128px] lg:px-6 lg:pt-[126px]">
+      <div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col justify-center overflow-hidden px-5 pb-[56px] pt-[32px] sm:pt-[40px] lg:px-6 lg:pb-[72px]">
         <h1 className="hero-title max-w-full font-display text-[clamp(54px,9.2vw,148px)] font-black uppercase leading-[0.84] tracking-normal">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal whitespace-nowrap">15 Years Of</span>
