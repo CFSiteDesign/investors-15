@@ -490,11 +490,11 @@ function Footer() {
   );
 }
 
-function EmailBar() {
+function EmailBar({ onContactClick }: { onContactClick: () => void }) {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[11px] font-black uppercase tracking-[0.42em] text-background">
       <div className="mx-auto flex h-[32px] max-w-[1184px] items-center justify-end px-6">
-        <a href={foundersMailto}>FOUNDERS@MADMONKEYHOSTELS.COM</a>
+        <button type="button" onClick={onContactClick}>FOUNDERS@MADMONKEYHOSTELS.COM</button>
       </div>
     </footer>
   );
