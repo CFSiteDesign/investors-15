@@ -38,9 +38,9 @@ const mapPins = [
   { left: "38.9%", top: "21.4%" },
   { left: "45.1%", top: "17.8%" },
   { left: "43.1%", top: "27.5%" },
-  { left: "64.1%", top: "29.2%" },
-  { left: "54.6%", top: "67.2%" },
-  { left: "84%", top: "85.7%" },
+  { left: "63.6%", top: "29.3%" },
+  { left: "55%", top: "66.8%" },
+  { left: "84.6%", top: "84.6%" },
 ];
 
 const contactSchema = z.object({
