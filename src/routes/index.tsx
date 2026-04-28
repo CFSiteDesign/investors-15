@@ -221,7 +221,7 @@ function BriefMetric({ value, label, ctaLabel }: { value: string; label: string;
       <p className="font-display text-[44px] uppercase leading-none tracking-normal sm:text-[60px]">{value}</p>
       <p className="mt-[10px] text-[12px] font-black uppercase leading-[1.58] tracking-[0.12em] text-muted-foreground sm:text-[13px]">{label}</p>
       {ctaLabel ? (
-        <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-5 inline-flex border border-foreground px-5 py-3 text-[11px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:text-[12px]">
+        <a href={foundersMailto} className="mt-5 inline-flex border border-foreground px-5 py-3 text-[11px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background sm:text-[12px]">
           {ctaLabel}
         </a>
       ) : null}
@@ -446,7 +446,7 @@ function Ethical() {
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM" className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</a>
+          <a href={foundersMailto} className="mt-12 inline-flex bg-foreground px-8 py-5 text-[14px] font-black uppercase tracking-[0.16em] text-background">Contact Founders@madmonkeyhostels.com</a>
         </Reveal>
       </div>
     </section>
@@ -470,7 +470,7 @@ function ContactForm() {
     setErrors({});
     const subject = encodeURIComponent("Mad Monkey Investor Info Request");
     const body = encodeURIComponent(`Name: ${result.data.name}\nEmail: ${result.data.email}`);
-    window.location.href = `mailto:FOUNDERS@MADMONKEYHOSTELS.COM?subject=${subject}&body=${body}`;
+    window.location.href = `${foundersMailto}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -535,7 +535,7 @@ function EmailBar() {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[11px] font-black uppercase tracking-[0.42em] text-background">
       <div className="mx-auto flex h-[32px] max-w-[1184px] items-center justify-end px-6">
-        <a href="mailto:FOUNDERS@MADMONKEYHOSTELS.COM">FOUNDERS@MADMONKEYHOSTELS.COM</a>
+        <a href={foundersMailto}>FOUNDERS@MADMONKEYHOSTELS.COM</a>
       </div>
     </footer>
   );
