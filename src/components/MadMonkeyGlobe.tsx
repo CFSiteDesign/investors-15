@@ -435,17 +435,19 @@ function GlobeScene() {
       ))}
 
       {/* Arc connections */}
-      {arcs.map((arc, i) => (
-        <line key={arc.key} geometry={arcGeometries[i]}>
-          <lineBasicMaterial
-            color={COLOR_ATMOS}
-            transparent
-            opacity={0.3}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </line>
-      ))}
+      {arcs.map((arc, i) => {
+        const lineObj = new THREE.Line(
+          arcGeometries[i],
+          new THREE.LineBasicMaterial({
+            color: new THREE.Color(COLOR_ATMOS),
+            transparent: true,
+            opacity: 0.32,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
+        );
+        return <primitive key={arc.key} object={lineObj} />;
+      })}
 
       {/* Travelling pulses */}
       {arcs.map((arc, i) => (
