@@ -306,7 +306,7 @@ function Performance() {
           <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
           <Chart type="bar" title="Guest Capacity" subtitle="Annual capacity growth" data={guestCapacity} maxValue={1100} x="2022,2023,2024,2025" y="1.1m,825k,550k,275k,0" />
         </div>
-        <p className="mt-8 max-w-[620px] text-[15px] font-black uppercase leading-[1.5] tracking-[0.08em] text-secondary-foreground/80">With planned expansion to 3x capacity globally.</p>
+        
         <Reveal delay={160} className="mt-14 lg:mt-16">
           <div className="relative overflow-hidden border border-secondary-foreground/20">
             <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full" />
