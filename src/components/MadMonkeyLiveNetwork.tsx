@@ -965,15 +965,16 @@ function CameraRig({
       focusFromLook.current = null;
     }
 
-    // Hold the centred default look — user pan offset is applied in applyCamera.
+    // Auto drift removed — camera holds the centred default look.
+    // User pan offset (panRef) is added in applyCamera().
     const [dx, , dz] = projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng);
-    toLook.current.set(dx, 0, dz);
-    if (state.clock.elapsedTime >= pauseUntil) {
-      currentLook.current.lerp(toLook.current, Math.min(1, delta * 1.2));
-    }
+    currentLook.current.set(dx, 0, dz);
+    toLook.current.copy(currentLook.current);
     fromLook.current.copy(currentLook.current);
     baseZoom.current += (1 - baseZoom.current) * Math.min(1, delta * 1.5);
     applyCamera(currentLook.current, baseZoom.current);
+    void pauseUntil;
+    void state;
   });
 
   return null;
