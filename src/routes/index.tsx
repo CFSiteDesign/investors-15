@@ -283,7 +283,9 @@ function Performance() {
             
           </div>
           <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-black sm:mt-8">
-            <MadMonkeyGlobe />
+            <Suspense fallback={<div className="h-[420px] w-full bg-black sm:h-[520px] lg:h-[640px]" />}>
+              <MadMonkeyGlobe />
+            </Suspense>
           </div>
         </Reveal>
       </div>
