@@ -289,7 +289,7 @@ function Performance() {
               <p className="text-[12px] font-black uppercase tracking-[0.18em] opacity-70">Global Footprint</p>
               <h3 className="mt-3 max-w-[640px] font-display text-[clamp(22px,3.4vw,40px)] uppercase leading-[1.05] text-balance">Our Network Across Asia & Beyond</h3>
             </div>
-            <p className="text-[11px] font-black uppercase tracking-[0.18em] opacity-60 sm:text-[12px]">{mapPins.length} Active Locations</p>
+            
           </div>
           <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-background/40 sm:mt-8">
             <img
