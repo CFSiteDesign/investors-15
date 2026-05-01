@@ -147,7 +147,7 @@ function Hero() {
 
 function Manifesto() {
   return (
-    <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
+    <section className="bg-background pb-[82px] pt-[56px] lg:pb-[88px] lg:pt-[56px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
         <div>
           <h2 className="max-w-[900px] font-display text-[clamp(20px,2.6vw,38px)] normal-case leading-[1.2] tracking-normal text-balance">
@@ -168,7 +168,7 @@ function Manifesto() {
 
 function DataInnovation() {
   return (
-    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[76px]">
+    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[56px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
         <div className="relative z-10 grid gap-10 bg-background lg:grid-cols-[minmax(380px,520px)_minmax(520px,1fr)] lg:items-end lg:gap-20">
           <div>
@@ -261,7 +261,7 @@ function Metric({ value, label }: { value: string; label: string }) {
 
 function Performance() {
   return (
-    <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
+    <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[72px]">
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar: Scale</p>
@@ -394,7 +394,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
 
 function Ethical() {
   return (
-    <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
+    <section id="ethical" className="bg-background py-[82px] lg:py-[88px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar: Integrity</p>
