@@ -403,10 +403,7 @@ function GlobeScene() {
             <meshBasicMaterial color={COLOR_PIN} transparent opacity={0.95} />
           </mesh>
           {/* Halo ring */}
-          <mesh
-            ref={(el) => { haloRefs.current[i] = el; }}
-            lookAt={[0, 0, 0] as unknown as THREE.Vector3}
-          >
+          <mesh ref={(el) => { haloRefs.current[i] = el; }}>
             <ringGeometry args={[0.018, 0.024, 24]} />
             <meshBasicMaterial
               color={COLOR_PIN}
