@@ -291,21 +291,8 @@ function Performance() {
             </div>
             
           </div>
-          <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-background/40 sm:mt-8">
-            <img
-              src={globalNetworkImage}
-              alt="Mad Monkey Global Network"
-              loading="lazy"
-              className="block h-auto w-full select-none object-contain"
-            />
-            {mapPins.map((pin, index) => (
-              <span
-                key={`${pin.left}-${pin.top}`}
-                className="map-pin-pulse"
-                style={{ left: pin.left, top: pin.top, animationDelay: `${index * 220}ms` }}
-                aria-hidden="true"
-              />
-            ))}
+          <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-black sm:mt-8">
+            <MadMonkeyGlobe />
           </div>
         </Reveal>
       </div>
