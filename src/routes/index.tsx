@@ -21,16 +21,7 @@ export const Route = createFileRoute("/")({
 });
 
 const heroUrl = "https://i.imghippo.com/files/wei8466Qpo.jpg";
-const experienceUrl = "https://i.imghippo.com/files/idSb4836m.JPG";
 const foundersMailto = "mailto:founders@madmonkeyhostels.com";
-
-const reviews = [
-  ["Google", "Guest Review", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
-  ["Hostelworld", "Guest Review", "Mad Monkey Koh Rong Samloem is literally paradise. Met the best people here.", "10/10"],
-  ["Google", "Guest Review", "The social atmosphere is incredible. If you're traveling solo, this is the place to be.", "10/10"],
-  ["Hostelworld", "Guest Review", "Clean, safe, and so much fun. The tours are well organized and the food is great.", "10/10"],
-  ["Google", "Guest Review", "15 years of excellence shows. Mad Monkey knows how to host a perfect stay.", "10/10"],
-];
 
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guestCapacity = [622.052, 661.718, 940.781, 1037.176];
@@ -98,50 +89,35 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 }
 
 function Index() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
-
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Header onContactClick={() => setIsContactOpen(true)} />
+      <Header />
       <Hero />
-      <Manifesto onContactClick={() => setIsContactOpen(true)} />
-      <DataInnovation onContactClick={() => setIsContactOpen(true)} />
-      <ReviewTicker />
+      <Manifesto />
+      <DataInnovation />
       <Performance />
-      <Ethical onContactClick={() => setIsContactOpen(true)} />
+      <Ethical />
       <Footer />
-      <EmailBar onContactClick={() => setIsContactOpen(true)} />
-      {isContactOpen ? <ContactModal onClose={() => setIsContactOpen(false)} /> : null}
+      <EmailBar />
     </main>
   );
 }
 
-function ContactModal({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 z-[70] grid place-items-center bg-background/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Contact founders">
-      <div className="relative w-[min(820px,calc(100vw-32px))] border border-border bg-background shadow-2xl">
-        <button type="button" onClick={onClose} className="absolute right-3 top-3 z-10 grid size-10 place-items-center border border-border bg-background text-[18px] font-black text-foreground transition-colors hover:bg-foreground hover:text-background" aria-label="Close contact form">×</button>
-        <iframe src="/contact-form" title="Contact form" className="h-[380px] w-full sm:h-[240px]" />
-      </div>
-    </div>
-  );
-}
 
-function Header({ onContactClick }: { onContactClick: () => void }) {
+function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto grid h-[76px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[98px] lg:gap-8 lg:px-6">
+      <div className="mx-auto grid h-[68px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[84px] lg:gap-8 lg:px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[44px] w-auto object-contain lg:h-[58px]" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[38px] w-auto object-contain lg:h-[46px]" />
         </a>
-        <nav className="hidden items-center justify-end gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
+        <nav className="hidden items-center justify-end gap-8 text-[12px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Proven</a>
           <a href="#secure" className="transition-opacity hover:opacity-60">Scale</a>
           <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
         <div className="flex items-center gap-3">
-          <button type="button" onClick={onContactClick} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</button>
-          <button type="button" onClick={onContactClick} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</button>
+          <a href={foundersMailto} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
         </div>
       </div>
     </header>
@@ -150,10 +126,10 @@ function Header({ onContactClick }: { onContactClick: () => void }) {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[calc(100svh-32px)] flex-col overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
-      <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
+    <section className="relative flex min-h-[calc(100svh-32px)] flex-col overflow-hidden bg-background pt-[68px] lg:pt-[84px]">
+      <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[84px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
       <div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col justify-center overflow-hidden px-5 pb-[56px] pt-[32px] sm:pt-[40px] lg:px-6 lg:pb-[72px]">
-        <h1 className="hero-title max-w-full font-display text-[clamp(42px,13vw,54px)] font-black uppercase leading-[0.88] tracking-normal sm:text-[clamp(54px,9.2vw,148px)] sm:leading-[0.84]">
+        <h1 className="hero-title max-w-full font-display text-[clamp(42px,13vw,54px)] font-black uppercase leading-[0.88] tracking-normal sm:text-[clamp(50px,8.4vw,128px)] sm:leading-[0.84]">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">15 Years Of</span>
           </span>
@@ -161,7 +137,7 @@ function Hero() {
             <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">Mad Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[40px] max-w-[1060px] text-[clamp(20px,2.3vw,36px)] font-light leading-[1.18] text-muted-foreground lg:mt-[52px]">
+        <p className="hero-copy mt-[36px] max-w-[1000px] text-[clamp(18px,2vw,30px)] font-light leading-[1.2] text-muted-foreground lg:mt-[44px]">
           Founded by backpackers for backpackers, we are Southeast Asia’s market-leading, socially responsible travel platform headquartered in Singapore and operating across Southeast Asia.
         </p>
       </div>
@@ -169,28 +145,28 @@ function Hero() {
   );
 }
 
-function Manifesto({ onContactClick }: { onContactClick: () => void }) {
+function Manifesto() {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
         <div>
-          <h2 className="max-w-[900px] font-display text-[clamp(22px,3.2vw,46px)] uppercase leading-[1.12] tracking-normal text-balance">
+          <h2 className="max-w-[900px] font-display text-[clamp(20px,2.6vw,38px)] normal-case leading-[1.2] tracking-normal text-balance">
             While Southeast Asia is among the world's fastest-growing travel markets, it remains highly fragmented and underserved by branded operators.
             <span className="block text-muted-foreground">Mad Monkey provides a proven, scalable model for adventure-led hospitality across the region.</span>
           </h2>
         </div>
         <div className="mt-[36px] max-w-[760px] lg:mt-[52px]">
-          <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
+          <div className="space-y-6 text-[15px] font-light leading-[1.7] text-muted-foreground lg:text-[17px]">
             <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
-          <button type="button" onClick={onContactClick} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</button>
+          <a href={foundersMailto} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[16px]">Get in Touch</a>
         </div>
       </div>
     </section>
   );
 }
 
-function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
+function DataInnovation() {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[76px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
@@ -200,20 +176,20 @@ function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR: PROVEN
             </p>
-            <h2 className="mt-[18px] max-w-[520px] font-display text-[clamp(34px,5vw,72px)] uppercase leading-[1.02] tracking-normal text-balance">
+            <h2 className="mt-[18px] max-w-[520px] font-display text-[clamp(30px,4.2vw,60px)] uppercase leading-[1.04] tracking-normal text-balance">
             DATA-DRIVEN OPERATIONS
             </h2>
-            <p className="mt-[24px] max-w-[520px] text-[16px] font-light leading-[1.58] text-muted-foreground lg:text-[18px]">
+            <p className="mt-[24px] max-w-[520px] text-[15px] font-light leading-[1.58] text-muted-foreground lg:text-[17px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
             </p>
           </div>
           <div>
             <div className="grid max-w-[760px] grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-[56px]">
-              <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
+              <BriefMetric value="1 in 3" label="Guests converted to our tech powered loyalty programme." />
               <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
             </div>
             <div className="mt-10 flex justify-start lg:mt-12 lg:justify-center">
-              <button type="button" onClick={onContactClick} className="inline-flex border border-foreground bg-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 sm:px-7">Request Info</button>
+              <a href={foundersMailto} className="inline-flex border border-foreground bg-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 sm:px-7">Request Info</a>
             </div>
           </div>
         </div>
@@ -282,23 +258,6 @@ function Metric({ value, label }: { value: string; label: string }) {
   );
 }
 
-function ReviewTicker() {
-  return (
-    <section className="overflow-hidden border-y border-border bg-background py-8">
-      <div className="flex w-max animate-ticker gap-5">
-        {[...reviews, ...reviews, ...reviews].map(([brand, type, quote, rating], index) => (
-          <article key={`${brand}-${index}`} className="w-[360px] shrink-0 border border-border bg-background p-5">
-            <p className="text-[12px] font-black uppercase tracking-[0.16em] text-muted-foreground">{brand}</p>
-            <p className="mt-1 text-[12px] font-black uppercase tracking-[0.16em]">{type}</p>
-            <p className="mt-5 text-[17px] font-semibold leading-snug">"{quote}"</p>
-            <p className="mt-5 font-display text-[44px] leading-none">{rating}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function Performance() {
   return (
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
@@ -337,7 +296,7 @@ function Performance() {
           <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
           <Chart type="bar" title="Guest Capacity" subtitle="Annual capacity growth" data={guestCapacity} maxValue={1100} x="2022,2023,2024,2025" y="1.1m,825k,550k,275k,0" />
         </div>
-        <p className="mt-8 max-w-[620px] text-[15px] font-black uppercase leading-[1.5] tracking-[0.08em] text-secondary-foreground/80">With planned expansion to 3x capacity globally.</p>
+        
         <Reveal delay={160} className="mt-14 lg:mt-16">
           <div className="relative overflow-hidden border border-secondary-foreground/20">
             <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full" />
@@ -435,14 +394,14 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   );
 }
 
-function Ethical({ onContactClick }: { onContactClick: () => void }) {
+function Ethical() {
   return (
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar: Integrity</p>
-          <h2 className="mt-8 max-w-[840px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">A Leading Force in Sustainability</h2>
-          <p className="mt-8 max-w-[680px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Local growth and sustainability are leading forces in all our operations, ensuring we invest back into all communities.</p>
+          <h2 className="mt-8 max-w-[840px] font-display text-[clamp(32px,5.8vw,86px)] uppercase leading-[1.02] text-balance">A Leading Force in Sustainability</h2>
+          <p className="mt-8 max-w-[680px] text-[16px] font-light leading-[1.48] text-muted-foreground lg:text-[20px] lg:leading-[1.35]">Local growth and sustainability are leading forces in all our operations, ensuring we invest back into all communities.</p>
         </Reveal>
         <Reveal delay={120}>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
@@ -451,7 +410,7 @@ function Ethical({ onContactClick }: { onContactClick: () => void }) {
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <button type="button" onClick={onContactClick} className="mt-12 inline-flex w-full justify-center bg-foreground px-4 py-5 text-center text-[11px] font-black uppercase leading-snug tracking-[0.12em] text-background [overflow-wrap:anywhere] sm:w-auto sm:px-8 sm:text-[14px] sm:tracking-[0.16em]">Contact Founders@madmonkeyhostels.com</button>
+          <a href={foundersMailto} className="mt-12 inline-flex w-full justify-center bg-foreground px-4 py-5 text-center text-[11px] font-black uppercase leading-snug tracking-[0.12em] text-background [overflow-wrap:anywhere] sm:w-auto sm:px-8 sm:text-[13px] sm:tracking-[0.16em]">Contact Founders@madmonkeyhostels.com</a>
         </Reveal>
       </div>
     </section>
@@ -499,11 +458,11 @@ function Footer() {
   );
 }
 
-function EmailBar({ onContactClick }: { onContactClick: () => void }) {
+function EmailBar() {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-foreground text-[9px] font-black uppercase tracking-[0.16em] text-background sm:text-[11px] sm:tracking-[0.42em]">
       <div className="mx-auto flex h-[34px] max-w-[1184px] items-center justify-center px-3 sm:h-[32px] sm:justify-end sm:px-6">
-        <button type="button" onClick={onContactClick} className="max-w-full truncate">FOUNDERS@MADMONKEYHOSTELS.COM</button>
+        <a href={foundersMailto} className="max-w-full truncate">FOUNDERS@MADMONKEYHOSTELS.COM</a>
       </div>
     </footer>
   );
