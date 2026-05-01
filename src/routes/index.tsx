@@ -114,21 +114,20 @@ function Index() {
 }
 
 
-function Header({ onContactClick }: { onContactClick: () => void }) {
+function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto grid h-[76px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[98px] lg:gap-8 lg:px-6">
+      <div className="mx-auto grid h-[68px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[84px] lg:gap-8 lg:px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[44px] w-auto object-contain lg:h-[58px]" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[38px] w-auto object-contain lg:h-[46px]" />
         </a>
-        <nav className="hidden items-center justify-end gap-8 text-[13px] font-black uppercase tracking-[0.18em] lg:flex">
+        <nav className="hidden items-center justify-end gap-8 text-[12px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Proven</a>
           <a href="#secure" className="transition-opacity hover:opacity-60">Scale</a>
           <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
         <div className="flex items-center gap-3">
-          <button type="button" onClick={onContactClick} className="hidden h-[40px] items-center border border-foreground px-6 text-[12px] font-black uppercase tracking-[0.16em] transition-colors hover:bg-foreground hover:text-background md:inline-flex">Watch The Film</button>
-          <button type="button" onClick={onContactClick} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</button>
+          <a href={foundersMailto} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
         </div>
       </div>
     </header>
