@@ -380,11 +380,9 @@ function Ocean() {
             float gz = gridLine(vWorldPos.z, 2.0, 1.2);
             float grid = max(gx, gz);
 
-            // Pulse every ~6s
-            float pulse = 0.7 + 0.3 * sin(uTime * (6.2831 / 6.0));
-
+            // Steady grid — no pulse on the ocean
             vec3 col = uOcean;
-            col = mix(col, uGrid, grid * 0.08 * pulse);
+            col = mix(col, uGrid, grid * 0.08);
 
             // Vignette toward edges
             float r = length(vWorldPos.xz) / 45.0;
@@ -1012,7 +1010,26 @@ function Scene({
   const pulseOffsets = useMemo(() => HOSTELS.map(() => Math.random() * Math.PI * 2), []);
   const [checkinTriggers, setCheckinTriggers] = useState<number[]>(() => HOSTELS.map(() => 0));
 
-  // Random check-in pulses disabled per design feedback
+  // Random check-in dispatcher: every 2-4s a random hostel fires a pulse ring + "+N" label
+  useEffect(() => {
+    let cancelled = false;
+    const tick = () => {
+      if (cancelled) return;
+      const next = 2000 + Math.random() * 2000;
+      setTimeout(() => {
+        if (cancelled) return;
+        const i = Math.floor(Math.random() * HOSTELS.length);
+        setCheckinTriggers((prev) => {
+          const arr = prev.slice();
+          arr[i] = arr[i] + 1;
+          return arr;
+        });
+        tick();
+      }, next);
+    };
+    tick();
+    return () => { cancelled = true; };
+  }, []);
 
   // Fade-in
   const groupRef = useRef<THREE.Group>(null);
