@@ -168,7 +168,7 @@ function Manifesto() {
 
 function DataInnovation() {
   return (
-    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[76px]">
+    <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[56px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
         <div className="relative z-10 grid gap-10 bg-background lg:grid-cols-[minmax(380px,520px)_minmax(520px,1fr)] lg:items-end lg:gap-20">
           <div>
