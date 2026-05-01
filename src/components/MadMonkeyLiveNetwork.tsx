@@ -898,10 +898,12 @@ function CameraRig({
   pauseUntil,
   focusTarget,
   onArrive,
+  panRef,
 }: {
   pauseUntil: number;
   focusTarget: { lat: number; lng: number; zoom: number } | null;
   onArrive: () => void;
+  panRef: React.MutableRefObject<{ x: number; z: number }>;
 }) {
   const { camera } = useThree();
   const fromLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
@@ -919,27 +921,14 @@ function CameraRig({
     return [x, 0, z];
   }
 
-  // Apply camera offset (top-down ~55deg off vertical)
+  // Apply camera offset (top-down ~55deg off vertical), with user pan added on top
   const applyCamera = (look: THREE.Vector3, zoom: number) => {
-    const dist = 26 / zoom;
-    const pitch = (90 - 55) * (Math.PI / 180); // 55 off vertical
-    const yaw = -Math.PI / 2; // viewing roughly from south
-    void yaw;
-    // place camera offset from look point
-    const offY = Math.sin((55 * Math.PI) / 180) * 0; // not used
-    void offY;
-    // camera position: look + (0, dist*cos(pitchFromHoriz), dist*sin(pitchFromHoriz))
-    // pitch off vertical = 55deg => from horizontal = 35deg
-    const fromHoriz = (90 - 55) * (Math.PI / 180);
-    const horiz = Math.cos(fromHoriz) * dist;
-    const vert = Math.sin(fromHoriz) * dist;
-    void horiz;
-    void vert;
-    // Use a simpler stable rig
     const camDist = 22 / zoom;
     const camY = 18 / zoom;
-    camera.position.set(look.x, camY, look.z + camDist);
-    camera.lookAt(look.x, 0, look.z);
+    const lx = look.x + panRef.current.x;
+    const lz = look.z + panRef.current.z;
+    camera.position.set(lx, camY, lz + camDist);
+    camera.lookAt(lx, 0, lz);
   };
 
   useEffect(() => {
@@ -948,7 +937,7 @@ function CameraRig({
   }, []);
 
   useFrame((state, delta) => {
-    // Focus override
+    // Focus override (click-to-focus on a hostel) — resets pan
     if (focusTarget) {
       if (!focusFromLook.current) {
         focusFromLook.current = currentLook.current.clone();
@@ -964,6 +953,9 @@ function CameraRig({
         0,
         focusFromLook.current.z + (tz - focusFromLook.current.z) * k,
       );
+      // Ease pan offset back to zero while focusing
+      panRef.current.x += (0 - panRef.current.x) * k * 0.4;
+      panRef.current.z += (0 - panRef.current.z) * k * 0.4;
       const zoom = focusFromZoom.current + (targetZoom.current - focusFromZoom.current) * k;
       baseZoom.current = zoom;
       applyCamera(currentLook.current, zoom);
@@ -973,16 +965,16 @@ function CameraRig({
       focusFromLook.current = null;
     }
 
-    // Auto ken-burns drift removed — camera holds the centred default framing.
-    // Always lerp current look back toward the default centre and base zoom toward 1.
+    // Auto drift removed — camera holds the centred default look.
+    // User pan offset (panRef) is added in applyCamera().
     const [dx, , dz] = projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng);
-    toLook.current.set(dx, 0, dz);
-    if (state.clock.elapsedTime >= pauseUntil) {
-      currentLook.current.lerp(toLook.current, Math.min(1, delta * 1.2));
-    }
+    currentLook.current.set(dx, 0, dz);
+    toLook.current.copy(currentLook.current);
     fromLook.current.copy(currentLook.current);
     baseZoom.current += (1 - baseZoom.current) * Math.min(1, delta * 1.5);
     applyCamera(currentLook.current, baseZoom.current);
+    void pauseUntil;
+    void state;
   });
 
   return null;
@@ -1001,6 +993,7 @@ function Scene({
   setHovered,
   selected,
   setSelected,
+  panRef,
 }: {
   isMobile: boolean;
   onPauseDrift: () => void;
@@ -1011,6 +1004,7 @@ function Scene({
   setHovered: (h: Hostel | null, e?: ThreeEvent<PointerEvent>) => void;
   selected: Hostel | null;
   setSelected: (h: Hostel | null) => void;
+  panRef: React.MutableRefObject<{ x: number; z: number }>;
 }) {
   const monkeyTex = useTexture(monkeyHeadAsset);
   monkeyTex.colorSpace = THREE.SRGBColorSpace;
@@ -1037,7 +1031,7 @@ function Scene({
 
   return (
     <>
-      <CameraRig pauseUntil={pauseUntil} focusTarget={focusTarget} onArrive={onArrive} />
+      <CameraRig pauseUntil={pauseUntil} focusTarget={focusTarget} onArrive={onArrive} panRef={panRef} />
 
       <ambientLight intensity={0.55} color={C.white} />
       <directionalLight
@@ -1119,6 +1113,16 @@ export default function MadMonkeyLiveNetwork() {
   const [mounted, setMounted] = useState(false);
   const lastTimeRef = useRef(0);
 
+  // User pan offset (world units). Updated imperatively from drag handlers.
+  const panRef = useRef<{ x: number; z: number }>({ x: 0, z: 0 });
+  const dragRef = useRef<{ active: boolean; moved: boolean; lastX: number; lastY: number; pointerId: number | null }>({
+    active: false, moved: false, lastX: 0, lastY: 0, pointerId: null,
+  });
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Pixels → world units. Orthographic camera zoom=28 means 1 world unit ≈ 28 px.
+  const PX_PER_UNIT = 28;
+
   useEffect(() => {
     setMounted(true);
     const mq = window.matchMedia("(max-width: 767px)");
@@ -1193,11 +1197,47 @@ export default function MadMonkeyLiveNetwork() {
         opacity: mounted ? 1 : 0,
         transition: "opacity 1.5s cubic-bezier(0.16,1,0.3,1)",
       }}
+      onPointerDown={(e) => {
+        // Ignore clicks that originate on the HUD (which is pointer-events:none anyway)
+        dragRef.current.active = true;
+        dragRef.current.moved = false;
+        dragRef.current.lastX = e.clientX;
+        dragRef.current.lastY = e.clientY;
+        dragRef.current.pointerId = e.pointerId;
+        (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+      }}
       onPointerMove={(e) => {
-        if (!hovered.h) return;
-        const rect = wrapperRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        setHoveredState((s) => ({ ...s, x: e.clientX - rect.left, y: e.clientY - rect.top }));
+        // Hover card position
+        if (hovered.h) {
+          const rect = wrapperRef.current?.getBoundingClientRect();
+          if (rect) setHoveredState((s) => ({ ...s, x: e.clientX - rect.left, y: e.clientY - rect.top }));
+        }
+        if (!dragRef.current.active) return;
+        const dx = e.clientX - dragRef.current.lastX;
+        const dy = e.clientY - dragRef.current.lastY;
+        dragRef.current.lastX = e.clientX;
+        dragRef.current.lastY = e.clientY;
+        if (Math.abs(dx) + Math.abs(dy) > 2) dragRef.current.moved = true;
+        if (dragRef.current.moved && !isDragging) setIsDragging(true);
+        // Drag right → world moves right under the cursor → camera target moves left.
+        panRef.current.x -= dx / PX_PER_UNIT;
+        panRef.current.z -= dy / PX_PER_UNIT;
+        // Cancel any active focus while dragging
+        if (focusTarget) setFocusTarget(null);
+      }}
+      onPointerUp={(e) => {
+        const wasDrag = dragRef.current.moved;
+        dragRef.current.active = false;
+        if (dragRef.current.pointerId !== null) {
+          try { (e.currentTarget as HTMLDivElement).releasePointerCapture(dragRef.current.pointerId); } catch { /* noop */ }
+          dragRef.current.pointerId = null;
+        }
+        if (wasDrag) setIsDragging(false);
+      }}
+      onPointerCancel={() => {
+        dragRef.current.active = false;
+        dragRef.current.moved = false;
+        setIsDragging(false);
       }}
     >
       <Canvas
@@ -1207,6 +1247,7 @@ export default function MadMonkeyLiveNetwork() {
         onCreated={({ gl }) => {
           gl.setClearColor(new THREE.Color("#0A0426"));
         }}
+        style={{ cursor: isDragging ? "grabbing" : "grab", touchAction: "none" }}
       >
         <OrthographicCamera makeDefault position={[0, 18, 22]} zoom={28} near={0.1} far={200} />
         <Suspense fallback={null}>
@@ -1218,13 +1259,20 @@ export default function MadMonkeyLiveNetwork() {
             onArrive={() => { /* keep focus until user clicks outside */ }}
             hoveredId={hovered.h?.id ?? null}
             setHovered={(h, e) => {
+              // Suppress hover state while actively dragging
+              if (dragRef.current.active && dragRef.current.moved) return;
               const rect = wrapperRef.current?.getBoundingClientRect();
               const x = e && rect ? (e.nativeEvent as PointerEvent).clientX - rect.left : hovered.x;
               const y = e && rect ? (e.nativeEvent as PointerEvent).clientY - rect.top : hovered.y;
               setHoveredState({ h, x, y });
             }}
             selected={selected}
-            setSelected={handleSelect}
+            setSelected={(h) => {
+              // Don't treat a drag-release as a click
+              if (dragRef.current.moved) return;
+              handleSelect(h);
+            }}
+            panRef={panRef}
           />
         </Suspense>
       </Canvas>
