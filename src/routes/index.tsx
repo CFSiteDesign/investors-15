@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-// Note: useState retained for chart hover state
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
@@ -22,16 +21,7 @@ export const Route = createFileRoute("/")({
 });
 
 const heroUrl = "https://i.imghippo.com/files/wei8466Qpo.jpg";
-const experienceUrl = "https://i.imghippo.com/files/idSb4836m.JPG";
 const foundersMailto = "mailto:founders@madmonkeyhostels.com";
-
-const reviews = [
-  ["Google", "Guest Review", "Best hostel experience in SE Asia! The staff are amazing and the vibe is unmatched.", "10/10"],
-  ["Hostelworld", "Guest Review", "Mad Monkey Koh Rong Samloem is literally paradise. Met the best people here.", "10/10"],
-  ["Google", "Guest Review", "The social atmosphere is incredible. If you're traveling solo, this is the place to be.", "10/10"],
-  ["Hostelworld", "Guest Review", "Clean, safe, and so much fun. The tours are well organized and the food is great.", "10/10"],
-  ["Google", "Guest Review", "15 years of excellence shows. Mad Monkey knows how to host a perfect stay.", "10/10"],
-];
 
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guestCapacity = [622.052, 661.718, 940.781, 1037.176];
