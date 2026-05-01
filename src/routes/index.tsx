@@ -109,7 +109,7 @@ function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
       <div className="mx-auto grid h-[68px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[84px] lg:gap-8 lg:px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[38px] w-auto object-contain lg:h-[46px]" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[28px] w-auto object-contain lg:h-[46px]" />
         </a>
         <nav className="hidden items-center justify-end gap-8 text-[12px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Proven</a>
