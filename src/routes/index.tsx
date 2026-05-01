@@ -116,7 +116,7 @@ function Header() {
           <a href="#secure" className="transition-opacity hover:opacity-60">Scale</a>
           <a href="#ethical" className="transition-opacity hover:opacity-60">Integrity</a>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="ml-auto flex items-center justify-end gap-3">
           <a href={foundersMailto} className="inline-flex h-[38px] items-center bg-foreground px-4 text-[11px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 md:h-[40px] md:px-6 md:text-[12px]">Contact Us</a>
         </div>
       </div>
