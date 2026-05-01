@@ -176,7 +176,7 @@ function Manifesto() {
   );
 }
 
-function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
+function DataInnovation() {
   return (
     <section id="data" className="scroll-mt-[96px] border-y border-border bg-background py-[42px] lg:scroll-mt-[118px] lg:py-[76px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
@@ -186,20 +186,20 @@ function DataInnovation({ onContactClick }: { onContactClick: () => void }) {
             <span className="text-[19px] leading-none text-foreground">↯</span>
             PILLAR: PROVEN
             </p>
-            <h2 className="mt-[18px] max-w-[520px] font-display text-[clamp(34px,5vw,72px)] uppercase leading-[1.02] tracking-normal text-balance">
+            <h2 className="mt-[18px] max-w-[520px] font-display text-[clamp(30px,4.2vw,60px)] uppercase leading-[1.04] tracking-normal text-balance">
             DATA-DRIVEN OPERATIONS
             </h2>
-            <p className="mt-[24px] max-w-[520px] text-[16px] font-light leading-[1.58] text-muted-foreground lg:text-[18px]">
+            <p className="mt-[24px] max-w-[520px] text-[15px] font-light leading-[1.58] text-muted-foreground lg:text-[17px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
             </p>
           </div>
           <div>
             <div className="grid max-w-[760px] grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-[56px]">
-              <BriefMetric value="1 in 3" label="Guests convert to our tech powered loyalty programme." />
+              <BriefMetric value="1 in 3" label="Guests converted to our tech powered loyalty programme." />
               <BriefMetric value="55k+" label="Actively engaged loyalty members since Jan 2025 — the program now drives over 40% of all bookings." />
             </div>
             <div className="mt-10 flex justify-start lg:mt-12 lg:justify-center">
-              <button type="button" onClick={onContactClick} className="inline-flex border border-foreground bg-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 sm:px-7">Request Info</button>
+              <a href={foundersMailto} className="inline-flex border border-foreground bg-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-80 sm:px-7">Request Info</a>
             </div>
           </div>
         </div>
