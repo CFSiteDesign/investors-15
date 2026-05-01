@@ -193,6 +193,23 @@ function DataInnovation() {
             </div>
           </div>
         </div>
+
+        <Reveal delay={80} className="mt-[72px] lg:mt-[104px]">
+          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+            <div>
+              <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Performance & Growth</p>
+              <h3 className="mt-6 max-w-[680px] font-display text-[clamp(34px,5.4vw,76px)] uppercase leading-[1] text-balance">Data-Driven Excellence</h3>
+            </div>
+            <div className="border border-border px-6 py-5 text-right">
+              <p className="text-[12px] font-black uppercase tracking-[0.16em] text-muted-foreground">Last Updated</p>
+              <p className="mt-2 text-[14px] font-black uppercase tracking-[0.14em]">APRIL 2026</p>
+            </div>
+          </div>
+        </Reveal>
+        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
+          <Chart type="bar" title="Guest Capacity" subtitle="Annual capacity growth" data={guestCapacity} maxValue={1100} x="2022,2023,2024,2025" y="1.1m,825k,550k,275k,0" />
+        </div>
       </div>
     </section>
   );
@@ -280,23 +297,8 @@ function Performance() {
           </div>
         </Reveal>
 
-        <Reveal delay={80} className="mt-[104px]">
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div>
-            <p className="text-[14px] font-black uppercase tracking-[0.16em]">Performance & Growth</p>
-            <h3 className="mt-6 max-w-[680px] font-display text-[clamp(38px,6.2vw,92px)] uppercase leading-[1] text-balance">Data-Driven Excellence</h3>
-          </div>
-          <div className="border border-secondary-foreground px-6 py-5 text-right">
-            <p className="text-[12px] font-black uppercase tracking-[0.16em] opacity-70">Last Updated</p>
-            <p className="mt-2 text-[14px] font-black uppercase tracking-[0.14em]">APRIL 2026</p>
-          </div>
-        </div>
-        </Reveal>
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          <Chart type="line" title="Loyalty Members" subtitle="Cumulative Growth 2025-26" data={loyalty} maxValue={55} x="Jan 25,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Jan 26,Feb,Mar" y="55k,41k,28k,14k,0k" />
-          <Chart type="bar" title="Guest Capacity" subtitle="Annual capacity growth" data={guestCapacity} maxValue={1100} x="2022,2023,2024,2025" y="1.1m,825k,550k,275k,0" />
-        </div>
-        
+
+
         <Reveal delay={160} className="mt-14 lg:mt-16">
           <div className="relative overflow-hidden border border-secondary-foreground/20">
             <img src={globalNetworkImage} alt="Mad Monkey Global Network" loading="lazy" className="h-auto w-full" />
