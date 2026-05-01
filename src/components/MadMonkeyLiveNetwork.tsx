@@ -1222,9 +1222,8 @@ export default function MadMonkeyLiveNetwork() {
         // Drag right → world moves right under the cursor → camera target moves left.
         panRef.current.x -= dx / PX_PER_UNIT;
         panRef.current.z -= dy / PX_PER_UNIT;
-        // Cancel any active focus & pause auto-recenter while dragging
+        // Cancel any active focus while dragging
         if (focusTarget) setFocusTarget(null);
-        setPauseUntil(lastTimeRef.current + 999999); // effectively keep manual pan
       }}
       onPointerUp={(e) => {
         const wasDrag = dragRef.current.moved;
