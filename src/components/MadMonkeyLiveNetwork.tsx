@@ -973,34 +973,14 @@ function CameraRig({
       focusFromLook.current = null;
     }
 
-    const now = state.clock.elapsedTime;
-    if (now < pauseUntil) {
-      // hold position, allow zoom return
-      const z = baseZoom.current + (1 - baseZoom.current) * Math.min(1, delta * 2);
-      baseZoom.current = z;
-      applyCamera(currentLook.current, z);
-      return;
+    // Auto ken-burns drift removed — camera holds the centred default framing.
+    // Always lerp current look back toward the default centre and base zoom toward 1.
+    const [dx, , dz] = projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng);
+    toLook.current.set(dx, 0, dz);
+    if (state.clock.elapsedTime >= pauseUntil) {
+      currentLook.current.lerp(toLook.current, Math.min(1, delta * 1.2));
     }
-
-    phaseT.current += delta;
-    if (phase.current === "hold") {
-      if (phaseT.current >= HOLD) {
-        phase.current = "pan";
-        phaseT.current = 0;
-        idx.current = (idx.current + 1) % REGIONS.length;
-        fromLook.current.copy(currentLook.current);
-        const [tx, , tz] = projectLook(REGIONS[idx.current].lat, REGIONS[idx.current].lng);
-        toLook.current.set(tx, 0, tz);
-      }
-    } else {
-      const k = easeInOutCubic(Math.min(1, phaseT.current / PAN));
-      currentLook.current.lerpVectors(fromLook.current, toLook.current, k);
-      if (phaseT.current >= PAN) {
-        phase.current = "hold";
-        phaseT.current = 0;
-      }
-    }
-    // Smooth return to base zoom
+    fromLook.current.copy(currentLook.current);
     baseZoom.current += (1 - baseZoom.current) * Math.min(1, delta * 1.5);
     applyCamera(currentLook.current, baseZoom.current);
   });
