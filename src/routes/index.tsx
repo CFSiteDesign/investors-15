@@ -394,7 +394,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
 
 function Ethical() {
   return (
-    <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
+    <section id="ethical" className="bg-background py-[82px] lg:py-[88px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar: Integrity</p>
