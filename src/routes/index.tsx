@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+// Note: useState retained for chart hover state
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
