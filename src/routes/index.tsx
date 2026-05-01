@@ -109,7 +109,7 @@ function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
       <div className="mx-auto grid h-[68px] max-w-[1184px] grid-cols-[auto_1fr_auto] items-center gap-5 px-5 lg:h-[84px] lg:gap-8 lg:px-6">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
-          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[38px] w-auto object-contain lg:h-[46px]" />
+          <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[28px] w-auto object-contain lg:h-[46px]" />
         </a>
         <nav className="hidden items-center justify-end gap-8 text-[12px] font-black uppercase tracking-[0.18em] lg:flex">
           <a href="#data" className="transition-opacity hover:opacity-60">Proven</a>
@@ -128,7 +128,7 @@ function Hero() {
   return (
     <section className="relative flex flex-col overflow-hidden bg-background pt-[68px] lg:min-h-[calc(100svh-32px)] lg:pt-[84px]">
       <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[84px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
-      <div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col justify-center overflow-hidden px-5 pb-[36px] pt-[20px] sm:pt-[40px] lg:px-6 lg:pb-[72px]">
+      <div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col justify-center overflow-hidden px-5 pb-[36px] pt-[56px] sm:pt-[40px] lg:px-6 lg:pb-[72px]">
         <h1 className="hero-title max-w-full font-display text-[clamp(38px,12vw,50px)] font-black uppercase leading-[0.9] tracking-normal sm:text-[clamp(50px,8.4vw,128px)] sm:leading-[0.84]">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">15 Years Of</span>
