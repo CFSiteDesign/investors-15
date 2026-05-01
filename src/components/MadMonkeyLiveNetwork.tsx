@@ -380,8 +380,8 @@ function Ocean() {
             float gz = gridLine(vWorldPos.z, 2.0, 1.2);
             float grid = max(gx, gz);
 
-            // Pulse every ~6s
             // Steady grid — no pulse on the ocean
+            vec3 col = uOcean;
             col = mix(col, uGrid, grid * 0.08);
 
             // Vignette toward edges
