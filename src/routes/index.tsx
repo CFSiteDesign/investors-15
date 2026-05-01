@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
-import globalNetworkImage from "../assets/mad-monkey-global-network.png";
+
+const MadMonkeyLiveNetwork = lazy(() => import("@/components/MadMonkeyLiveNetwork"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,15 +27,6 @@ const foundersMailto = "mailto:founders@madmonkeyhostels.com";
 const loyalty = [6.975, 8.738, 10.941, 12.757, 13.858, 15.558, 16.966, 18.486, 20.668, 22.902, 26.459, 30.353, 36.434, 43.757, 51.575];
 const guestCapacity = [622.052, 661.718, 940.781, 1037.176];
 
-const mapPins = [
-  { left: "40.4%", top: "12.3%" },
-  { left: "38.9%", top: "21.4%" },
-  { left: "45.1%", top: "17.8%" },
-  { left: "43.1%", top: "27.5%" },
-  { left: "63.6%", top: "29.3%" },
-  { left: "55%", top: "66.8%" },
-  { left: "84.6%", top: "84.6%" },
-];
 function useScrollReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [hasEntered, setHasEntered] = useState(false);
@@ -292,20 +284,9 @@ function Performance() {
             
           </div>
           <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-black sm:mt-8">
-            <img
-              src={globalNetworkImage}
-              alt="Mad Monkey Global Network"
-              loading="lazy"
-              className="block h-auto w-full select-none object-contain"
-            />
-            {mapPins.map((pin, index) => (
-              <span
-                key={`${pin.left}-${pin.top}`}
-                className="map-pin-pulse"
-                style={{ left: pin.left, top: pin.top, animationDelay: `${index * 220}ms` }}
-                aria-hidden="true"
-              />
-            ))}
+            <Suspense fallback={<div style={{ height: "clamp(440px, 70vh, 760px)" }} className="w-full bg-black" />}>
+              <MadMonkeyLiveNetwork />
+            </Suspense>
           </div>
         </Reveal>
       </div>
