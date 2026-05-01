@@ -898,10 +898,12 @@ function CameraRig({
   pauseUntil,
   focusTarget,
   onArrive,
+  panRef,
 }: {
   pauseUntil: number;
   focusTarget: { lat: number; lng: number; zoom: number } | null;
   onArrive: () => void;
+  panRef: React.MutableRefObject<{ x: number; z: number }>;
 }) {
   const { camera } = useThree();
   const fromLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
@@ -919,27 +921,14 @@ function CameraRig({
     return [x, 0, z];
   }
 
-  // Apply camera offset (top-down ~55deg off vertical)
+  // Apply camera offset (top-down ~55deg off vertical), with user pan added on top
   const applyCamera = (look: THREE.Vector3, zoom: number) => {
-    const dist = 26 / zoom;
-    const pitch = (90 - 55) * (Math.PI / 180); // 55 off vertical
-    const yaw = -Math.PI / 2; // viewing roughly from south
-    void yaw;
-    // place camera offset from look point
-    const offY = Math.sin((55 * Math.PI) / 180) * 0; // not used
-    void offY;
-    // camera position: look + (0, dist*cos(pitchFromHoriz), dist*sin(pitchFromHoriz))
-    // pitch off vertical = 55deg => from horizontal = 35deg
-    const fromHoriz = (90 - 55) * (Math.PI / 180);
-    const horiz = Math.cos(fromHoriz) * dist;
-    const vert = Math.sin(fromHoriz) * dist;
-    void horiz;
-    void vert;
-    // Use a simpler stable rig
     const camDist = 22 / zoom;
     const camY = 18 / zoom;
-    camera.position.set(look.x, camY, look.z + camDist);
-    camera.lookAt(look.x, 0, look.z);
+    const lx = look.x + panRef.current.x;
+    const lz = look.z + panRef.current.z;
+    camera.position.set(lx, camY, lz + camDist);
+    camera.lookAt(lx, 0, lz);
   };
 
   useEffect(() => {
@@ -948,7 +937,7 @@ function CameraRig({
   }, []);
 
   useFrame((state, delta) => {
-    // Focus override
+    // Focus override (click-to-focus on a hostel) — resets pan
     if (focusTarget) {
       if (!focusFromLook.current) {
         focusFromLook.current = currentLook.current.clone();
@@ -964,6 +953,9 @@ function CameraRig({
         0,
         focusFromLook.current.z + (tz - focusFromLook.current.z) * k,
       );
+      // Ease pan offset back to zero while focusing
+      panRef.current.x += (0 - panRef.current.x) * k * 0.4;
+      panRef.current.z += (0 - panRef.current.z) * k * 0.4;
       const zoom = focusFromZoom.current + (targetZoom.current - focusFromZoom.current) * k;
       baseZoom.current = zoom;
       applyCamera(currentLook.current, zoom);
@@ -973,8 +965,7 @@ function CameraRig({
       focusFromLook.current = null;
     }
 
-    // Auto ken-burns drift removed — camera holds the centred default framing.
-    // Always lerp current look back toward the default centre and base zoom toward 1.
+    // Hold the centred default look — user pan offset is applied in applyCamera.
     const [dx, , dz] = projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng);
     toLook.current.set(dx, 0, dz);
     if (state.clock.elapsedTime >= pauseUntil) {
