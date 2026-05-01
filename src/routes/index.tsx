@@ -136,10 +136,10 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[calc(100svh-32px)] flex-col overflow-hidden bg-background pt-[76px] lg:pt-[98px]">
-      <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[98px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
+    <section className="relative flex min-h-[calc(100svh-32px)] flex-col overflow-hidden bg-background pt-[68px] lg:pt-[84px]">
+      <img src={heroUrl} alt="Mad Monkey Hero" className="absolute left-1/2 top-[84px] h-[140px] w-[1280px] max-w-none -translate-x-1/2 object-cover opacity-[0.03]" />
       <div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col justify-center overflow-hidden px-5 pb-[56px] pt-[32px] sm:pt-[40px] lg:px-6 lg:pb-[72px]">
-        <h1 className="hero-title max-w-full font-display text-[clamp(42px,13vw,54px)] font-black uppercase leading-[0.88] tracking-normal sm:text-[clamp(54px,9.2vw,148px)] sm:leading-[0.84]">
+        <h1 className="hero-title max-w-full font-display text-[clamp(42px,13vw,54px)] font-black uppercase leading-[0.88] tracking-normal sm:text-[clamp(50px,8.4vw,128px)] sm:leading-[0.84]">
           <span className="hero-title-mask hero-title-mask-up">
             <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">15 Years Of</span>
           </span>
@@ -147,7 +147,7 @@ function Hero() {
             <span className="hero-title-line hero-title-center-reveal sm:whitespace-nowrap">Mad Monkey</span>
           </span>
         </h1>
-        <p className="hero-copy mt-[40px] max-w-[1060px] text-[clamp(20px,2.3vw,36px)] font-light leading-[1.18] text-muted-foreground lg:mt-[52px]">
+        <p className="hero-copy mt-[36px] max-w-[1000px] text-[clamp(18px,2vw,30px)] font-light leading-[1.2] text-muted-foreground lg:mt-[44px]">
           Founded by backpackers for backpackers, we are Southeast Asia’s market-leading, socially responsible travel platform headquartered in Singapore and operating across Southeast Asia.
         </p>
       </div>
