@@ -381,10 +381,8 @@ function Ocean() {
             float grid = max(gx, gz);
 
             // Pulse every ~6s
-            float pulse = 0.7 + 0.3 * sin(uTime * (6.2831 / 6.0));
-
-            vec3 col = uOcean;
-            col = mix(col, uGrid, grid * 0.08 * pulse);
+            // Steady grid — no pulse on the ocean
+            col = mix(col, uGrid, grid * 0.08);
 
             // Vignette toward edges
             float r = length(vWorldPos.xz) / 45.0;
