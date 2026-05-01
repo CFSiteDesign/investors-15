@@ -1049,26 +1049,7 @@ function Scene({
   const pulseOffsets = useMemo(() => HOSTELS.map(() => Math.random() * Math.PI * 2), []);
   const [checkinTriggers, setCheckinTriggers] = useState<number[]>(() => HOSTELS.map(() => 0));
 
-  // Random check-in dispatcher
-  useEffect(() => {
-    let cancelled = false;
-    const tick = () => {
-      if (cancelled) return;
-      const next = 2000 + Math.random() * 2000;
-      setTimeout(() => {
-        if (cancelled) return;
-        const i = Math.floor(Math.random() * HOSTELS.length);
-        setCheckinTriggers((prev) => {
-          const arr = prev.slice();
-          arr[i] = arr[i] + 1;
-          return arr;
-        });
-        tick();
-      }, next);
-    };
-    tick();
-    return () => { cancelled = true; };
-  }, []);
+  // Random check-in pulses disabled per design feedback
 
   // Fade-in
   const groupRef = useRef<THREE.Group>(null);
