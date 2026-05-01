@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
-import globalNetworkImage from "../assets/mad-monkey-global-network.png";
+
+const MadMonkeyLiveNetwork = lazy(() => import("@/components/MadMonkeyLiveNetwork"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -292,20 +293,9 @@ function Performance() {
             
           </div>
           <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-black sm:mt-8">
-            <img
-              src={globalNetworkImage}
-              alt="Mad Monkey Global Network"
-              loading="lazy"
-              className="block h-auto w-full select-none object-contain"
-            />
-            {mapPins.map((pin, index) => (
-              <span
-                key={`${pin.left}-${pin.top}`}
-                className="map-pin-pulse"
-                style={{ left: pin.left, top: pin.top, animationDelay: `${index * 220}ms` }}
-                aria-hidden="true"
-              />
-            ))}
+            <Suspense fallback={<div style={{ height: "clamp(440px, 70vh, 760px)" }} className="w-full bg-black" />}>
+              <MadMonkeyLiveNetwork />
+            </Suspense>
           </div>
         </Reveal>
       </div>
