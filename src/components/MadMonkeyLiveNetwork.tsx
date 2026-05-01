@@ -886,15 +886,9 @@ function Stars() {
 // ---------------------------------------------------------------------------
 // Camera ken-burns drift
 // ---------------------------------------------------------------------------
-type CameraTarget = { lat: number; lng: number; label: string };
-const REGIONS: CameraTarget[] = [
-  { lat: 13.7563, lng: 100.5018, label: "Thailand" },
-  { lat: 16.0, lng: 107.0, label: "Vietnam" },
-  { lat: 12.5, lng: 122.0, label: "Philippines" },
-  { lat: 11.5, lng: 104.5, label: "Cambodia" },
-  { lat: -8.5, lng: 116.0, label: "Indonesia" },
-  { lat: -33.9, lng: 151.2, label: "Australia" },
-];
+// Default camera centre — sits over the SE Asia network with Australia visible bottom-right
+const DEFAULT_LOOK = { lat: 5, lng: 115 };
+
 
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -910,14 +904,9 @@ function CameraRig({
   onArrive: () => void;
 }) {
   const { camera } = useThree();
-  const idx = useRef(0);
-  const phase = useRef<"hold" | "pan">("hold");
-  const phaseT = useRef(0);
-  const HOLD = 4;
-  const PAN = 4;
-  const fromLook = useRef(new THREE.Vector3(...projectLook(REGIONS[0].lat, REGIONS[0].lng)));
-  const toLook = useRef(new THREE.Vector3(...projectLook(REGIONS[0].lat, REGIONS[0].lng)));
-  const currentLook = useRef(new THREE.Vector3(...projectLook(REGIONS[0].lat, REGIONS[0].lng)));
+  const fromLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
+  const toLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
+  const currentLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
   const focusFromLook = useRef<THREE.Vector3 | null>(null);
   const focusFromZoom = useRef<number>(1);
   const focusT = useRef(0);
