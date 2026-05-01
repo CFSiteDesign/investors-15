@@ -98,20 +98,16 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 }
 
 function Index() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
-
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Header onContactClick={() => setIsContactOpen(true)} />
+      <Header />
       <Hero />
-      <Manifesto onContactClick={() => setIsContactOpen(true)} />
-      <DataInnovation onContactClick={() => setIsContactOpen(true)} />
-      <ReviewTicker />
+      <Manifesto />
+      <DataInnovation />
       <Performance />
-      <Ethical onContactClick={() => setIsContactOpen(true)} />
+      <Ethical />
       <Footer />
-      <EmailBar onContactClick={() => setIsContactOpen(true)} />
-      {isContactOpen ? <ContactModal onClose={() => setIsContactOpen(false)} /> : null}
+      <EmailBar />
     </main>
   );
 }
