@@ -147,7 +147,7 @@ function Hero() {
 
 function Manifesto() {
   return (
-    <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
+    <section className="bg-background pb-[82px] pt-[56px] lg:pb-[88px] lg:pt-[56px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
         <div>
           <h2 className="max-w-[900px] font-display text-[clamp(20px,2.6vw,38px)] normal-case leading-[1.2] tracking-normal text-balance">
