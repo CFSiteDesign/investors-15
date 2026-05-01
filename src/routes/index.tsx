@@ -261,7 +261,7 @@ function Metric({ value, label }: { value: string; label: string }) {
 
 function Performance() {
   return (
-    <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
+    <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[72px]">
       <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em]">Pillar: Scale</p>
