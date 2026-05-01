@@ -404,14 +404,14 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
   );
 }
 
-function Ethical({ onContactClick }: { onContactClick: () => void }) {
+function Ethical() {
   return (
     <section id="ethical" className="bg-background py-[82px] lg:py-[120px]">
       <div className="mx-auto max-w-[1088px] px-5 lg:px-6">
         <Reveal>
           <p className="text-[14px] font-black uppercase tracking-[0.16em] text-muted-foreground">Pillar: Integrity</p>
-          <h2 className="mt-8 max-w-[840px] font-display text-[clamp(36px,7vw,104px)] uppercase leading-[1] text-balance">A Leading Force in Sustainability</h2>
-          <p className="mt-8 max-w-[680px] text-[17px] font-light leading-[1.48] text-muted-foreground lg:text-[22px] lg:leading-[1.35]">Local growth and sustainability are leading forces in all our operations, ensuring we invest back into all communities.</p>
+          <h2 className="mt-8 max-w-[840px] font-display text-[clamp(32px,5.8vw,86px)] uppercase leading-[1.02] text-balance">A Leading Force in Sustainability</h2>
+          <p className="mt-8 max-w-[680px] text-[16px] font-light leading-[1.48] text-muted-foreground lg:text-[20px] lg:leading-[1.35]">Local growth and sustainability are leading forces in all our operations, ensuring we invest back into all communities.</p>
         </Reveal>
         <Reveal delay={120}>
           <div className="mt-14 grid gap-10 sm:grid-cols-2">
@@ -420,7 +420,7 @@ function Ethical({ onContactClick }: { onContactClick: () => void }) {
           </div>
         </Reveal>
         <Reveal delay={180}>
-          <button type="button" onClick={onContactClick} className="mt-12 inline-flex w-full justify-center bg-foreground px-4 py-5 text-center text-[11px] font-black uppercase leading-snug tracking-[0.12em] text-background [overflow-wrap:anywhere] sm:w-auto sm:px-8 sm:text-[14px] sm:tracking-[0.16em]">Contact Founders@madmonkeyhostels.com</button>
+          <a href={foundersMailto} className="mt-12 inline-flex w-full justify-center bg-foreground px-4 py-5 text-center text-[11px] font-black uppercase leading-snug tracking-[0.12em] text-background [overflow-wrap:anywhere] sm:w-auto sm:px-8 sm:text-[13px] sm:tracking-[0.16em]">Contact Founders@madmonkeyhostels.com</a>
         </Reveal>
       </div>
     </section>
