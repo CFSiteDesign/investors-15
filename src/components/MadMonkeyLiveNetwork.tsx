@@ -992,6 +992,7 @@ function Scene({
   setHovered,
   selected,
   setSelected,
+  panRef,
 }: {
   isMobile: boolean;
   onPauseDrift: () => void;
@@ -1002,6 +1003,7 @@ function Scene({
   setHovered: (h: Hostel | null, e?: ThreeEvent<PointerEvent>) => void;
   selected: Hostel | null;
   setSelected: (h: Hostel | null) => void;
+  panRef: React.MutableRefObject<{ x: number; z: number }>;
 }) {
   const monkeyTex = useTexture(monkeyHeadAsset);
   monkeyTex.colorSpace = THREE.SRGBColorSpace;
@@ -1028,7 +1030,7 @@ function Scene({
 
   return (
     <>
-      <CameraRig pauseUntil={pauseUntil} focusTarget={focusTarget} onArrive={onArrive} />
+      <CameraRig pauseUntil={pauseUntil} focusTarget={focusTarget} onArrive={onArrive} panRef={panRef} />
 
       <ambientLight intensity={0.55} color={C.white} />
       <directionalLight
