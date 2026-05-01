@@ -886,15 +886,9 @@ function Stars() {
 // ---------------------------------------------------------------------------
 // Camera ken-burns drift
 // ---------------------------------------------------------------------------
-type CameraTarget = { lat: number; lng: number; label: string };
-const REGIONS: CameraTarget[] = [
-  { lat: 13.7563, lng: 100.5018, label: "Thailand" },
-  { lat: 16.0, lng: 107.0, label: "Vietnam" },
-  { lat: 12.5, lng: 122.0, label: "Philippines" },
-  { lat: 11.5, lng: 104.5, label: "Cambodia" },
-  { lat: -8.5, lng: 116.0, label: "Indonesia" },
-  { lat: -33.9, lng: 151.2, label: "Australia" },
-];
+// Default camera centre — sits over the SE Asia network with Australia visible bottom-right
+const DEFAULT_LOOK = { lat: 5, lng: 115 };
+
 
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -910,14 +904,9 @@ function CameraRig({
   onArrive: () => void;
 }) {
   const { camera } = useThree();
-  const idx = useRef(0);
-  const phase = useRef<"hold" | "pan">("hold");
-  const phaseT = useRef(0);
-  const HOLD = 4;
-  const PAN = 4;
-  const fromLook = useRef(new THREE.Vector3(...projectLook(REGIONS[0].lat, REGIONS[0].lng)));
-  const toLook = useRef(new THREE.Vector3(...projectLook(REGIONS[0].lat, REGIONS[0].lng)));
-  const currentLook = useRef(new THREE.Vector3(...projectLook(REGIONS[0].lat, REGIONS[0].lng)));
+  const fromLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
+  const toLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
+  const currentLook = useRef(new THREE.Vector3(...projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng)));
   const focusFromLook = useRef<THREE.Vector3 | null>(null);
   const focusFromZoom = useRef<number>(1);
   const focusT = useRef(0);
@@ -984,34 +973,14 @@ function CameraRig({
       focusFromLook.current = null;
     }
 
-    const now = state.clock.elapsedTime;
-    if (now < pauseUntil) {
-      // hold position, allow zoom return
-      const z = baseZoom.current + (1 - baseZoom.current) * Math.min(1, delta * 2);
-      baseZoom.current = z;
-      applyCamera(currentLook.current, z);
-      return;
+    // Auto ken-burns drift removed — camera holds the centred default framing.
+    // Always lerp current look back toward the default centre and base zoom toward 1.
+    const [dx, , dz] = projectLook(DEFAULT_LOOK.lat, DEFAULT_LOOK.lng);
+    toLook.current.set(dx, 0, dz);
+    if (state.clock.elapsedTime >= pauseUntil) {
+      currentLook.current.lerp(toLook.current, Math.min(1, delta * 1.2));
     }
-
-    phaseT.current += delta;
-    if (phase.current === "hold") {
-      if (phaseT.current >= HOLD) {
-        phase.current = "pan";
-        phaseT.current = 0;
-        idx.current = (idx.current + 1) % REGIONS.length;
-        fromLook.current.copy(currentLook.current);
-        const [tx, , tz] = projectLook(REGIONS[idx.current].lat, REGIONS[idx.current].lng);
-        toLook.current.set(tx, 0, tz);
-      }
-    } else {
-      const k = easeInOutCubic(Math.min(1, phaseT.current / PAN));
-      currentLook.current.lerpVectors(fromLook.current, toLook.current, k);
-      if (phaseT.current >= PAN) {
-        phase.current = "hold";
-        phaseT.current = 0;
-      }
-    }
-    // Smooth return to base zoom
+    fromLook.current.copy(currentLook.current);
     baseZoom.current += (1 - baseZoom.current) * Math.min(1, delta * 1.5);
     applyCamera(currentLook.current, baseZoom.current);
   });
@@ -1049,26 +1018,7 @@ function Scene({
   const pulseOffsets = useMemo(() => HOSTELS.map(() => Math.random() * Math.PI * 2), []);
   const [checkinTriggers, setCheckinTriggers] = useState<number[]>(() => HOSTELS.map(() => 0));
 
-  // Random check-in dispatcher
-  useEffect(() => {
-    let cancelled = false;
-    const tick = () => {
-      if (cancelled) return;
-      const next = 2000 + Math.random() * 2000;
-      setTimeout(() => {
-        if (cancelled) return;
-        const i = Math.floor(Math.random() * HOSTELS.length);
-        setCheckinTriggers((prev) => {
-          const arr = prev.slice();
-          arr[i] = arr[i] + 1;
-          return arr;
-        });
-        tick();
-      }, next);
-    };
-    tick();
-    return () => { cancelled = true; };
-  }, []);
+  // Random check-in pulses disabled per design feedback
 
   // Fade-in
   const groupRef = useRef<THREE.Group>(null);
