@@ -1112,6 +1112,16 @@ export default function MadMonkeyLiveNetwork() {
   const [mounted, setMounted] = useState(false);
   const lastTimeRef = useRef(0);
 
+  // User pan offset (world units). Updated imperatively from drag handlers.
+  const panRef = useRef<{ x: number; z: number }>({ x: 0, z: 0 });
+  const dragRef = useRef<{ active: boolean; moved: boolean; lastX: number; lastY: number; pointerId: number | null }>({
+    active: false, moved: false, lastX: 0, lastY: 0, pointerId: null,
+  });
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Pixels → world units. Orthographic camera zoom=28 means 1 world unit ≈ 28 px.
+  const PX_PER_UNIT = 28;
+
   useEffect(() => {
     setMounted(true);
     const mq = window.matchMedia("(max-width: 767px)");
@@ -1186,11 +1196,48 @@ export default function MadMonkeyLiveNetwork() {
         opacity: mounted ? 1 : 0,
         transition: "opacity 1.5s cubic-bezier(0.16,1,0.3,1)",
       }}
+      onPointerDown={(e) => {
+        // Ignore clicks that originate on the HUD (which is pointer-events:none anyway)
+        dragRef.current.active = true;
+        dragRef.current.moved = false;
+        dragRef.current.lastX = e.clientX;
+        dragRef.current.lastY = e.clientY;
+        dragRef.current.pointerId = e.pointerId;
+        (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+      }}
       onPointerMove={(e) => {
-        if (!hovered.h) return;
-        const rect = wrapperRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        setHoveredState((s) => ({ ...s, x: e.clientX - rect.left, y: e.clientY - rect.top }));
+        // Hover card position
+        if (hovered.h) {
+          const rect = wrapperRef.current?.getBoundingClientRect();
+          if (rect) setHoveredState((s) => ({ ...s, x: e.clientX - rect.left, y: e.clientY - rect.top }));
+        }
+        if (!dragRef.current.active) return;
+        const dx = e.clientX - dragRef.current.lastX;
+        const dy = e.clientY - dragRef.current.lastY;
+        dragRef.current.lastX = e.clientX;
+        dragRef.current.lastY = e.clientY;
+        if (Math.abs(dx) + Math.abs(dy) > 2) dragRef.current.moved = true;
+        if (dragRef.current.moved && !isDragging) setIsDragging(true);
+        // Drag right → world moves right under the cursor → camera target moves left.
+        panRef.current.x -= dx / PX_PER_UNIT;
+        panRef.current.z -= dy / PX_PER_UNIT;
+        // Cancel any active focus & pause auto-recenter while dragging
+        if (focusTarget) setFocusTarget(null);
+        setPauseUntil(lastTimeRef.current + 999999); // effectively keep manual pan
+      }}
+      onPointerUp={(e) => {
+        const wasDrag = dragRef.current.moved;
+        dragRef.current.active = false;
+        if (dragRef.current.pointerId !== null) {
+          try { (e.currentTarget as HTMLDivElement).releasePointerCapture(dragRef.current.pointerId); } catch { /* noop */ }
+          dragRef.current.pointerId = null;
+        }
+        if (wasDrag) setIsDragging(false);
+      }}
+      onPointerCancel={() => {
+        dragRef.current.active = false;
+        dragRef.current.moved = false;
+        setIsDragging(false);
       }}
     >
       <Canvas
@@ -1200,6 +1247,7 @@ export default function MadMonkeyLiveNetwork() {
         onCreated={({ gl }) => {
           gl.setClearColor(new THREE.Color("#0A0426"));
         }}
+        style={{ cursor: isDragging ? "grabbing" : "grab", touchAction: "none" }}
       >
         <OrthographicCamera makeDefault position={[0, 18, 22]} zoom={28} near={0.1} far={200} />
         <Suspense fallback={null}>
@@ -1211,13 +1259,20 @@ export default function MadMonkeyLiveNetwork() {
             onArrive={() => { /* keep focus until user clicks outside */ }}
             hoveredId={hovered.h?.id ?? null}
             setHovered={(h, e) => {
+              // Suppress hover state while actively dragging
+              if (dragRef.current.active && dragRef.current.moved) return;
               const rect = wrapperRef.current?.getBoundingClientRect();
               const x = e && rect ? (e.nativeEvent as PointerEvent).clientX - rect.left : hovered.x;
               const y = e && rect ? (e.nativeEvent as PointerEvent).clientY - rect.top : hovered.y;
               setHoveredState({ h, x, y });
             }}
             selected={selected}
-            setSelected={handleSelect}
+            setSelected={(h) => {
+              // Don't treat a drag-release as a click
+              if (dragRef.current.moved) return;
+              handleSelect(h);
+            }}
+            panRef={panRef}
           />
         </Suspense>
       </Canvas>
