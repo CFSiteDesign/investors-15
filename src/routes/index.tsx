@@ -268,23 +268,6 @@ function Metric({ value, label }: { value: string; label: string }) {
   );
 }
 
-function ReviewTicker() {
-  return (
-    <section className="overflow-hidden border-y border-border bg-background py-8">
-      <div className="flex w-max animate-ticker gap-5">
-        {[...reviews, ...reviews, ...reviews].map(([brand, type, quote, rating], index) => (
-          <article key={`${brand}-${index}`} className="w-[360px] shrink-0 border border-border bg-background p-5">
-            <p className="text-[12px] font-black uppercase tracking-[0.16em] text-muted-foreground">{brand}</p>
-            <p className="mt-1 text-[12px] font-black uppercase tracking-[0.16em]">{type}</p>
-            <p className="mt-5 text-[17px] font-semibold leading-snug">"{quote}"</p>
-            <p className="mt-5 font-display text-[44px] leading-none">{rating}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function Performance() {
   return (
     <section id="secure" className="bg-secondary py-[74px] text-secondary-foreground lg:py-[96px]">
