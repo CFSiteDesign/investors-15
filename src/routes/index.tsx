@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
-import globalNetworkImage from "../assets/mad-monkey-global-network.png";
+
+const MadMonkeyGlobe = lazy(() => import("@/components/MadMonkeyGlobe"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
