@@ -155,21 +155,21 @@ function Hero() {
   );
 }
 
-function Manifesto({ onContactClick }: { onContactClick: () => void }) {
+function Manifesto() {
   return (
     <section className="bg-background pb-[82px] pt-[56px] lg:pb-[116px] lg:pt-[72px]">
       <div className="mx-auto max-w-[1420px] px-5 lg:px-6">
         <div>
-          <h2 className="max-w-[900px] font-display text-[clamp(22px,3.2vw,46px)] uppercase leading-[1.12] tracking-normal text-balance">
+          <h2 className="max-w-[900px] font-display text-[clamp(20px,2.6vw,38px)] normal-case leading-[1.2] tracking-normal text-balance">
             While Southeast Asia is among the world's fastest-growing travel markets, it remains highly fragmented and underserved by branded operators.
             <span className="block text-muted-foreground">Mad Monkey provides a proven, scalable model for adventure-led hospitality across the region.</span>
           </h2>
         </div>
         <div className="mt-[36px] max-w-[760px] lg:mt-[52px]">
-          <div className="space-y-6 text-[16px] font-light leading-[1.7] text-muted-foreground lg:text-[18px]">
+          <div className="space-y-6 text-[15px] font-light leading-[1.7] text-muted-foreground lg:text-[17px]">
             <p>We’re seeking strategic investment partnerships who strongly value unit level profitability since inception, and are passionate about making a difference.</p>
           </div>
-          <button type="button" onClick={onContactClick} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[13px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[18px]">Get in Touch</button>
+          <a href={foundersMailto} className="mt-7 inline-flex border border-foreground px-6 py-4 text-[12px] font-black uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-8 lg:py-5 lg:text-[16px]">Get in Touch</a>
         </div>
       </div>
     </section>
