@@ -347,6 +347,13 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
     if (title === "Guests Per Month") return Math.round(value * 1000).toLocaleString();
     return Math.round(value * 1000).toLocaleString();
   };
+  const visibleXLabels = title === "Loyalty Members"
+    ? [
+        { label: "Jan 25", index: 0, anchor: "start" },
+        { label: "Jul", index: 6, anchor: "middle" },
+        { label: "Jan 26", index: 12, anchor: "middle" },
+      ]
+    : xLabels.map((label, index) => ({ label, index, anchor: "middle" }));
 
   return (
     <article ref={ref} className={`chart-reveal-card border border-border bg-background px-7 py-6 text-foreground ${hasEntered ? "chart-reveal-card-in" : ""} ${wide ? "lg:col-span-2" : ""}`}>
@@ -399,8 +406,8 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
             <text x={Math.min(hovered.x + 20, 370)} y={Math.max(hovered.y - 8, 108)} className="fill-foreground text-[13px] font-black">value : {formatValue(hovered.value)}</text>
           </g>
         ) : null}
-        {xLabels.map((label, index) => (
-          <text key={`${label}-${index}`} x={58 + (index / (xLabels.length - 1)) * 392} y="330" className="fill-muted-foreground text-[12px] font-bold" textAnchor="middle">{label}</text>
+        {visibleXLabels.map(({ label, index, anchor }) => (
+          <text key={`${label}-${index}`} x={58 + (index / (xLabels.length - 1)) * 392} y="330" className="fill-muted-foreground text-[10px] font-bold sm:text-[12px]" textAnchor={anchor}>{label}</text>
         ))}
       </svg>
     </article>
