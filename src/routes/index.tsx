@@ -240,7 +240,7 @@ function LoyaltyChart() {
         </div>
         <span className="grid size-[32px] shrink-0 place-items-center rounded-full bg-muted/25 text-muted-foreground" aria-hidden="true">⌁</span>
       </div>
-      <svg viewBox="0 0 480 330" className="mt-[22px] h-[285px] w-full overflow-visible" role="img" aria-label="Loyalty members cumulative growth line chart">
+      <svg viewBox="0 0 480 360" className="mt-[22px] h-[315px] w-full overflow-visible" role="img" aria-label="Loyalty members cumulative growth line chart">
         <defs>
           <linearGradient id="loyaltyFill" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stopColor="var(--color-graph-purple)" stopOpacity="0.72" />
@@ -251,7 +251,7 @@ function LoyaltyChart() {
           <line key={y} x1="55" x2="445" y1={y} y2={y} className="stroke-border/50" strokeDasharray="3 4" />
         ))}
         {['55k', '41k', '28k', '14k', '0k'].map((label, index) => (
-          <text key={label} x="26" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
+          <text key={label} x="20" y={84 + index * 62.5} className="fill-muted-foreground text-[12px] font-bold">{label}</text>
         ))}
         <polygon points={area} fill="url(#loyaltyFill)" />
         <polyline points={line} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
@@ -260,10 +260,10 @@ function LoyaltyChart() {
           const isAnchor = index === 0 || index === 12 || index === loyalty.length - 1;
           return (
             <g key={`${label}-${index}`}>
-              {/* Mobile: only Jan 25, Jan 26, Mar */}
-              <text x={x} y="354" className="fill-muted-foreground text-[11px] font-bold sm:hidden" textAnchor="middle" opacity={isAnchor ? 1 : 0}>{label}</text>
-              {/* Desktop: every label */}
-              <text x={x} y="354" className="hidden fill-muted-foreground text-[11px] font-bold sm:block" textAnchor="middle">{label}</text>
+              {/* Compact: only Jan 25, Jan 26, Mar */}
+              <text x={x} y="356" className="fill-muted-foreground text-[11px] font-bold lg:hidden" textAnchor="middle" opacity={isAnchor ? 1 : 0}>{label}</text>
+              {/* Wide: every label */}
+              <text x={x} y="356" className="hidden fill-muted-foreground text-[11px] font-bold lg:block" textAnchor="middle">{label}</text>
             </g>
           );
         })}
