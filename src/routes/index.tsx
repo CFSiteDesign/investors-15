@@ -275,20 +275,6 @@ function Performance() {
 
 
 
-        <Reveal delay={160} className="mt-14 lg:mt-20">
-          <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-[12px] font-black uppercase tracking-[0.18em] opacity-70">Global Footprint</p>
-              <h3 className="mt-3 max-w-[640px] font-display text-[clamp(22px,3.4vw,40px)] uppercase leading-[1.05] text-balance">Our Network Across Asia & Beyond</h3>
-            </div>
-            
-          </div>
-          <div className="relative mt-6 overflow-hidden border border-secondary-foreground/20 bg-black sm:mt-8">
-            <Suspense fallback={<div style={{ height: "clamp(440px, 70vh, 760px)" }} className="w-full bg-black" />}>
-              <MadMonkeyLiveNetwork />
-            </Suspense>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
