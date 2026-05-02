@@ -120,7 +120,7 @@ function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
       <div className="flex h-[68px] w-full items-center justify-between gap-5 px-5 lg:h-[84px] lg:gap-8">
-        <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
+        <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3 lg:ml-12 xl:ml-24">
           <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[28px] w-auto object-contain lg:h-[46px]" />
         </a>
         <div className="flex items-center gap-6 lg:gap-8">
