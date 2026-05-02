@@ -97,9 +97,19 @@ function Index() {
 
 function LiveNetwork() {
   return (
-    <section aria-label="Live Network — South East Asia" className="relative w-full bg-[#0d0628]">
-      <div className="mx-auto max-w-[1400px] px-0 sm:px-4 lg:px-6">
-        <div className="relative w-full overflow-hidden border-y border-[#2A1B5C] sm:rounded-xl sm:border" style={{ height: "min(80vh, 720px)" }}>
+    <section aria-label="Live Network — South East Asia" className="relative w-full bg-background py-[60px] sm:py-[88px]">
+      <div className="mx-auto max-w-[1184px] px-5 lg:px-6">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-[11px] font-black uppercase tracking-[0.22em] text-muted-foreground">Live Network</p>
+          <h2 className="mt-2 font-display text-[clamp(28px,6vw,48px)] font-black uppercase leading-[0.95]">South East Asia Footprint</h2>
+          <p className="mt-3 max-w-[640px] text-[14px] font-light leading-[1.5] text-muted-foreground sm:text-[16px]">
+            Real-time view of the Mad Monkey operation — every property, route and traveller in motion across the region.
+          </p>
+        </div>
+        <div
+          className="relative w-full overflow-hidden rounded-xl border border-[#2A1B5C] bg-[#0d0628]"
+          style={{ height: "clamp(420px, 60vh, 560px)" }}
+        >
           <LiveNetworkEmbed />
         </div>
       </div>
