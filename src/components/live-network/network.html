@@ -2019,8 +2019,8 @@ function animate(now) {
     line.material.color.lerp(active ? _COL_CYAN : _COL_BLUE, 0.18 * dtN);
   });
 
-  // ---- hover raycast (skip when pointer is idle/away and nothing selected) ----
-  const pointerActive = pointerOverCanvas && (now - lastPointerMoveAt < 250);
+  // ---- hover raycast (run while pointer is over the canvas, even if idle) ----
+  const pointerActive = pointerOverCanvas;
   if (pointerActive) {
     raycaster.setFromCamera(pointer, camera);
     const focusedCountry = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
