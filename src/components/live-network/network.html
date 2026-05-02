@@ -1745,7 +1745,11 @@ function deselect() {
   camState.pauseUntil = performance.now() + 1500;
 }
 btnClose.addEventListener('click', deselect);
-document.getElementById('btn-view').addEventListener('click', deselect);
+document.getElementById('btn-view').addEventListener('click', () => {
+  if (selectedIdx === -1) return;
+  const url = HOSTELS[selectedIdx].url;
+  if (url) window.open(url, '_blank', 'noopener,noreferrer');
+});
 
 // any pointer down counts as "interaction" pause
 canvas.addEventListener('pointerdown', () => {
