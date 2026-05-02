@@ -314,8 +314,12 @@
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
   }
 
-  .premium-metric:hover {
-    transform: translate3d(0, -6px, 0);
+  /* Only apply lift on devices that actually support hover (i.e. not touch).
+     Prevents the metric card from "sticking" up after a tap on mobile. */
+  @media (hover: hover) {
+    .premium-metric:hover {
+      transform: translate3d(0, -6px, 0);
+    }
   }
 
   .hero-title { transform: scaleX(1.04); transform-origin: left top; width: min-content; }
