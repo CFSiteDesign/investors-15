@@ -1846,7 +1846,7 @@ function animate(now) {
       camState.zoom = camState.toZoom;
       camState.tweening = false;
     } else {
-      const e = easeInOutCubic(t);
+      const e = easeInOutQuint(t);
       camState.lookAt.lerpVectors(camState.fromLookAt, camState.toLookAt, e);
       camState.zoom = camState.fromZoom + (camState.toZoom - camState.fromZoom) * e;
     }
