@@ -1832,9 +1832,8 @@ function animate(now) {
     nextKenBurns();
   }
 
-  // ---- ocean grid pulse ----
-  const gridPulse = 0.06 + 0.04 * (Math.sin(now * 0.001) * 0.5 + 0.5);
-  gridMat.opacity = gridPulse;
+  // ---- ocean grid (steady, no pulse per request) ----
+  gridMat.opacity = 0.08;
 
   // ---- node pulses + hover lift ----
   hostelMeshes.forEach((g, i) => {
