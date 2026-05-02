@@ -1695,7 +1695,7 @@ function selectHostel(idx) {
   const lookX = cx * 0.7 + h.pos.x * 0.3;
   const lookZ = cz * 0.7 + h.pos.z * 0.3;
 
-  startCameraTween(lookX, lookZ, zoom, 1200);
+  startCameraTween(lookX, lookZ, zoom, 1600);
   camState.holdUntil = performance.now() + 1200 + 999999;
 
   // Fan out close-by sibling pins so none overlap when zoomed in.
