@@ -1744,6 +1744,10 @@ canvas.addEventListener('touchmove', (e) => {
       camState.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pinch.startZoom * ratio));
       setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
     }
+  } else if (e.touches.length === 1) {
+    // Single-finger drag: stop the browser from scrolling the parent page
+    // while the user is panning the map.
+    e.preventDefault();
   }
 }, { passive: false });
 canvas.addEventListener('touchend', (e) => {
