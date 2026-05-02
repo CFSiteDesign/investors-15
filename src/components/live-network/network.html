@@ -366,21 +366,20 @@
 
   /* mobile */
   @media (max-width: 768px) {
-    .hud-tl, .hud-tr {
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      right: 16px;
-      width: auto;
-      max-width: none;
-    }
-    .hud-tr { top: auto; bottom: 16px; right: 16px; left: auto; width: calc(100% - 32px); }
+    .hud-tl { top: 10px; left: 10px; max-width: 160px; }
+    .hud-tr { top: 10px; right: 10px; left: auto; bottom: auto; width: 150px; }
+    .hud-tr .glass { padding: 8px 10px; }
     .hud-bl, .hud-br { display: none; }
-    .wordmark .wm-1, .wordmark .wm-2 { font-size: 24px; }
-    .tagline-sub { font-size: 10px; }
+    .wordmark .wm-1, .wordmark .wm-2 { font-size: 15px; }
+    .tagline-sub { display: none; }
+    .panel-rows { font-size: 10px; line-height: 1.55; }
+    .panel-rows .row .k { font-size: 8px; }
+    .panel-rows .row .v .delta { display: none; }
+    .status-line { display: none; }
+    .panel-rule { margin: 6px 0; }
     .detail {
       grid-template-columns: 1fr;
-      bottom: 100px;
+      bottom: 16px;
     }
     .detail .img-slot { aspect-ratio: 16/9; }
   }
