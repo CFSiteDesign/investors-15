@@ -1740,7 +1740,7 @@ function deselect() {
   detailEl.classList.remove('show');
   resetFanOut();
   // Zoom back out to match the initial framing
-  startCameraTween(0, 0, 0.7, 1100);
+  startCameraTween(2, 2, 0.7, 1100);
   camState.holdUntil = performance.now() + 1100;
   camState.pauseUntil = performance.now() + 1500;
 }
