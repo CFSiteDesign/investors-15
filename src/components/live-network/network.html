@@ -1807,11 +1807,21 @@ for (let i = 0; i < SEED_COUNT; i++) {
   if (tr) tr.progress = Math.random() * 0.8;
 }
 
-// Visibility pause
+// Visibility pause + focus the iframe window when visible so the parent
+// browser doesn't throttle requestAnimationFrame (which causes low FPS until
+// the user clicks).
 const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { running = e.isIntersecting; });
+  entries.forEach(e => {
+    running = e.isIntersecting;
+    if (e.isIntersecting) {
+      try { window.focus(); } catch (_) {}
+    }
+  });
 });
 io.observe(canvas);
+// Also try focusing once on load + on first pointer enter.
+window.addEventListener('load', () => { try { window.focus(); } catch (_) {} });
+window.addEventListener('pointerenter', () => { try { window.focus(); } catch (_) {} });
 
 function animate(now) {
   requestAnimationFrame(animate);
