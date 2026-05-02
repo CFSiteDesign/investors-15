@@ -461,11 +461,7 @@
       <div class="d-country" id="d-country">country</div>
       <div class="d-name" id="d-name">Hostel name</div>
       <div class="d-tag" id="d-tag">tagline placeholder</div>
-      <div class="d-stats">
-        <div>occupancy<span class="v" id="d-occ">87%</span></div>
-        <div>beds<span class="v" id="d-beds">120</span></div>
-        <div>opened<span class="v" id="d-opened">2014</span></div>
-      </div>
+      <div class="d-stats" style="display:none"></div>
       <div class="d-actions">
         <button class="btn btn-primary" id="btn-view">view hostel</button>
         <button class="btn btn-ghost" id="btn-close">close</button>
@@ -1539,9 +1535,7 @@ const detailEl = document.getElementById('detail');
 const dCountry = document.getElementById('d-country');
 const dName = document.getElementById('d-name');
 const dTag = document.getElementById('d-tag');
-const dOcc = document.getElementById('d-occ');
-const dBeds = document.getElementById('d-beds');
-const dOpened = document.getElementById('d-opened');
+// occupancy/beds/opened removed from card
 const btnClose = document.getElementById('btn-close');
 
 function updateHoverCard(e) {
@@ -1672,9 +1666,6 @@ function selectHostel(idx) {
   dCountry.textContent = h.country;
   dName.textContent = h.name;
   dTag.textContent = h.tagline;
-  dOcc.textContent = `${75 + (idx * 7) % 24}%`;
-  dBeds.textContent = `${60 + (idx * 13) % 120}`;
-  dOpened.textContent = 2010 + (idx * 3) % 14;
   detailEl.classList.add('show');
 
   // Frame the entire country cluster so sibling pins stay visible.
