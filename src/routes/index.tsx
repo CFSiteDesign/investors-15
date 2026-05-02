@@ -258,18 +258,14 @@ function LoyaltyChart() {
         {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26', 'Feb', 'Mar'].map((label, index) => {
           const x = 55 + (index / (loyalty.length - 1)) * 390;
           const lastIdx = loyalty.length - 1;
-          // Compact view: show Jan 25 (start), Jul (mid), Mar 26 (end) — well-spaced
           const compactAnchor = index === 0 || index === 6 || index === lastIdx;
           const compactLabel = index === lastIdx ? 'Mar 26' : label;
           const compactAnchorAttr = index === 0 ? 'start' : index === lastIdx ? 'end' : 'middle';
           return (
             <g key={`${label}-${index}`}>
-              {/* Compact: only 3 well-spaced labels */}
               {compactAnchor && (
-                <text x={x} y="356" className="fill-muted-foreground text-[11px] font-bold lg:hidden" textAnchor={compactAnchorAttr}>{compactLabel}</text>
+                <text x={x} y="356" className="fill-muted-foreground text-[10px] font-bold sm:text-[11px]" textAnchor={compactAnchorAttr}>{compactLabel}</text>
               )}
-              {/* Wide: every label */}
-              <text x={x} y="356" className="hidden fill-muted-foreground text-[11px] font-bold lg:block" textAnchor="middle">{label}</text>
             </g>
           );
         })}
