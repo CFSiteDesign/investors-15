@@ -1729,6 +1729,16 @@ function selectHostel(idx) {
   dCountry.textContent = h.country;
   dName.textContent = h.name;
   dTag.textContent = h.tagline;
+  // Hostel image: use provided h.image, else search Unsplash for "<name> <country>"
+  if (dImg) {
+    dImg.classList.remove('loaded');
+    const query = encodeURIComponent(`${h.name} ${h.country}`);
+    const src = h.image || `https://source.unsplash.com/600x600/?${query},travel`;
+    dImg.alt = `${h.name}, ${h.country}`;
+    dImg.onload = () => dImg.classList.add('loaded');
+    dImg.onerror = () => dImg.classList.remove('loaded');
+    dImg.src = src;
+  }
   detailEl.classList.add('show');
 
   // Frame the entire country cluster so sibling pins stay visible.
