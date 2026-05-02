@@ -1,11 +1,9 @@
-import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
-
-const MadMonkeyLiveNetwork = lazy(() => import("@/components/MadMonkeyLiveNetwork"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
