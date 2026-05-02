@@ -210,12 +210,12 @@ function LoyaltyChart() {
 
   return (
     <article ref={ref} className="relative h-full min-h-[408px] overflow-hidden bg-background px-[30px] py-[28px] text-foreground">
-      <div className="flex items-start justify-between">
-        <div>
-          <h3 className="text-[21px] font-black uppercase leading-none tracking-normal">LOYALTY MEMBERS</h3>
-          <p className="mt-[9px] text-[12px] font-black uppercase leading-none tracking-[0.22em] text-muted-foreground">CUMULATIVE GROWTH 2025-26</p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-[18px] font-black uppercase leading-[1.05] tracking-normal sm:text-[21px]">LOYALTY MEMBERS</h3>
+          <p className="mt-[10px] text-[10px] font-black uppercase leading-[1.4] tracking-[0.18em] text-muted-foreground sm:mt-[9px] sm:text-[12px] sm:leading-none sm:tracking-[0.22em]">CUMULATIVE GROWTH 2025-26</p>
         </div>
-        <span className="grid size-[32px] place-items-center rounded-full bg-muted/25 text-muted-foreground" aria-hidden="true">⌁</span>
+        <span className="grid size-[32px] shrink-0 place-items-center rounded-full bg-muted/25 text-muted-foreground" aria-hidden="true">⌁</span>
       </div>
       <svg viewBox="0 0 480 330" className="mt-[22px] h-[285px] w-full overflow-visible" role="img" aria-label="Loyalty members cumulative growth line chart">
         <defs>
