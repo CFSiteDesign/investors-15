@@ -1,0 +1,2033 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Live Network · Hostel Investor View</title>
+
+<!--
+  ============================================================================
+  CLIENT ASSET / CONTENT SWAP LIST
+  ============================================================================
+  Replace the following placeholders with production assets when ready:
+
+  1.  MASCOT SPRITE      -> assets/mascot.png
+      Currently a black-and-white placeholder mascot. Swap with the
+      production brand mascot (recommended: 512x512 PNG, transparent bg).
+
+  2.  HOSTEL TAGLINES    -> see HOSTELS array below, `tagline` field.
+      All taglines are placeholder copy; replace with real hostel one-liners.
+
+  3.  HOSTEL DETAIL IMG  -> see DetailPanel component, `imageSlot` div.
+      Currently a striped SVG placeholder. Wire up `hostel.image` to a real
+      photo URL per location.
+
+  4.  WORDMARK           -> top-left HUD .wm-line elements. Currently a
+      neutral text wordmark for review purposes. Swap copy / drop in SVG
+      logo here when finalised.
+
+  5.  GUEST COUNTER      -> seeded at 1,234,567. Pull live number from API
+      if available; otherwise the increment loop is fine for the hero.
+
+  6.  COUNTRY / CITY DATA -> HOSTELS array below holds canonical lat/lng for
+      every location. Add or remove rows as the network grows.
+
+  ============================================================================
+  PORTING NOTES (for the React + TS + R3F engineer)
+  ============================================================================
+  - This preview uses Three.js + React via UMD/Babel so it runs as a single
+    HTML file. Component boundaries mirror what you'd ship in R3F:
+       <Globe>            = <Canvas> + <Scene>
+       <Landmass>         = extruded GeoJSON country meshes
+       <HostelNode>       = ring + beam + sprite group
+       <TravellerFlow>    = instanced spheres on bezier curves
+       <CheckinPulses>    = expanding ring meshes
+       <NetworkMesh>      = persistent BufferGeometry lines
+       <AmbientParticles> = Points geometry
+       <KenBurnsCamera>   = camera tween controller
+       <HUD>              = absolute-positioned glass panels
+  - Replace the `simulatedBloom` emissive trick with
+    @react-three/postprocessing <EffectComposer><Bloom/></EffectComposer> if
+    targeting WebGL2 only.
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --c-bg:        #0d0628;
+    --c-deep:      #2A1B5C;
+    --c-mid:       #4A3A8C;
+    --c-light:     #5A4A9C;
+    --c-blue:      #6FB3E8;
+    --c-cyan:      #7DF9FF;
+    --c-green:     #4ADE80;
+    --c-white:     #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--c-bg);
+    color: var(--c-white);
+    font-family: 'Fredoka', system-ui, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #stage {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 50%, #1a0f3d 0%, #07041a 70%, #000 100%);
+    opacity: 0;
+    transition: opacity 1.5s ease-out;
+  }
+  #stage.ready { opacity: 1; }
+  #three-canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+  #three-canvas.hover-node { cursor: pointer; }
+
+  /* vignette */
+  #vignette {
+    position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 90%, #000 100%);
+    z-index: 5;
+  }
+
+  /* ---------- HUD ---------- */
+  .hud {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .hud > * { pointer-events: auto; }
+
+  /* top-left wordmark */
+  .hud-tl {
+    top: 24px; left: 24px;
+    max-width: 320px;
+  }
+  .wordmark {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    color: var(--c-white);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+  }
+  .wordmark .wm-line { display: block; }
+  .wordmark .wm-1 { font-size: 32px; opacity: 0.95; }
+  .wordmark .wm-2 { font-size: 32px; opacity: 0.7; font-weight: 500; }
+  .tagline-sub {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.55);
+    text-transform: lowercase;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+
+  /* top-right status panel */
+  .hud-tr {
+    top: 24px; right: 24px;
+    width: 320px;
+  }
+  .glass {
+    background: rgba(20, 10, 50, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(111, 179, 232, 0.3);
+    border-radius: 12px;
+    padding: 18px 20px;
+    color: var(--c-white);
+  }
+  .panel-head {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-white);
+  }
+  .panel-head .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--c-green);
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--c-green);
+    box-shadow: 0 0 8px var(--c-green);
+    animation: pulse-dot 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.8); }
+  }
+  .panel-rule {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(111,179,232,0.5), rgba(111,179,232,0.05));
+    margin: 12px 0;
+  }
+  .panel-rows {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .panel-rows .row {
+    display: flex; justify-content: space-between; gap: 12px;
+    color: rgba(255,255,255,0.85);
+  }
+  .panel-rows .row .k { color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .panel-rows .row .v { color: var(--c-white); font-weight: 700; }
+  .panel-rows .row .v .delta { color: var(--c-cyan); margin-left: 6px; font-weight: 500; font-size: 11px; }
+  .status-line {
+    margin-top: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .status-line .ok { color: var(--c-green); display: inline-flex; align-items: center; gap: 6px; }
+
+  /* bottom-left legend */
+  .hud-bl {
+    bottom: 24px; left: 24px;
+    width: 240px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    margin: 6px 0;
+  }
+  .legend-swatch {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex: 0 0 10px;
+  }
+
+  /* bottom-right hint */
+  .hud-br {
+    bottom: 24px; right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ---------- hostel hover card ---------- */
+  .hover-card {
+    position: fixed;
+    z-index: 20;
+    pointer-events: none;
+    min-width: 220px;
+    max-width: 260px;
+    transform: translate(16px, 16px);
+    background: rgba(20, 10, 50, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(125, 249, 255, 0.4);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--c-white);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 24px rgba(125,249,255,0.18);
+    opacity: 0;
+    transition: opacity 0.18s ease-out;
+  }
+  .hover-card.show { opacity: 1; }
+  .hover-card .hc-country {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-cyan);
+  }
+  .hover-card .hc-name {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin: 4px 0 6px;
+    line-height: 1.15;
+  }
+  .hover-card .hc-tag {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+  }
+
+  /* ---------- detail panel (on click) ---------- */
+  .detail {
+    position: fixed;
+    z-index: 30;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 24px);
+    width: min(720px, calc(100vw - 48px));
+    background: rgba(20, 10, 50, 0.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(111, 179, 232, 0.4);
+    border-radius: 14px;
+    padding: 18px;
+    color: var(--c-white);
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 18px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .detail.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+  }
+  .detail .img-slot {
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(111,179,232,0.18) 0 8px,
+        rgba(111,179,232,0.05) 8px 16px),
+      linear-gradient(180deg, var(--c-deep), #1a0f3d);
+    border: 1px solid rgba(111,179,232,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+  .detail .d-country {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--c-cyan);
+    text-transform: uppercase;
+  }
+  .detail .d-name {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.05;
+    margin: 6px 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .detail .d-tag {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .detail .d-stats {
+    display: flex; gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+  }
+  .detail .d-stats .v { color: var(--c-white); font-weight: 700; font-size: 14px; display: block; margin-top: 2px; }
+  .d-actions { display: flex; gap: 10px; }
+  .btn {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.18s ease;
+  }
+  .btn-primary {
+    background: var(--c-blue);
+    color: #0a0625;
+  }
+  .btn-primary:hover { background: var(--c-cyan); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border-color: rgba(255,255,255,0.18);
+  }
+  .btn-ghost:hover { color: var(--c-white); border-color: rgba(255,255,255,0.4); }
+
+  /* mobile */
+  @media (max-width: 768px) {
+    .hud-tl, .hud-tr {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      width: auto;
+      max-width: none;
+    }
+    .hud-tr { top: auto; bottom: 16px; right: 16px; left: auto; width: calc(100% - 32px); }
+    .hud-bl, .hud-br { display: none; }
+    .wordmark .wm-1, .wordmark .wm-2 { font-size: 24px; }
+    .tagline-sub { font-size: 10px; }
+    .detail {
+      grid-template-columns: 1fr;
+      bottom: 100px;
+    }
+    .detail .img-slot { aspect-ratio: 16/9; }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="three-canvas"></canvas>
+  <div id="vignette"></div>
+
+  <!-- HUD: top-left wordmark -->
+  <div class="hud hud-tl">
+    <div class="wordmark">
+      <span class="wm-line wm-1">live network</span>
+      <span class="wm-line wm-2">south east asia</span>
+    </div>
+    <div class="tagline-sub">real-time view of our south east asia operation</div>
+  </div>
+
+  <!-- HUD: top-right status -->
+  <div class="hud hud-tr">
+    <div class="glass">
+      <div class="panel-head">
+        <span>network · live</span>
+        <span class="live"><span class="live-dot"></span>online</span>
+      </div>
+      <div class="panel-rule"></div>
+      <div class="panel-rows">
+        <div class="row"><span class="k">hostels</span><span class="v" id="stat-hostels">23</span></div>
+        <div class="row"><span class="k">countries</span><span class="v">7</span></div>
+        <div class="row"><span class="k">guests since 2010</span><span class="v" id="stat-guests">1,234,567<span class="delta" id="stat-delta">+0</span></span></div>
+        <div class="row"><span class="k">travellers in motion</span><span class="v" id="stat-active">0</span></div>
+      </div>
+      <div class="panel-rule"></div>
+      <div class="status-line">
+        <span>status</span>
+        <span class="ok"><span class="live-dot"></span>active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUD: bottom-left legend -->
+  <div class="hud hud-bl">
+    <div class="legend-item">
+      <span class="legend-swatch" style="background:#7DF9FF; box-shadow:0 0 8px #7DF9FF;"></span>
+      traveller in transit
+    </div>
+  </div>
+
+  <!-- HUD: bottom-right hint -->
+  <div class="hud hud-br">
+    hover · click to focus<br/>
+    drag to pan
+  </div>
+
+  <!-- Hover card -->
+  <div class="hover-card" id="hover-card">
+    <div class="hc-country" id="hc-country">country</div>
+    <div class="hc-name" id="hc-name">Hostel name</div>
+    <div class="hc-tag" id="hc-tag">tagline placeholder</div>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="detail" id="detail">
+    <div class="img-slot">replace · hostel photo</div>
+    <div>
+      <div class="d-country" id="d-country">country</div>
+      <div class="d-name" id="d-name">Hostel name</div>
+      <div class="d-tag" id="d-tag">tagline placeholder</div>
+      <div class="d-stats">
+        <div>occupancy<span class="v" id="d-occ">87%</span></div>
+        <div>beds<span class="v" id="d-beds">120</span></div>
+        <div>opened<span class="v" id="d-opened">2014</span></div>
+      </div>
+      <div class="d-actions">
+        <button class="btn btn-primary" id="btn-view">view hostel</button>
+        <button class="btn btn-ghost" id="btn-close">close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THREE.js (UMD) -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script src="country-rings.js"></script>
+
+<script>
+/* =========================================================================
+   DATA
+   ========================================================================= */
+
+const PALETTE = {
+  bg:    0x0d0628,
+  ocean: 0x2A1B5C,
+  land:  0x4A3A8C,
+  landTop: 0x5A4A9C,
+  blue:  0x6FB3E8,
+  cyan:  0x7DF9FF,
+  green: 0x4ADE80,
+  white: 0xFFFFFF,
+};
+
+const HOSTELS = [
+  // Thailand
+  { id: 'bkk',  name: 'Bangkok',     country: 'Thailand',    lat: 13.7563, lng: 100.5018, tagline: 'the heartbeat of khao san road' },
+  { id: 'cmx',  name: 'Chiang Mai',  country: 'Thailand',    lat: 18.7883, lng:  98.9853, tagline: 'old town gateway to the north' },
+  { id: 'pai',  name: 'Pai',         country: 'Thailand',    lat: 19.20, lng:  99.40, tagline: 'mountain detour, slow river days' },
+  { id: 'hkt',  name: 'Phuket',      country: 'Thailand',    lat:  7.8804, lng:  98.3923, tagline: 'andaman coast base camp' },
+  // Laos
+  { id: 'lpq',  name: 'Luang Prabang', country: 'Laos',      lat: 19.8845, lng: 102.1348, tagline: 'mekong mornings, temple nights' },
+  { id: 'vvg',  name: 'Vang Vieng',  country: 'Laos',        lat: 18.9226, lng: 102.4496, tagline: 'limestone karsts and tubing days' },
+  // Vietnam
+  { id: 'han',  name: 'Hanoi',       country: 'Vietnam',     lat: 21.0285, lng: 105.8542, tagline: 'old quarter, motorbike chorus' },
+  { id: 'hoi',  name: 'Hoi An',      country: 'Vietnam',     lat: 15.8801, lng: 108.3380, tagline: 'lantern lit riverside town' },
+  { id: 'hgi',  name: 'Ha Giang',    country: 'Vietnam',     lat: 22.8233, lng: 104.9836, tagline: 'the loop starts here' },
+  // Cambodia
+  { id: 'pnh',  name: 'Phnom Penh',  country: 'Cambodia',    lat: 11.5564, lng: 104.9282, tagline: 'riverside capital crossroads' },
+  { id: 'rep',  name: 'Siem Reap',   country: 'Cambodia',    lat: 13.3671, lng: 103.8448, tagline: 'temple city basecamp' },
+  { id: 'krg',  name: 'Koh Rong',    country: 'Cambodia',    lat: 10.7167, lng: 103.2333, tagline: 'island time, plankton nights' },
+  { id: 'ksd',  name: 'Koh Sdach',   country: 'Cambodia',    lat: 11.2333, lng: 102.9333, tagline: 'untouched archipelago hideout' },
+  { id: 'kmt',  name: 'Kampot',      country: 'Cambodia',    lat: 10.6104, lng: 104.1810, tagline: 'pepper farms and lazy rivers' },
+  // Philippines
+  { id: 'nac',  name: 'Nacpan',      country: 'Philippines', lat: 11.2333, lng: 119.4167, tagline: 'four kilometre beach paradise' },
+  { id: 'iao',  name: 'Siargao',     country: 'Philippines', lat:  9.8482, lng: 126.0458, tagline: 'cloud nine, surf at dawn' },
+  { id: 'pgl',  name: 'Panglao',     country: 'Philippines', lat:  9.5786, lng: 123.7569, tagline: 'whale sharks and white sand' },
+  { id: 'dgt',  name: 'Dumaguete',   country: 'Philippines', lat:  9.3068, lng: 123.3054, tagline: 'university town, dive coast' },
+  { id: 'sqj',  name: 'Siquijor',    country: 'Philippines', lat:  9.1989, lng: 123.5950, tagline: 'mystic island shores' },
+  { id: 'mnl',  name: 'Manila',      country: 'Philippines', lat: 14.5995, lng: 120.9842, tagline: 'archipelago gateway' },
+  // Indonesia
+  { id: 'gil',  name: 'Gili T',      country: 'Indonesia',   lat: -8.3500, lng: 116.0400, tagline: 'no cars, all sunsets' },
+  { id: 'klb',  name: 'Kuta Lombok', country: 'Indonesia',   lat: -8.8950, lng: 116.2750, tagline: 'south coast surf bay' },
+  { id: 'nls',  name: 'Lembongan',   country: 'Indonesia',   lat: -8.6814, lng: 115.4500, tagline: 'mangrove channels, reef breaks' },
+  { id: 'ulu',  name: 'Uluwatu',     country: 'Indonesia',   lat: -8.8290, lng: 115.0848, tagline: 'cliffside line-up since dawn' },
+  // Australia
+  { id: 'syd',  name: 'Coogee',      country: 'Australia',   lat: -33.9205, lng: 151.2577, tagline: 'sunrise swims and salt air' },
+];
+
+// Primary backpacker trails (by id pair, weighted spawn frequency)
+const TRAILS = [
+  ['bkk','cmx', 3], ['cmx','pai', 3], ['bkk','rep', 2], ['rep','pnh', 2],
+  ['pnh','hoi', 1], ['han','hoi', 3], ['vvg','lpq', 3], ['mnl','iao', 2],
+  ['pgl','iao', 2], ['gil','klb', 3], ['bkk','hkt', 2], ['rep','han', 1],
+  ['pgl','dgt', 1], ['nls','ulu', 2], ['kmt','krg', 1], ['pnh','rep', 2],
+  ['hgi','han', 2], ['lpq','vvg', 2], ['gil','ulu', 1], ['syd','gil', 1],
+  ['syd','iao', 1], ['mnl','pgl', 1], ['cmx','lpq', 1], ['pgl','sqj', 1],
+];
+
+// Country anchors (for backbone lines)
+const ANCHORS = ['bkk','vvg','han','pnh','mnl','gil','syd'];
+
+/* =========================================================================
+   COORD CONVERSION
+   - Project lat/lng to scene XZ space.
+   - Centre the map roughly on SE Asia (~ lng 110, lat 10).
+   ========================================================================= */
+const SCENE = {
+  centerLng: 110,
+  centerLat: 10,
+  // 1 deg ≈ 0.55 units → tweak till framing feels right
+  scaleX: 0.55,
+  scaleZ: 0.65,
+};
+function project(lat, lng) {
+  // X: east-west, Z: north-south (Z negative = north)
+  const x = (lng - SCENE.centerLng) * SCENE.scaleX;
+  const z = -(lat - SCENE.centerLat) * SCENE.scaleZ;
+  return [x, z];
+}
+HOSTELS.forEach(h => {
+  const [x, z] = project(h.lat, h.lng);
+  h.pos = new THREE.Vector3(x, 0.3, z);
+  h.displayOffset = { x: 0, z: 0 };
+  h.bodyLeanX = 0;
+  h.bodyLiftY = 0;
+  h.tipOrbit = 0;
+});
+
+// Spread tightly-clustered same-country pins apart by nudging h.pos itself.
+// (User accepts a small geographic shift in exchange for readability.)
+{
+  const MIN = 1.15; // world units between pin centres
+  const ITERS = 40;
+  // Group by country
+  const byCountry = {};
+  HOSTELS.forEach((h, i) => { (byCountry[h.country] ||= []).push(i); });
+  Object.values(byCountry).forEach(idxs => {
+    if (idxs.length < 2) return;
+    for (let it = 0; it < ITERS; it++) {
+      let moved = false;
+      for (let a = 0; a < idxs.length; a++) {
+        for (let b = a + 1; b < idxs.length; b++) {
+          const A = HOSTELS[idxs[a]].pos, B = HOSTELS[idxs[b]].pos;
+          let dx = B.x - A.x, dz = B.z - A.z;
+          let d = Math.hypot(dx, dz);
+          if (d < 0.001) { dx = (Math.random() - 0.5); dz = (Math.random() - 0.5); d = Math.hypot(dx, dz); }
+          if (d < MIN) {
+            const push = (MIN - d) * 0.5;
+            const nx = dx / d, nz = dz / d;
+            A.x -= nx * push; A.z -= nz * push;
+            B.x += nx * push; B.z += nz * push;
+            moved = true;
+          }
+        }
+      }
+      if (!moved) break;
+    }
+  });
+}
+
+/* =========================================================================
+   THREE SETUP
+   ========================================================================= */
+const canvas = document.getElementById('three-canvas');
+const renderer = new THREE.WebGLRenderer({
+  canvas, antialias: true, alpha: true,
+  powerPreference: 'high-performance',
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x07041a, 30, 90);
+
+const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 200);
+// 55° off vertical, top-down-ish
+const CAM_ANGLE = THREE.MathUtils.degToRad(55);
+const CAM_DIST  = 32;
+camera.position.set(
+  Math.sin(CAM_ANGLE) * 0,            // start centred on x
+  Math.cos(CAM_ANGLE) * CAM_DIST,
+  Math.sin(CAM_ANGLE) * CAM_DIST + 6  // slight tilt toward +z (south)
+);
+camera.lookAt(0, 0, 0);
+
+// Forward declaration — `camState` is initialised later. Resize() runs at
+// script start before that, so we guard with this flag instead of `typeof`
+// (which still throws TDZ for let/const declarations).
+let _camStateReady = false;
+
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  if (_camStateReady) {
+    setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
+  }
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* =========================================================================
+   LIGHTING
+   ========================================================================= */
+scene.add(new THREE.AmbientLight(0x6e5cb8, 0.7));
+
+const keyLight = new THREE.DirectionalLight(0xb9c8ff, 1.1);
+keyLight.position.set(-15, 25, -15);
+scene.add(keyLight);
+
+const rimLight = new THREE.DirectionalLight(0x6FB3E8, 0.45);
+rimLight.position.set(20, 8, 18);
+scene.add(rimLight);
+
+/* =========================================================================
+   OCEAN PLANE + GRID
+   ========================================================================= */
+const oceanGeo = new THREE.PlaneGeometry(200, 200);
+const oceanMat = new THREE.MeshStandardMaterial({
+  color: PALETTE.ocean,
+  roughness: 0.95,
+  metalness: 0.0,
+  emissive: 0x140a3a,
+  emissiveIntensity: 0.4,
+});
+const ocean = new THREE.Mesh(oceanGeo, oceanMat);
+ocean.rotation.x = -Math.PI / 2;
+ocean.position.y = 0;
+scene.add(ocean);
+
+// Lat/long grid as transparent line segments
+const gridGroup = new THREE.Group();
+gridGroup.position.y = 0.005;
+scene.add(gridGroup);
+
+const gridMat = new THREE.LineBasicMaterial({
+  color: PALETTE.blue, transparent: true, opacity: 0.08,
+  blending: THREE.AdditiveBlending,
+});
+{
+  const pts = [];
+  const range = 90, step = 3;
+  for (let x = -range; x <= range; x += step) {
+    pts.push(new THREE.Vector3(x, 0, -range), new THREE.Vector3(x, 0, range));
+  }
+  for (let z = -range; z <= range; z += step) {
+    pts.push(new THREE.Vector3(-range, 0, z), new THREE.Vector3(range, 0, z));
+  }
+  const g = new THREE.BufferGeometry().setFromPoints(pts);
+  const lines = new THREE.LineSegments(g, gridMat);
+  gridGroup.add(lines);
+}
+
+/* =========================================================================
+   LANDMASSES
+   - We don't have GeoJSON loaded; we approximate each country with a
+     polygon of lat/lng points and extrude to ~0.3 units. This gives the
+     same low-poly silhouette the spec calls for, with a fast load.
+   ========================================================================= */
+
+// Real country borders loaded from country-rings.js (Natural Earth 110m,
+// extracted via world-atlas@2 and Douglas-Peucker simplified).
+// COUNTRY_RINGS is { CountryName: [ ring, ring, ... ] }, each ring an
+// array of [lng, lat] pairs (closed loop).
+const COUNTRY_RINGS = window.COUNTRY_RINGS || {};
+
+const landGroup = new THREE.Group();
+scene.add(landGroup);
+
+function buildLandmass(polyLngLat) {
+  // Convert to scene coords
+  const shape = new THREE.Shape();
+  polyLngLat.forEach(([lng, lat], i) => {
+    const [x, z] = project(lat, lng);
+    if (i === 0) shape.moveTo(x, -z);  // shape is in 2D xy; we'll rotate
+    else shape.lineTo(x, -z);
+  });
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.3,
+    bevelEnabled: true,
+    bevelThickness: 0.05,
+    bevelSize: 0.04,
+    bevelSegments: 1,
+    steps: 1,
+  });
+  geo.rotateX(-Math.PI / 2);
+  geo.translate(0, 0.005, 0);
+
+  // Two materials: side (mid purple) + top (lighter)
+  const sideMat = new THREE.MeshStandardMaterial({
+    color: PALETTE.land, roughness: 0.85, metalness: 0.05,
+    emissive: 0x1a1248, emissiveIntensity: 0.25,
+  });
+  const topMat = new THREE.MeshStandardMaterial({
+    color: PALETTE.landTop, roughness: 0.7, metalness: 0.05,
+    emissive: 0x251a5c, emissiveIntensity: 0.3,
+  });
+  // Apply per-face material via groups — ExtrudeGeometry has front (top) at index 0
+  // and side at index 1 by default. We'll just merge with multi-material.
+  const mesh = new THREE.Mesh(geo, [topMat, sideMat]);
+  // ExtrudeGeometry by default gives one group covering all; split manually:
+  // Easier: use single material that has slight variation. Keep multi by adding groups.
+  // We'll just use topMat - the lighting + emissive gives us depth.
+  mesh.material = topMat;
+
+  // Add a slightly inset "side" below to fake darker sides
+  const sideGeo = geo.clone();
+  const sideMesh = new THREE.Mesh(sideGeo, sideMat);
+  sideMesh.scale.set(1.0, 0.99, 1.0);
+  sideMesh.position.y = -0.005;
+
+  const group = new THREE.Group();
+  group.add(sideMesh);
+  group.add(mesh);
+
+  // Subtle outline (top edge) for that contour-line texture
+  const edges = new THREE.EdgesGeometry(geo, 30);
+  const edgeMat = new THREE.LineBasicMaterial({
+    color: PALETTE.blue, transparent: true, opacity: 0.18,
+    blending: THREE.AdditiveBlending,
+  });
+  const edgeLines = new THREE.LineSegments(edges, edgeMat);
+  edgeLines.position.y = 0.001;
+  group.add(edgeLines);
+
+  return group;
+}
+
+Object.values(COUNTRY_RINGS).forEach(rings => {
+  rings.forEach(ring => {
+    try {
+      landGroup.add(buildLandmass(ring));
+    } catch (e) {
+      console.warn('country build failed', e);
+    }
+  });
+});
+
+/* =========================================================================
+   COUNTRY LABELS (3D sprites)
+   ========================================================================= */
+function makeTextSprite(text, opts = {}) {
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 128;
+  const ctx = c.getContext('2d');
+  ctx.font = `${opts.weight || 800} ${opts.size || 56}px 'Fredoka', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // Soft dark halo so the label reads on light land + dark water alike
+  ctx.shadowColor = 'rgba(8,30,66,0.85)';
+  ctx.shadowBlur = 14;
+  ctx.fillStyle = opts.color || 'rgba(255,255,255,0.95)';
+  ctx.fillText(text.toLowerCase(), 256, 64);
+  // Second pass — crisp letterforms on top of the halo
+  ctx.shadowBlur = 0;
+  ctx.fillText(text.toLowerCase(), 256, 64);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: opts.opacity ?? 0.85, depthWrite: false });
+  const s = new THREE.Sprite(mat);
+  s.scale.set(opts.scale || 4, (opts.scale || 4) * 0.25, 1);
+  return s;
+}
+
+const COUNTRY_LABELS = [
+  { name: 'thailand',    lat: 15.5, lng: 101 },
+  { name: 'laos',        lat: 19.5, lng: 103.5 },
+  { name: 'vietnam',     lat: 18,   lng: 106.5 },
+  { name: 'cambodia',    lat: 12.5, lng: 105 },
+  { name: 'philippines', lat: 12,   lng: 122.5 },
+  { name: 'indonesia',   lat: -3,   lng: 117 },
+  { name: 'australia',   lat: -25,  lng: 134 },
+  { name: 'malaysia',    lat: 3.5,  lng: 102 },
+  { name: 'myanmar',     lat: 20,   lng: 96 },
+];
+const labelSprites = [];
+COUNTRY_LABELS.forEach(c => {
+  const s = makeTextSprite(c.name, { size: 64, opacity: 0.85, scale: 5.2 });
+  const [x, z] = project(c.lat, c.lng);
+  s.position.set(x, 0.6, z);
+  scene.add(s);
+  labelSprites.push(s);
+});
+
+/* =========================================================================
+   HOSTEL NODES
+   ========================================================================= */
+const nodeGroup = new THREE.Group();
+scene.add(nodeGroup);
+
+// Beam shader-ish: gradient via vertex colors
+function makeBeam() {
+  const h = 2;
+  const geo = new THREE.CylinderGeometry(0.05, 0.05, h, 12, 1, true);
+  // Vertex colors top→bottom
+  const colors = [];
+  const pos = geo.attributes.position;
+  const baseCol = new THREE.Color(PALETTE.blue);
+  const tipCol  = new THREE.Color(PALETTE.cyan);
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i); // -h/2..h/2
+    const t = (y + h / 2) / h; // 0 at base, 1 at top
+    const c = baseCol.clone().lerp(tipCol, t * 0.4);
+    colors.push(c.r, c.g, c.b);
+  }
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+  const mat = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    uniforms: {
+      uIntensity: { value: 1.0 },
+    },
+    vertexShader: `
+      varying float vT;
+      varying vec3  vC;
+      attribute vec3 color;
+      void main() {
+        vT = (position.y + 1.0) / 2.0;
+        vC = color;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying float vT;
+      varying vec3  vC;
+      uniform float uIntensity;
+      void main() {
+        float a = pow(1.0 - vT, 1.6) * uIntensity;
+        gl_FragColor = vec4(vC * (1.0 + uIntensity * 0.3), a);
+      }
+    `,
+  });
+
+  const m = new THREE.Mesh(geo, mat);
+  m.position.y = 1.0;  // base of beam at y=0
+  return m;
+}
+
+// Mascot sprite
+const mascotTex = new THREE.TextureLoader().load('assets/mascot.png');
+mascotTex.colorSpace = THREE.SRGBColorSpace;
+
+function makeMascotPinSprite() {
+  // Build a canvas: blue pin (teardrop) with mascot head filling the circle.
+  // We use a single sprite so the pin always faces the camera.
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 320;
+  const ctx = c.getContext('2d');
+
+  // Pin geometry (in canvas px)
+  const cx = 128, cy = 120;       // head centre
+  const r = 96;                   // head radius
+  const tipY = 296;               // tip y
+
+  // ---- shadow ----
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.beginPath();
+  ctx.ellipse(cx, tipY + 6, 36, 8, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // ---- pin body path (head + tail) ----
+  function pinPath() {
+    // tangent angle from head centre to tip
+    const dx = 0, dy = tipY - cy;
+    const dist = Math.hypot(dx, dy);
+    const sinA = r / dist;
+    const cosA = Math.sqrt(1 - sinA * sinA);
+    // tangent points on circle (left/right)
+    const tLx = cx - r * cosA;
+    const tLy = cy + r * sinA;
+    const tRx = cx + r * cosA;
+    const tRy = cy + r * sinA;
+
+    ctx.beginPath();
+    // arc across the top (the head), going from right tangent CCW around the top to left tangent
+    ctx.arc(cx, cy, r, Math.atan2(tRy - cy, tRx - cx), Math.atan2(tLy - cy, tLx - cx), false);
+    // line to tip
+    ctx.lineTo(cx, tipY);
+    ctx.closePath();
+  }
+
+  // outer pin: blue gradient
+  const grad = ctx.createLinearGradient(cx, cy - r, cx, tipY);
+  grad.addColorStop(0, '#9FD4FF');
+  grad.addColorStop(0.45, '#6FB3E8');
+  grad.addColorStop(1, '#3E7FB8');
+  ctx.fillStyle = grad;
+  pinPath();
+  ctx.fill();
+
+  // outer stroke (cyan glow edge)
+  ctx.lineWidth = 6;
+  ctx.strokeStyle = 'rgba(125,249,255,0.85)';
+  ctx.shadowColor = 'rgba(125,249,255,0.9)';
+  ctx.shadowBlur = 18;
+  pinPath();
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // ---- inner white circle (cradle for mascot head) ----
+  const innerR = r - 12;
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fill();
+
+  // subtle inner ring
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(42,27,92,0.25)';
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // ---- mascot image clipped to inner circle ----
+  if (mascotImg && mascotImg.complete && mascotImg.naturalWidth) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerR - 2, 0, Math.PI * 2);
+    ctx.clip();
+    // fit-cover the mascot
+    const size = (innerR - 2) * 2 * 1.05;
+    ctx.drawImage(mascotImg, cx - size / 2, cy - size / 2 + 4, size, size);
+    ctx.restore();
+  }
+
+  // ---- highlight gloss on pin ----
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx - r * 0.35, cy - r * 0.4, r * 0.42, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
+  ctx.fill();
+  ctx.restore();
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  const mat = new THREE.SpriteMaterial({
+    map: tex, transparent: true, depthWrite: false, depthTest: true,
+  });
+  const s = new THREE.Sprite(mat);
+  // Anchor at tip (bottom centre): default sprite centre is (0.5,0.5).
+  // Move so the tip sits at the node origin; we'll place node group y=0.
+  s.center.set(0.5, 0.05); // tip ≈ at sprite y = 0.075 in UV (canvas tipY=296/320 = 0.925 from top → 0.075 from bottom)
+  s.scale.set(1.10, 1.36, 1);
+  return s;
+}
+
+// Pre-load mascot raster so we can composite into pin canvas
+let mascotImg = new Image();
+mascotImg.crossOrigin = 'anonymous';
+mascotImg.src = 'assets/mascot.png';
+
+// Pre-built texture cache (one per node — but they're all identical, so share one)
+let _sharedPinTexture = null;
+function getPinSprite() {
+  if (!_sharedPinTexture) {
+    return makeMascotPinSprite(); // first call builds the canvas+texture
+  }
+  // subsequent: reuse the texture but make a fresh sprite material
+  const mat = new THREE.SpriteMaterial({
+    map: _sharedPinTexture, transparent: true, depthWrite: false,
+  });
+  const s = new THREE.Sprite(mat);
+  s.center.set(0.5, 0.05);
+  s.scale.set(1.10, 1.36, 1);
+  return s;
+}
+
+// Rebuild pin texture once mascot finishes loading (so it isn't blank on first paint)
+mascotImg.onload = () => {
+  hostelMeshes.forEach(g => {
+    const old = g.userData.parts.pin;
+    if (!old) return;
+    const fresh = makeMascotPinSprite();
+    fresh.position.copy(old.position);
+    fresh.center.copy(old.center);
+    const parent = old.parent || g.userData.parts.visual || g;
+    parent.add(fresh);
+    parent.remove(old);
+    g.userData.parts.pin = fresh;
+    old.material.map?.dispose();
+    old.material.dispose();
+  });
+};
+
+// Ring (base ring)
+function makeBaseRing() {
+  const geo = new THREE.RingGeometry(0.16, 0.22, 32);
+  const mat = new THREE.MeshBasicMaterial({
+    color: PALETTE.blue,
+    transparent: true,
+    opacity: 0.85,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const m = new THREE.Mesh(geo, mat);
+  m.rotation.x = -Math.PI / 2;
+  m.position.y = 0.32;
+  return m;
+}
+// Solid disc under the ring for a glow halo
+function makeBaseHalo() {
+  const geo = new THREE.CircleGeometry(0.32, 32);
+  const mat = new THREE.MeshBasicMaterial({
+    color: PALETTE.blue,
+    transparent: true,
+    opacity: 0.18,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  });
+  const m = new THREE.Mesh(geo, mat);
+  m.rotation.x = -Math.PI / 2;
+  m.position.y = 0.31;
+  return m;
+}
+
+const hostelMeshes = [];
+HOSTELS.forEach((h, i) => {
+  // Outer group stays at the TRUE hostel coordinate (never moves on fan-out).
+  // Inner `visual` group holds the visible parts and gets offset on fan-out
+  // so the pin tip can lean toward the hostel via a leader line.
+  const g = new THREE.Group();
+  g.position.copy(h.pos);
+  g.userData = { hostel: h, index: i };
+
+  const visual = new THREE.Group();
+  g.add(visual);
+
+  // Anchor dot at true location (tiny disc on the ground)
+  const anchorGeo = new THREE.CircleGeometry(0.07, 16);
+  const anchorMat = new THREE.MeshBasicMaterial({
+    color: PALETTE.cyan, transparent: true, opacity: 0.0,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const anchor = new THREE.Mesh(anchorGeo, anchorMat);
+  anchor.rotation.x = -Math.PI / 2;
+  anchor.position.y = 0.02;
+  g.add(anchor);
+
+  // Leader line from anchor up to pin tip (only visible when fanned)
+  const leaderGeo = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,0)
+  ]);
+  const leaderMat = new THREE.LineBasicMaterial({
+    color: PALETTE.cyan, transparent: true, opacity: 0,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const leader = new THREE.Line(leaderGeo, leaderMat);
+  g.add(leader);
+
+  const halo = makeBaseHalo();
+  const ring = makeBaseRing();
+  const beam = makeBeam();
+  beam.visible = false; // beam removed per design — keep object for compatibility
+  const pin = getPinSprite();
+  pin.position.y = 0.32; // tip sits just above the ring
+
+  // Hover hit target (invisible, larger sphere for picking).
+  const hitGeo = new THREE.SphereGeometry(0.55, 8, 8);
+  const hit = new THREE.Mesh(hitGeo, new THREE.MeshBasicMaterial({ visible: false }));
+  hit.position.set(0, 0.6, 0);
+  hit.userData.isHostelHit = true;
+  hit.userData.hostelIndex = i;
+
+  visual.add(halo); visual.add(ring); visual.add(beam); visual.add(pin); visual.add(hit);
+
+  g.userData.parts = { halo, ring, beam, pin, hit, visual, anchor, leader };
+  g.userData.basePulsePhase = Math.random() * Math.PI * 2;
+
+  nodeGroup.add(g);
+  hostelMeshes.push(g);
+});
+
+/* =========================================================================
+   PERSISTENT NETWORK MESH
+   - Each hostel connects to its 4 nearest neighbours.
+   - Plus backbone lines between country anchors.
+   ========================================================================= */
+function buildBezierPoints(a, b, peakBoost = 0) {
+  const dist = a.distanceTo(b);
+  const peak = Math.min(0.4 + dist * 0.05 + peakBoost, 2.0);
+  const mid = a.clone().add(b).multiplyScalar(0.5);
+  mid.y = peak;
+  const pts = [];
+  const steps = 40;
+  const v0 = a.clone(); v0.y = 0.4;
+  const v2 = b.clone(); v2.y = 0.4;
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const omt = 1 - t;
+    const p = new THREE.Vector3()
+      .addScaledVector(v0, omt * omt)
+      .addScaledVector(mid, 2 * omt * t)
+      .addScaledVector(v2, t * t);
+    pts.push(p);
+  }
+  return { pts, mid, peak };
+}
+
+function buildArcLine(a, b, color, opacity, peakBoost = 0) {
+  const { pts } = buildBezierPoints(a, b, peakBoost);
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  const mat = new THREE.LineBasicMaterial({
+    color, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  return new THREE.Line(geo, mat);
+}
+
+const meshLineGroup = new THREE.Group();
+scene.add(meshLineGroup);
+
+// 4 nearest neighbours
+const neighborSet = new Set();
+HOSTELS.forEach((h, i) => {
+  const dists = HOSTELS
+    .map((o, j) => ({ j, d: h.pos.distanceTo(o.pos) }))
+    .filter(x => x.j !== i)
+    .sort((a, b) => a.d - b.d)
+    .slice(0, 4);
+  dists.forEach(({ j }) => {
+    const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+    if (!neighborSet.has(key)) {
+      neighborSet.add(key);
+      const line = buildArcLine(h.pos, HOSTELS[j].pos, PALETTE.blue, 0.13);
+      line.userData.pair = [i, j];
+      meshLineGroup.add(line);
+    }
+  });
+});
+
+// Country anchor backbone
+const anchorIds = ANCHORS.map(id => HOSTELS.findIndex(h => h.id === id));
+for (let i = 0; i < anchorIds.length; i++) {
+  for (let j = i + 1; j < anchorIds.length; j++) {
+    const a = HOSTELS[anchorIds[i]].pos;
+    const b = HOSTELS[anchorIds[j]].pos;
+    const line = buildArcLine(a, b, PALETTE.blue, 0.18, 0.4);
+    line.userData.backbone = true;
+    meshLineGroup.add(line);
+  }
+}
+
+/* =========================================================================
+   TRAVELLER FLOW
+   ========================================================================= */
+const travellerGroup = new THREE.Group();
+scene.add(travellerGroup);
+
+const travellers = [];
+
+// Build a list of valid edges (matches the persistent mesh lines).
+const VALID_EDGES = []; // array of [aIdx, bIdx, weight]
+{
+  // 1) Weighted backpacker trails
+  TRAILS.forEach(([a, b, w]) => {
+    const ai = HOSTELS.findIndex(h => h.id === a);
+    const bi = HOSTELS.findIndex(h => h.id === b);
+    if (ai >= 0 && bi >= 0) VALID_EDGES.push([ai, bi, w * 3]);
+  });
+  // 2) 4-nearest neighbour edges (mirror the mesh build)
+  const seen = new Set();
+  HOSTELS.forEach((h, i) => {
+    const dists = HOSTELS
+      .map((o, j) => ({ j, d: h.pos.distanceTo(o.pos) }))
+      .filter(x => x.j !== i)
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 4);
+    dists.forEach(({ j }) => {
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (!seen.has(key)) { seen.add(key); VALID_EDGES.push([i, j, 1]); }
+    });
+  });
+
+  // 3) Cross-country long-haul lanes — weight the country-anchor backbone
+  //    heavily so the globe feels like a connected international operation.
+  //    These edges are already drawn as visible mesh lines, so travellers
+  //    still ride only what the user can see.
+  const anchorIds = ANCHORS.map(id => HOSTELS.findIndex(h => h.id === id));
+  for (let i = 0; i < anchorIds.length; i++) {
+    for (let j = i + 1; j < anchorIds.length; j++) {
+      VALID_EDGES.push([anchorIds[i], anchorIds[j], 6]);
+    }
+  }
+}
+
+function spawnTraveller() {
+  // Weighted random pick from VALID_EDGES so travellers only ride visible lines.
+  let total = 0;
+  for (const e of VALID_EDGES) total += e[2];
+  let r = Math.random() * total;
+  let pick = VALID_EDGES[0];
+  for (const e of VALID_EDGES) { r -= e[2]; if (r <= 0) { pick = e; break; } }
+
+  let aIdx = pick[0], bIdx = pick[1];
+  if (Math.random() < 0.5) [aIdx, bIdx] = [bIdx, aIdx];
+
+  const { pts } = buildBezierPoints(HOSTELS[aIdx].pos, HOSTELS[bIdx].pos);
+
+  // Dot
+  const dotGeo = new THREE.SphereGeometry(0.08, 12, 12);
+  const dotMat = new THREE.MeshBasicMaterial({
+    color: PALETTE.cyan,
+    transparent: true,
+    opacity: 1,
+    blending: THREE.AdditiveBlending,
+  });
+  const dot = new THREE.Mesh(dotGeo, dotMat);
+
+  // Glow halo around the dot
+  const glowMat = new THREE.SpriteMaterial({
+    map: dotGlowTex,
+    color: PALETTE.cyan,
+    transparent: true,
+    opacity: 0.9,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+  const glow = new THREE.Sprite(glowMat);
+  glow.scale.set(0.4, 0.4, 1);
+  dot.add(glow);
+
+  // Trail line
+  const trailLen = 12;
+  const trailGeo = new THREE.BufferGeometry();
+  const trailPos = new Float32Array(trailLen * 3);
+  trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+  const colors = new Float32Array(trailLen * 3);
+  const opacities = new Float32Array(trailLen);
+  for (let i = 0; i < trailLen; i++) {
+    const t = i / (trailLen - 1);
+    colors[i * 3 + 0] = 0.49;
+    colors[i * 3 + 1] = 0.98;
+    colors[i * 3 + 2] = 1.0;
+    opacities[i] = 1 - t;
+  }
+  trailGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  const trailMat = new THREE.LineBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const trail = new THREE.Line(trailGeo, trailMat);
+
+  travellerGroup.add(dot);
+  travellerGroup.add(trail);
+
+  travellers.push({
+    pts, dot, trail, trailLen, trailHistory: [],
+    progress: 0,
+    // Speed scales by arc length so short hops aren't instant and long
+    // crossings don't drag. Aim for ~6–14s per trip regardless of distance.
+    speed: (1 / (60 * (6 + Math.random() * 8))),
+    aIdx, bIdx,
+    age: 0,
+  });
+}
+
+// Glow texture for dots
+function makeRadialGlow() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.3, 'rgba(125,249,255,0.8)');
+  g.addColorStop(1, 'rgba(125,249,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 128, 128);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+const dotGlowTex = makeRadialGlow();
+
+/* =========================================================================
+   CHECK-IN PULSES + FLOATING +N TEXT
+   ========================================================================= */
+const pulseGroup = new THREE.Group();
+scene.add(pulseGroup);
+const pulses = [];
+
+function makePulseRing() {
+  const geo = new THREE.RingGeometry(0.18, 0.22, 48);
+  const mat = new THREE.MeshBasicMaterial({
+    color: PALETTE.cyan,
+    transparent: true,
+    opacity: 0.9,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const m = new THREE.Mesh(geo, mat);
+  m.rotation.x = -Math.PI / 2;
+  return m;
+}
+
+function makePlusLabel(n) {
+  const c = document.createElement('canvas');
+  c.width = 128; c.height = 64;
+  const ctx = c.getContext('2d');
+  ctx.font = '700 36px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(125,249,255,1)';
+  ctx.shadowColor = 'rgba(125,249,255,0.8)';
+  ctx.shadowBlur = 12;
+  ctx.fillText(`+${n}`, 64, 32);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+  const s = new THREE.Sprite(mat);
+  s.scale.set(0.7, 0.35, 1);
+  return s;
+}
+
+function triggerCheckin(idx) {
+  const h = HOSTELS[idx];
+  const ring = makePulseRing();
+  ring.position.copy(h.pos);
+  ring.position.y = 0.32;
+  pulseGroup.add(ring);
+
+  const n = [1,1,1,2,3,5][Math.floor(Math.random() * 6)];
+  const label = makePlusLabel(n);
+  label.position.copy(h.pos);
+  label.position.y = 1.0;
+  pulseGroup.add(label);
+
+  pulses.push({ ring, label, age: 0, life: 1.5 });
+}
+
+/* =========================================================================
+   AMBIENT PARTICLES + STARS
+   ========================================================================= */
+function makeParticles() {
+  const N = 200;
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(N * 3);
+  const opacities = new Float32Array(N);
+  const speeds = new Float32Array(N * 2);
+  for (let i = 0; i < N; i++) {
+    positions[i * 3 + 0] = (Math.random() - 0.5) * 80;
+    positions[i * 3 + 1] = 0.05 + Math.random() * 0.4;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 80;
+    opacities[i] = 0.1 + Math.random() * 0.3;
+    speeds[i * 2 + 0] = (Math.random() - 0.5) * 0.003;
+    speeds[i * 2 + 1] = (Math.random() - 0.5) * 0.003;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('aOpacity', new THREE.BufferAttribute(opacities, 1));
+  const mat = new THREE.PointsMaterial({
+    size: 0.05, color: 0xffffff, transparent: true, opacity: 0.4,
+    depthWrite: false, blending: THREE.AdditiveBlending,
+    sizeAttenuation: true,
+  });
+  const pts = new THREE.Points(geo, mat);
+  pts.userData.speeds = speeds;
+  return pts;
+}
+const ambient = makeParticles();
+scene.add(ambient);
+
+function makeStars() {
+  const N = 350;
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    const r = 60 + Math.random() * 40;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI * 0.4 + Math.PI * 0.05;
+    positions[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.cos(phi);
+    positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({
+    size: 0.18, color: 0xffffff, transparent: true, opacity: 0.5,
+    depthWrite: false, blending: THREE.AdditiveBlending,
+    sizeAttenuation: true,
+  });
+  return new THREE.Points(geo, mat);
+}
+scene.add(makeStars());
+
+/* =========================================================================
+   KEN BURNS CAMERA + INTERACTIONS
+   ========================================================================= */
+const KEN_TARGETS = [
+  // [x, z], represents where camera looks
+  { name: 'thailand',    target: project(15, 101) },
+  { name: 'vietnam',     target: project(18, 106) },
+  { name: 'philippines', target: project(11, 122) },
+  { name: 'cambodia',    target: project(12, 105) },
+  { name: 'indonesia',   target: project(-5, 116) },
+  { name: 'australia',   target: project(-30, 148) },
+];
+let kenIdx = 0;
+
+const camState = {
+  // current look-at point
+  lookAt: new THREE.Vector3(0, 0, 0),
+  // tween
+  tweening: false,
+  fromLookAt: new THREE.Vector3(),
+  toLookAt: new THREE.Vector3(),
+  fromZoom: 1,
+  toZoom: 1,
+  zoom: 1,            // distance multiplier (1 = default)
+  tStart: 0,
+  tDur: 4000,
+  // hold
+  holdUntil: 0,
+  // pause for user
+  pauseUntil: 0,
+  // entry fade
+  introT: 0,
+};
+
+function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+function easeOutQuart(t)   { return 1 - Math.pow(1 - t, 4); }
+
+function setCamera(lookAtX, lookAtZ, zoom) {
+  // Viewport-fit: the map is roughly 28 units wide. We want it to comfortably
+  // fit any viewport. At wider aspect ratios, the default frame is fine; on
+  // narrow / portrait phones we need to push the camera back so nothing clips.
+  const aspect = camera.aspect;
+  const refAspect = 16 / 9;
+  let fit = 1;
+  if (aspect < refAspect) {
+    // narrower than 16:9 — zoom out proportionally
+    fit = refAspect / aspect;
+  }
+  // Also pull back if the window is short (height < 600px) so HUD chrome
+  // doesn't overlap the map.
+  const heightFit = Math.max(1, 720 / Math.max(420, window.innerHeight));
+  fit = Math.max(fit, heightFit);
+  // Cap so we don't pull out absurdly far on extreme aspects
+  fit = Math.min(fit, 2.4);
+
+  const dist = CAM_DIST * zoom * fit;
+  // Camera offset from look-at: fixed angle 55° off vertical
+  const offX = 0;
+  const offY = Math.cos(CAM_ANGLE) * dist;
+  const offZ = Math.sin(CAM_ANGLE) * dist;
+  camera.position.set(lookAtX + offX, offY, lookAtZ + offZ);
+  camera.lookAt(lookAtX, 0, lookAtZ);
+}
+
+function startCameraTween(toX, toZ, zoom = 1, dur = 4000) {
+  camState.fromLookAt.copy(camState.lookAt);
+  camState.toLookAt.set(toX, 0, toZ);
+  camState.fromZoom = camState.zoom;
+  camState.toZoom = zoom;
+  camState.tStart = performance.now();
+  camState.tDur = dur;
+  camState.tweening = true;
+}
+
+function nextKenBurns() {
+  const target = KEN_TARGETS[kenIdx % KEN_TARGETS.length];
+  kenIdx++;
+  startCameraTween(target.target[0], target.target[1], 1, 4000);
+  camState.holdUntil = performance.now() + 4000 + 4000; // tween + hold
+}
+
+// Initial framing: SE Asia centered, Australia visible bottom-right
+camState.lookAt.set(0, 0, 4);
+_camStateReady = true;
+setCamera(0, 4, 1.05); // centred from load, no intro dolly
+
+// Auto ken-burns pan disabled per request — camera holds central framing
+// until a user clicks a hostel.
+const KEN_BURNS_ENABLED = false;
+
+/* =========================================================================
+   PICKING / HOVER / CLICK
+   ========================================================================= */
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let hoveredIdx = -1;
+let selectedIdx = -1;
+
+const hoverCardEl = document.getElementById('hover-card');
+const hcCountry = document.getElementById('hc-country');
+const hcName = document.getElementById('hc-name');
+const hcTag = document.getElementById('hc-tag');
+
+const detailEl = document.getElementById('detail');
+const dCountry = document.getElementById('d-country');
+const dName = document.getElementById('d-name');
+const dTag = document.getElementById('d-tag');
+const dOcc = document.getElementById('d-occ');
+const dBeds = document.getElementById('d-beds');
+const dOpened = document.getElementById('d-opened');
+const btnClose = document.getElementById('btn-close');
+
+function updateHoverCard(e) {
+  hoverCardEl.style.left = `${e.clientX}px`;
+  hoverCardEl.style.top  = `${e.clientY}px`;
+}
+
+function onPointerMove(e) {
+  pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  updateHoverCard(e);
+}
+window.addEventListener('pointermove', onPointerMove);
+
+function setHover(idx) {
+  if (hoveredIdx === idx) return;
+  hoveredIdx = idx;
+  if (idx === -1) {
+    hoverCardEl.classList.remove('show');
+    canvas.classList.remove('hover-node');
+  } else {
+    const h = HOSTELS[idx];
+    hcCountry.textContent = h.country;
+    hcName.textContent = h.name;
+    hcTag.textContent = h.tagline;
+    hoverCardEl.classList.add('show');
+    canvas.classList.add('hover-node');
+  }
+}
+
+function onClick(e) {
+  // Suppress click after a drag pan
+  if (drag.didDrag) { drag.didDrag = false; return; }
+
+  const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
+  const ndcY = -(e.clientY / window.innerHeight) * 2 + 1;
+  pointer.set(ndcX, ndcY);
+  raycaster.setFromCamera(pointer, camera);
+
+  // pick from hit meshes — skip blurred (out-of-focus-country) pins so they
+  // don't intercept clicks meant for the focused cluster.
+  const focusedCountry = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
+  const hits = [];
+  hostelMeshes.forEach(g => {
+    const idx = g.userData.index;
+    if (focusedCountry && HOSTELS[idx].country !== focusedCountry) return;
+    const hit = g.userData.parts.hit;
+    const inter = raycaster.intersectObject(hit, false);
+    if (inter.length) hits.push({ d: inter[0].distance, idx });
+  });
+  if (hits.length) {
+    hits.sort((a, b) => a.d - b.d);
+    selectHostel(hits[0].idx);
+  } else {
+    if (selectedIdx !== -1) deselect();
+  }
+  // pause ken-burns
+  camState.pauseUntil = performance.now() + 6000;
+}
+canvas.addEventListener('click', onClick);
+
+/* ----- click-drag to pan camera ----- */
+const drag = {
+  active: false,
+  didDrag: false,
+  startX: 0, startY: 0,
+  baseLookAt: new THREE.Vector3(),
+};
+const DRAG_THRESHOLD = 4; // px before it counts as a drag
+
+canvas.addEventListener('pointerdown', (e) => {
+  drag.active = true;
+  drag.didDrag = false;
+  drag.startX = e.clientX;
+  drag.startY = e.clientY;
+  drag.baseLookAt.copy(camState.lookAt);
+  // cancel any in-flight tween so user gets immediate control
+  camState.tweening = false;
+  canvas.setPointerCapture?.(e.pointerId);
+  canvas.style.cursor = 'grabbing';
+});
+
+window.addEventListener('pointerup', (e) => {
+  if (!drag.active) return;
+  drag.active = false;
+  canvas.style.cursor = '';
+  try { canvas.releasePointerCapture?.(e.pointerId); } catch {}
+});
+
+window.addEventListener('pointermove', (e) => {
+  if (!drag.active) return;
+  const dx = e.clientX - drag.startX;
+  const dy = e.clientY - drag.startY;
+  if (!drag.didDrag && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+    drag.didDrag = true;
+    // close any open detail/hover when starting a drag
+    setHover(-1);
+  }
+  if (!drag.didDrag) return;
+
+  // px → world: scale by current camera distance / viewport so the cursor
+  // tracks the ground point under it reasonably well.
+  const dist = CAM_DIST * camState.zoom;
+  const fovTan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const worldPerPxY = (2 * dist * fovTan) / window.innerHeight;
+  const worldPerPxX = worldPerPxY * camera.aspect;
+
+  // Camera looks down at angle CAM_ANGLE off vertical along +Z.
+  // Screen X maps to world X, screen Y maps to world Z (scaled by 1/sin for tilt).
+  const wx = -dx * worldPerPxX;
+  const wz = -dy * worldPerPxY / Math.cos(CAM_ANGLE);
+
+  camState.lookAt.set(
+    drag.baseLookAt.x + wx,
+    0,
+    drag.baseLookAt.z + wz
+  );
+  // clamp so user can't pan into outer space
+  camState.lookAt.x = Math.max(-30, Math.min(30, camState.lookAt.x));
+  camState.lookAt.z = Math.max(-25, Math.min(35, camState.lookAt.z));
+
+  setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
+});
+
+function selectHostel(idx) {
+  selectedIdx = idx;
+  const h = HOSTELS[idx];
+  dCountry.textContent = h.country;
+  dName.textContent = h.name;
+  dTag.textContent = h.tagline;
+  dOcc.textContent = `${75 + (idx * 7) % 24}%`;
+  dBeds.textContent = `${60 + (idx * 13) % 120}`;
+  dOpened.textContent = 2010 + (idx * 3) % 14;
+  detailEl.classList.add('show');
+
+  // Frame the entire country cluster so sibling pins stay visible.
+  const siblings = HOSTELS.filter(o => o.country === h.country);
+  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+  siblings.forEach(o => {
+    minX = Math.min(minX, o.pos.x); maxX = Math.max(maxX, o.pos.x);
+    minZ = Math.min(minZ, o.pos.z); maxZ = Math.max(maxZ, o.pos.z);
+  });
+  const cx = (minX + maxX) / 2;
+  const cz = (minZ + maxZ) / 2;
+  const spanX = Math.max(2, maxX - minX);
+  const spanZ = Math.max(2, maxZ - minZ);
+  const spread = Math.max(spanX, spanZ * 1.4);
+  const zoom = Math.max(0.45, Math.min(1.0, spread / 22 + 0.25));
+
+  const lookX = cx * 0.7 + h.pos.x * 0.3;
+  const lookZ = cz * 0.7 + h.pos.z * 0.3;
+
+  startCameraTween(lookX, lookZ, zoom, 1200);
+  camState.holdUntil = performance.now() + 1200 + 999999;
+
+  // Fan out close-by sibling pins so none overlap when zoomed in.
+  applyFanOut(h.country, cx, cz);
+}
+
+// Resolve overlapping pins by relaxing them apart in 2D (XZ plane).
+// Each hostel keeps a `basePos` and we tween `pos` to a fanned position.
+function applyFanOut(country, cx, cz) {
+  const MIN_DIST = 1.6; // world units between pin centres when fanned
+  const ITERS = 60;
+  const targets = HOSTELS.map(h => ({
+    h,
+    x: h.basePos ? h.basePos.x : h.pos.x,
+    z: h.basePos ? h.basePos.z : h.pos.z,
+    inCountry: h.country === country,
+  }));
+  // Cache base positions on first run
+  HOSTELS.forEach(h => { if (!h.basePos) h.basePos = h.pos.clone(); });
+
+  for (let it = 0; it < ITERS; it++) {
+    for (let i = 0; i < targets.length; i++) {
+      const a = targets[i];
+      if (!a.inCountry) continue;
+      for (let j = 0; j < targets.length; j++) {
+        if (i === j) continue;
+        const b = targets[j];
+        if (!b.inCountry) continue;
+        let dx = a.x - b.x, dz = a.z - b.z;
+        let d = Math.hypot(dx, dz);
+        if (d < 0.0001) { dx = (Math.random()-0.5); dz = (Math.random()-0.5); d = 1; }
+        if (d < MIN_DIST) {
+          const push = (MIN_DIST - d) * 0.5;
+          dx /= d; dz /= d;
+          a.x += dx * push; a.z += dz * push;
+          b.x -= dx * push; b.z -= dz * push;
+        }
+      }
+    }
+  }
+  // Set tween targets
+  HOSTELS.forEach((h, i) => {
+    h.tweenTo = new THREE.Vector3(targets[i].x, h.basePos.y, targets[i].z);
+  });
+}
+
+function resetFanOut() {
+  HOSTELS.forEach(h => {
+    if (h.basePos) h.tweenTo = h.basePos.clone();
+  });
+}
+function deselect() {
+  selectedIdx = -1;
+  detailEl.classList.remove('show');
+  resetFanOut();
+  // Zoom back out to centred SE Asia framing
+  startCameraTween(0, 4, 1.05, 1100);
+  camState.holdUntil = performance.now() + 1100;
+  camState.pauseUntil = performance.now() + 1500;
+}
+btnClose.addEventListener('click', deselect);
+document.getElementById('btn-view').addEventListener('click', deselect);
+
+// any pointer down counts as "interaction" pause
+canvas.addEventListener('pointerdown', () => {
+  camState.pauseUntil = performance.now() + 6000;
+});
+
+/* =========================================================================
+   STATS COUNTER
+   ========================================================================= */
+let guests = 1234567;
+const statGuests = document.getElementById('stat-guests');
+const statDelta = document.getElementById('stat-delta');
+const statActive = document.getElementById('stat-active');
+
+setInterval(() => {
+  const inc = 1 + Math.floor(Math.random() * 4);
+  guests += inc;
+  statGuests.firstChild.nodeValue = guests.toLocaleString();
+  statDelta.textContent = `+${inc}`;
+}, 3000);
+
+/* =========================================================================
+   ANIMATION LOOP
+   ========================================================================= */
+let lastT = performance.now();
+let running = true;
+const isMobile = window.innerWidth < 768;
+const SPAWN_INTERVAL = isMobile ? 800 : 400;
+
+// Dynamic target traveller count, drifts within [TRAV_MIN, TRAV_MAX].
+const TRAV_MIN = 4;
+const TRAV_MAX = 32;
+let travTarget = 8 + Math.floor(Math.random() * (TRAV_MAX - TRAV_MIN + 1));
+let nextTargetShiftAt = performance.now() + 6000;
+
+let nextSpawnAt = performance.now() + 500;
+let nextCheckinAt = performance.now() + 1500;
+
+// Pre-seed travellers already in motion so the network feels alive on load
+const SEED_COUNT = TRAV_MIN + Math.floor(Math.random() * 6); // 8-13
+for (let i = 0; i < SEED_COUNT; i++) {
+  spawnTraveller();
+  // randomise their progress so they aren't all bunched at the start
+  const tr = travellers[travellers.length - 1];
+  if (tr) tr.progress = Math.random() * 0.8;
+}
+
+// Visibility pause
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { running = e.isIntersecting; });
+});
+io.observe(canvas);
+
+function animate(now) {
+  requestAnimationFrame(animate);
+  if (!running) return;
+  const dt = Math.min(now - lastT, 60); // ms
+  lastT = now;
+  const dtN = dt / 16.667; // normalised to 60fps frame
+
+  // ---- intro fade ----
+  if (camState.introT < 1) {
+    camState.introT = Math.min(1, camState.introT + dt / 1500);
+    if (camState.introT >= 0.05) document.getElementById('stage').classList.add('ready');
+  }
+
+  // ---- camera ken-burns ----
+  if (camState.tweening) {
+    const t = (now - camState.tStart) / camState.tDur;
+    if (t >= 1) {
+      camState.lookAt.copy(camState.toLookAt);
+      camState.zoom = camState.toZoom;
+      camState.tweening = false;
+    } else {
+      const e = easeInOutCubic(t);
+      camState.lookAt.lerpVectors(camState.fromLookAt, camState.toLookAt, e);
+      camState.zoom = camState.fromZoom + (camState.toZoom - camState.fromZoom) * e;
+    }
+    setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
+  }
+  // schedule next ken-burns
+  if (KEN_BURNS_ENABLED && !camState.tweening && selectedIdx === -1 && now > camState.holdUntil && now > camState.pauseUntil) {
+    nextKenBurns();
+  }
+
+  // ---- ocean grid (steady, no pulse per request) ----
+  gridMat.opacity = 0.08;
+
+  // ---- node pulses + hover lift ----
+  hostelMeshes.forEach((g, i) => {
+    const t = now * 0.001 + g.userData.basePulsePhase;
+    const pulseScale = 1 + 0.075 * (Math.sin(t * Math.PI) * 0.5 + 0.5);
+    const ring = g.userData.parts.ring;
+    const halo = g.userData.parts.halo;
+    const visual = g.userData.parts.visual;
+    const anchor = g.userData.parts.anchor;
+    const leader = g.userData.parts.leader;
+    ring.scale.setScalar(pulseScale);
+    halo.scale.setScalar(pulseScale * 1.05);
+
+    // tween visual group XZ offset toward fan-out target (relative to true pos)
+    const h = HOSTELS[i];
+    // Combine: base displayOffset (always-on visual nudge for dense clusters)
+    // + fan-out offset (when a country is selected).
+    const baseOffX = h.displayOffset ? h.displayOffset.x : 0;
+    const baseOffZ = h.displayOffset ? h.displayOffset.z : 0;
+    let offX = baseOffX, offZ = baseOffZ;
+    if (h.tweenTo && h.basePos) {
+      offX = h.tweenTo.x - h.basePos.x;
+      offZ = h.tweenTo.z - h.basePos.z;
+    }
+    visual.position.x += (offX - visual.position.x) * 0.12 * dtN;
+    visual.position.z += (offZ - visual.position.z) * 0.12 * dtN;
+
+    // Leader line: from ground anchor up to the actual pin tip (which may be
+    // slid sideways via bodyLeanX and lifted via bodyLiftY for de-clustering).
+    const tipX = visual.position.x + (h.bodyLeanX || 0);
+    const tipY = visual.position.y + 0.32 + (h.bodyLiftY || 0);
+    const tipZ = visual.position.z;
+    const offMag = Math.hypot(tipX, tipZ);
+    const leaderArr = leader.geometry.attributes.position.array;
+    leaderArr[0] = 0;    leaderArr[1] = 0.05; leaderArr[2] = 0;
+    leaderArr[3] = tipX; leaderArr[4] = tipY;  leaderArr[5] = tipZ;
+    leader.geometry.attributes.position.needsUpdate = true;
+    const leanMag = Math.hypot(h.bodyLeanX || 0, h.bodyLiftY || 0);
+    const showLeader = (offMag > 0.05 || leanMag > 0.05)
+      ? Math.min(0.7, Math.max(offMag, leanMag) * 0.9)
+      : 0;
+    leader.material.opacity += (showLeader - leader.material.opacity) * 0.15 * dtN;
+    // Anchor dot: only show when the visible pin is offset from its true coord
+    // (i.e. during the focus fan-out). Keeps the base map clean.
+    const anchorTarget = showLeader > 0.02 ? 0.9 : 0.0;
+    anchor.material.opacity += (anchorTarget - anchor.material.opacity) * 0.15 * dtN;
+
+    // Focus blur: dim + scale-down hostels NOT in the selected country
+    const focusedCountry = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
+    const blurred = focusedCountry && h.country !== focusedCountry;
+    const targetVisOp = blurred ? 0.18 : 1.0;
+    const targetVisScale = blurred ? 0.7 : 1.0;
+    if (g.userData.visOp === undefined) g.userData.visOp = 1;
+    if (g.userData.visScale === undefined) g.userData.visScale = 1;
+    g.userData.visOp += (targetVisOp - g.userData.visOp) * 0.12 * dtN;
+    g.userData.visScale += (targetVisScale - g.userData.visScale) * 0.12 * dtN;
+    visual.scale.setScalar(g.userData.visScale);
+    g.userData.parts.pin.material.opacity = g.userData.visOp;
+    g.userData.parts.beam.material.uniforms.uIntensity.value =
+      (i === hoveredIdx || i === selectedIdx ? 1.6 : 1.0) * g.userData.visOp;
+    g.userData.parts.ring.material.opacity = 0.85 * g.userData.visOp;
+    g.userData.parts.halo.material.opacity = 0.18 * g.userData.visOp;
+
+    // lift on hover (apply to visual y)
+    const targetY = (i === hoveredIdx) ? 0.2 : 0;
+    visual.position.y += (targetY - visual.position.y) * 0.15 * dtN;
+  });
+
+  // ---- mesh lines: highlight from hovered node + dim non-focused country ----
+  const focusedCountryLines = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
+  meshLineGroup.children.forEach(line => {
+    const pair = line.userData.pair;
+    let active = false;
+    if (pair && (pair[0] === hoveredIdx || pair[1] === hoveredIdx)) active = true;
+    let baseOp = line.userData.backbone ? 0.18 : 0.13;
+    // when focused on a country, dim lines that don't touch any of its pins
+    if (focusedCountryLines && pair) {
+      const inFocus = HOSTELS[pair[0]].country === focusedCountryLines || HOSTELS[pair[1]].country === focusedCountryLines;
+      if (!inFocus) baseOp *= 0.25;
+    } else if (focusedCountryLines && line.userData.backbone) {
+      baseOp *= 0.4;
+    }
+    const targetOp = active ? 0.85 : baseOp;
+    const targetCol = active ? new THREE.Color(PALETTE.cyan) : new THREE.Color(PALETTE.blue);
+    line.material.opacity += (targetOp - line.material.opacity) * 0.18 * dtN;
+    line.material.color.lerp(targetCol, 0.18 * dtN);
+  });
+
+  // ---- hover raycast ----
+
+  // ---- hover raycast ----
+  raycaster.setFromCamera(pointer, camera);
+  const focusedCountry = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
+  const hits = [];
+  hostelMeshes.forEach(g => {
+    const idx = g.userData.index;
+    if (focusedCountry && HOSTELS[idx].country !== focusedCountry) return;
+    const hit = g.userData.parts.hit;
+    const inter = raycaster.intersectObject(hit, false);
+    if (inter.length) hits.push({ d: inter[0].distance, idx });
+  });
+  if (hits.length) {
+    hits.sort((a, b) => a.d - b.d);
+    setHover(hits[0].idx);
+  } else {
+    setHover(-1);
+  }
+
+  // ---- spawn / drain travellers toward dynamic target ----
+  if (now > nextTargetShiftAt) {
+    travTarget = TRAV_MIN + Math.floor(Math.random() * (TRAV_MAX - TRAV_MIN + 1));
+    nextTargetShiftAt = now + 5000 + Math.random() * 8000;
+  }
+  if (now > nextSpawnAt && travellers.length < travTarget) {
+    spawnTraveller();
+    nextSpawnAt = now + SPAWN_INTERVAL * (0.7 + Math.random() * 0.6);
+  }
+
+  // ---- update travellers ----
+  for (let i = travellers.length - 1; i >= 0; i--) {
+    const tr = travellers[i];
+    tr.progress += tr.speed * dtN;
+    if (tr.progress >= 1) {
+      travellerGroup.remove(tr.dot);
+      travellerGroup.remove(tr.trail);
+      tr.dot.geometry.dispose();
+      tr.dot.material.dispose();
+      tr.trail.geometry.dispose();
+      tr.trail.material.dispose();
+      travellers.splice(i, 1);
+      continue;
+    }
+    const idx = Math.min(tr.pts.length - 1, Math.floor(tr.progress * (tr.pts.length - 1)));
+    const next = Math.min(tr.pts.length - 1, idx + 1);
+    const local = tr.progress * (tr.pts.length - 1) - idx;
+    const p = tr.pts[idx].clone().lerp(tr.pts[next], local);
+    tr.dot.position.copy(p);
+
+    // trail history
+    tr.trailHistory.unshift(p.clone());
+    if (tr.trailHistory.length > tr.trailLen) tr.trailHistory.pop();
+    const arr = tr.trail.geometry.attributes.position.array;
+    for (let k = 0; k < tr.trailLen; k++) {
+      const point = tr.trailHistory[Math.min(k, tr.trailHistory.length - 1)] || p;
+      arr[k * 3 + 0] = point.x;
+      arr[k * 3 + 1] = point.y;
+      arr[k * 3 + 2] = point.z;
+    }
+    tr.trail.geometry.attributes.position.needsUpdate = true;
+  }
+  statActive.textContent = travellers.length;
+
+  // ---- check-ins (disabled per request — no random blue pulses) ----
+  /*
+  if (now > nextCheckinAt) {
+    triggerCheckin(Math.floor(Math.random() * HOSTELS.length));
+    nextCheckinAt = now + 2000 + Math.random() * 2000;
+  }
+  */
+  for (let i = pulses.length - 1; i >= 0; i--) {
+    const p = pulses[i];
+    p.age += dt / 1000;
+    const t = p.age / p.life;
+    if (t >= 1) {
+      pulseGroup.remove(p.ring); pulseGroup.remove(p.label);
+      p.ring.geometry.dispose(); p.ring.material.dispose();
+      p.label.material.map.dispose(); p.label.material.dispose();
+      pulses.splice(i, 1);
+      continue;
+    }
+    const e = easeOutQuart(t);
+    p.ring.scale.setScalar(1 + e * 2.0);
+    p.ring.material.opacity = 0.9 * (1 - e);
+    p.label.position.y = 1.0 + e * 0.7;
+    p.label.material.opacity = 1 - e;
+  }
+
+  // ---- ambient drift ----
+  const apos = ambient.geometry.attributes.position.array;
+  const speeds = ambient.userData.speeds;
+  for (let i = 0; i < apos.length / 3; i++) {
+    apos[i * 3 + 0] += speeds[i * 2 + 0] * dtN;
+    apos[i * 3 + 2] += speeds[i * 2 + 1] * dtN;
+    if (apos[i * 3 + 0] > 40) apos[i * 3 + 0] = -40;
+    if (apos[i * 3 + 0] < -40) apos[i * 3 + 0] = 40;
+    if (apos[i * 3 + 2] > 40) apos[i * 3 + 2] = -40;
+    if (apos[i * 3 + 2] < -40) apos[i * 3 + 2] = 40;
+  }
+  ambient.geometry.attributes.position.needsUpdate = true;
+
+  renderer.render(scene, camera);
+}
+requestAnimationFrame(animate);
+
+</script>
+</body>
+</html>
