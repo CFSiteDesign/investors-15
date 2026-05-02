@@ -384,9 +384,20 @@
     .panel-rule { margin: 6px 0; }
     .detail {
       grid-template-columns: 1fr;
-      bottom: 16px;
+      bottom: 10px;
+      width: calc(100vw - 20px);
+      padding: 10px 12px;
+      border-radius: 12px;
+      gap: 8px;
     }
-    .detail .img-slot { aspect-ratio: 16/9; }
+    .detail .img-slot { display: none; }
+    .detail .d-country { font-size: 9px; letter-spacing: 0.18em; }
+    .detail .d-name { font-size: 18px; margin: 2px 0 4px; }
+    .detail .d-tag { font-size: 12px; line-height: 1.35; margin-bottom: 8px; }
+    .detail .d-stats { gap: 12px; font-size: 9px; margin-bottom: 8px; }
+    .detail .d-stats .v { font-size: 12px; margin-top: 1px; }
+    .d-actions { gap: 8px; }
+    .btn { font-size: 12px; padding: 7px 12px; border-radius: 7px; }
   }
 
 </style>
