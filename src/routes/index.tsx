@@ -86,8 +86,8 @@ function Index() {
       <Hero />
       <Manifesto />
       <DataInnovation />
-      <Performance />
       <LiveNetwork />
+      <Performance />
       <Ethical />
       <Footer />
       <EmailBar />
