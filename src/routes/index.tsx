@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContactForm } from "@/components/InvestorContactForm";
+import { LiveNetworkEmbed } from "@/components/LiveNetworkEmbed";
 import madMonkeyLogo from "../assets/mad-monkey-logo.webp";
 import footerLogo from "../assets/logo-footer1x1-2.webp";
 
@@ -83,10 +84,10 @@ function Index() {
     <main className="min-h-screen bg-background text-foreground">
       <Header />
       <Hero />
-      <LiveNetwork />
       <Manifesto />
       <DataInnovation />
       <Performance />
+      <LiveNetwork />
       <Ethical />
       <Footer />
       <EmailBar />
@@ -99,13 +100,7 @@ function LiveNetwork() {
     <section aria-label="Live Network — South East Asia" className="relative w-full bg-[#0d0628]">
       <div className="mx-auto max-w-[1400px] px-0 sm:px-4 lg:px-6">
         <div className="relative w-full overflow-hidden border-y border-[#2A1B5C] sm:rounded-xl sm:border" style={{ height: "min(80vh, 720px)" }}>
-          <iframe
-            src="/network/index.html"
-            title="Mad Monkey Live Network"
-            loading="lazy"
-            className="h-full w-full border-0"
-            style={{ display: "block" }}
-          />
+          <LiveNetworkEmbed />
         </div>
       </div>
     </section>
