@@ -1752,9 +1752,9 @@ function deselect() {
   detailEl.classList.remove('show');
   resetFanOut();
   // Zoom back out to match the initial framing
-  startCameraTween(2, 2, 0.7, 1100);
-  camState.holdUntil = performance.now() + 1100;
-  camState.pauseUntil = performance.now() + 1500;
+  startCameraTween(2, 2, 0.7, 1500);
+  camState.holdUntil = performance.now() + 1500;
+  camState.pauseUntil = performance.now() + 1900;
 }
 btnClose.addEventListener('click', deselect);
 document.getElementById('btn-view').addEventListener('click', () => {
