@@ -442,7 +442,7 @@ function Footer() {
     <footer className="border-t border-border bg-background px-6 pb-20 pt-10 text-foreground md:px-12 md:py-16 md:pb-24 lg:px-24">
       <div className="mb-8 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <img src={footerLogo} alt="Mad Monkey Hostels" loading="lazy" className="mb-8 h-16 w-auto object-contain md:h-20" />
+          <img src={footerLogo} alt="Mad Monkey Hostels" loading="lazy" className="mb-8 h-10 w-auto object-contain md:h-20" />
           <div className="space-y-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Navigation</p>
             <ul className="grid grid-cols-2 gap-4 text-[14px] font-black uppercase tracking-[0.16em]">
