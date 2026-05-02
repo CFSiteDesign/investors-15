@@ -2009,7 +2009,7 @@ function animate(now) {
     }
     tr.trail.geometry.attributes.position.needsUpdate = true;
   }
-  statActive.textContent = travellers.length;
+  if (statActive) statActive.textContent = travellers.length;
 
   // ---- check-ins (disabled per request — no random blue pulses) ----
   /*
