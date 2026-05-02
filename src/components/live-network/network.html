@@ -1464,6 +1464,7 @@ const camState = {
 
 function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
 function easeOutQuart(t)   { return 1 - Math.pow(1 - t, 4); }
+function easeInOutQuint(t) { return t < 0.5 ? 16*t*t*t*t*t : 1 - Math.pow(-2*t+2, 5)/2; }
 
 function setCamera(lookAtX, lookAtZ, zoom) {
   // Viewport-fit: the map is roughly 28 units wide. We want it to comfortably
@@ -1694,7 +1695,7 @@ function selectHostel(idx) {
   const lookX = cx * 0.7 + h.pos.x * 0.3;
   const lookZ = cz * 0.7 + h.pos.z * 0.3;
 
-  startCameraTween(lookX, lookZ, zoom, 1200);
+  startCameraTween(lookX, lookZ, zoom, 1600);
   camState.holdUntil = performance.now() + 1200 + 999999;
 
   // Fan out close-by sibling pins so none overlap when zoomed in.
@@ -1751,9 +1752,9 @@ function deselect() {
   detailEl.classList.remove('show');
   resetFanOut();
   // Zoom back out to match the initial framing
-  startCameraTween(2, 2, 0.7, 1100);
-  camState.holdUntil = performance.now() + 1100;
-  camState.pauseUntil = performance.now() + 1500;
+  startCameraTween(2, 2, 0.7, 1500);
+  camState.holdUntil = performance.now() + 1500;
+  camState.pauseUntil = performance.now() + 1900;
 }
 btnClose.addEventListener('click', deselect);
 document.getElementById('btn-view').addEventListener('click', () => {
@@ -1845,7 +1846,7 @@ function animate(now) {
       camState.zoom = camState.toZoom;
       camState.tweening = false;
     } else {
-      const e = easeInOutCubic(t);
+      const e = easeInOutQuint(t);
       camState.lookAt.lerpVectors(camState.fromLookAt, camState.toLookAt, e);
       camState.zoom = camState.fromZoom + (camState.toZoom - camState.fromZoom) * e;
     }
