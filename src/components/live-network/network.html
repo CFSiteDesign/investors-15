@@ -418,14 +418,16 @@
     .status-line { display: none; }
     .panel-rule { margin: 6px 0; }
     .detail {
-      grid-template-columns: 1fr;
+      grid-template-columns: 110px 1fr;
       bottom: 10px;
       width: calc(100vw - 20px);
       padding: 10px 12px;
       border-radius: 12px;
-      gap: 8px;
+      gap: 10px;
+      align-items: stretch;
     }
-    .detail .img-slot { display: none; }
+    .detail .img-slot { aspect-ratio: 1/1; border-radius: 8px; }
+    .detail .img-slot .img-fallback { display: none; }
     .detail .d-country { font-size: 9px; letter-spacing: 0.18em; }
     .detail .d-name { font-size: 18px; margin: 2px 0 4px; }
     .detail .d-tag { font-size: 12px; line-height: 1.35; margin-bottom: 8px; }
