@@ -1121,8 +1121,14 @@ HOSTELS.forEach((h, i) => {
   const pin = getPinSprite();
   pin.position.y = 0.32; // tip sits just above the ring
 
-  // Hover hit target — sized & positioned to match ONLY the monkey-head circle.
-  const hitGeo = new THREE.SphereGeometry(0.22, 12, 12);
+  // Hover hit target — sized & positioned to match the monkey-head circle.
+  // On touch devices we widen the hit sphere so the entire visible white
+  // circle (mascot head) is tappable, while staying small enough that
+  // neighbouring pins don't overlap each other's hit areas.
+  const isTouchDevice = (typeof window !== 'undefined') &&
+    (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth < 768);
+  const hitRadius = isTouchDevice ? 0.40 : 0.22;
+  const hitGeo = new THREE.SphereGeometry(hitRadius, 12, 12);
   const hit = new THREE.Mesh(hitGeo, new THREE.MeshBasicMaterial({ visible: false }));
   hit.position.set(0, 0.95, 0);
   hit.userData.isHostelHit = true;
