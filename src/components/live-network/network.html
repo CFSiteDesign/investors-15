@@ -278,6 +278,11 @@
     transition: opacity 0.18s ease-out;
   }
   .hover-card.show { opacity: 1; }
+  /* Hide hover-card on touch / coarse-pointer devices — taps go straight to
+     the detail card, and the hover card would otherwise stack behind it. */
+  @media (hover: none), (pointer: coarse) {
+    .hover-card { display: none !important; }
+  }
   .hover-card .hc-country {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
