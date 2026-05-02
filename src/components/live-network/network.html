@@ -107,8 +107,8 @@
 
   /* top-left wordmark */
   .hud-tl {
-    top: 24px; left: 24px;
-    max-width: 320px;
+    top: 14px; left: 14px;
+    max-width: 220px;
   }
   .wordmark {
     font-family: 'Fredoka', sans-serif;
@@ -119,50 +119,50 @@
     text-transform: lowercase;
   }
   .wordmark .wm-line { display: block; }
-  .wordmark .wm-1 { font-size: 32px; opacity: 0.95; }
-  .wordmark .wm-2 { font-size: 32px; opacity: 0.7; font-weight: 500; }
+  .wordmark .wm-1 { font-size: 20px; opacity: 0.95; }
+  .wordmark .wm-2 { font-size: 20px; opacity: 0.7; font-weight: 500; }
   .tagline-sub {
-    margin-top: 10px;
+    margin-top: 6px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 9px;
     letter-spacing: 0.05em;
     color: rgba(255,255,255,0.55);
     text-transform: lowercase;
-    max-width: 280px;
-    line-height: 1.5;
+    max-width: 200px;
+    line-height: 1.4;
   }
 
   /* top-right status panel */
   .hud-tr {
-    top: 24px; right: 24px;
-    width: 320px;
+    top: 14px; right: 14px;
+    width: 220px;
   }
   .glass {
     background: rgba(20, 10, 50, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(111, 179, 232, 0.3);
-    border-radius: 12px;
-    padding: 18px 20px;
+    border-radius: 9px;
+    padding: 10px 12px;
     color: var(--c-white);
   }
   .panel-head {
     display: flex; align-items: center; justify-content: space-between;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--c-white);
   }
   .panel-head .live {
-    display: inline-flex; align-items: center; gap: 6px;
+    display: inline-flex; align-items: center; gap: 5px;
     color: var(--c-green);
   }
   .live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
+    width: 6px; height: 6px; border-radius: 50%;
     background: var(--c-green);
-    box-shadow: 0 0 8px var(--c-green);
+    box-shadow: 0 0 6px var(--c-green);
     animation: pulse-dot 1.6s ease-in-out infinite;
   }
   @keyframes pulse-dot {
@@ -172,56 +172,56 @@
   .panel-rule {
     height: 1px;
     background: linear-gradient(90deg, rgba(111,179,232,0.5), rgba(111,179,232,0.05));
-    margin: 12px 0;
+    margin: 8px 0;
   }
   .panel-rows {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    line-height: 1.9;
+    font-size: 11px;
+    line-height: 1.7;
   }
   .panel-rows .row {
-    display: flex; justify-content: space-between; gap: 12px;
+    display: flex; justify-content: space-between; gap: 8px;
     color: rgba(255,255,255,0.85);
   }
-  .panel-rows .row .k { color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .panel-rows .row .k { color: rgba(255,255,255,0.5); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
   .panel-rows .row .v { color: var(--c-white); font-weight: 700; }
-  .panel-rows .row .v .delta { color: var(--c-cyan); margin-left: 6px; font-weight: 500; font-size: 11px; }
+  .panel-rows .row .v .delta { color: var(--c-cyan); margin-left: 5px; font-weight: 500; font-size: 9px; }
   .status-line {
-    margin-top: 10px;
+    margin-top: 6px;
     display: flex; align-items: center; justify-content: space-between;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.6);
   }
-  .status-line .ok { color: var(--c-green); display: inline-flex; align-items: center; gap: 6px; }
+  .status-line .ok { color: var(--c-green); display: inline-flex; align-items: center; gap: 5px; }
 
   /* bottom-left legend */
   .hud-bl {
-    bottom: 24px; left: 24px;
-    width: 240px;
+    bottom: 14px; left: 14px;
+    width: 200px;
   }
   .legend-item {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 9px;
     letter-spacing: 0.06em;
     color: rgba(255,255,255,0.7);
     text-transform: uppercase;
-    margin: 6px 0;
+    margin: 4px 0;
   }
   .legend-swatch {
-    width: 10px; height: 10px; border-radius: 50%;
-    flex: 0 0 10px;
+    width: 8px; height: 8px; border-radius: 50%;
+    flex: 0 0 8px;
   }
 
   /* bottom-right hint */
   .hud-br {
-    bottom: 24px; right: 24px;
+    bottom: 14px; right: 14px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    font-size: 9px;
+    letter-spacing: 0.16em;
     color: rgba(255,255,255,0.4);
     text-transform: uppercase;
     text-align: right;
