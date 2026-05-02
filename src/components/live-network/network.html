@@ -87,7 +87,9 @@
     transition: opacity 1.5s ease-out;
   }
   #stage.ready { opacity: 1; }
-  #three-canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+  /* touch-action: none lets us own all touch gestures (pan + pinch) inside
+     the map without the browser also trying to scroll the parent page. */
+  #three-canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; -ms-touch-action: none; }
   #three-canvas.hover-node { cursor: pointer; }
 
   /* vignette */
@@ -1742,6 +1744,10 @@ canvas.addEventListener('touchmove', (e) => {
       camState.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pinch.startZoom * ratio));
       setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
     }
+  } else if (e.touches.length === 1) {
+    // Single-finger drag: stop the browser from scrolling the parent page
+    // while the user is panning the map.
+    e.preventDefault();
   }
 }, { passive: false });
 canvas.addEventListener('touchend', (e) => {
