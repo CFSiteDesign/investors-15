@@ -233,6 +233,29 @@
     text-align: right;
   }
 
+  /* mobile drag-to-move hint (bottom-left) */
+  .hud-drag-hint {
+    display: none;
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    pointer-events: none;
+  }
+  .hud-drag-hint svg { opacity: 0.85; }
+
   /* ---------- hostel hover card ---------- */
   .hover-card {
     position: fixed;
@@ -376,6 +399,7 @@
     .hud-tr { top: 10px; right: 10px; left: auto; bottom: auto; width: 200px; }
     .hud-tr .glass { padding: 8px 10px; }
     .hud-bl, .hud-br { display: none; }
+    .hud-drag-hint { display: inline-flex; }
     .wordmark .wm-1, .wordmark .wm-2 { font-size: 15px; }
     .tagline-sub { display: none; }
     .panel-rows { font-size: 10px; line-height: 1.55; }
@@ -441,6 +465,19 @@
   </div>
 
   <!-- HUD: bottom-left legend removed -->
+
+  <!-- HUD: mobile drag hint -->
+  <div class="hud hud-drag-hint" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="5 9 2 12 5 15"></polyline>
+      <polyline points="9 5 12 2 15 5"></polyline>
+      <polyline points="15 19 12 22 9 19"></polyline>
+      <polyline points="19 9 22 12 19 15"></polyline>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <line x1="12" y1="2" x2="12" y2="22"></line>
+    </svg>
+    <span>drag to move</span>
+  </div>
 
   <!-- HUD: bottom-right hint -->
   <div class="hud hud-br">
