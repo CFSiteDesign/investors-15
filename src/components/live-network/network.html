@@ -1732,6 +1732,58 @@ window.addEventListener('pointermove', (e) => {
   setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
 });
 
+/* ----- manual zoom (wheel + pinch) ----- */
+const ZOOM_MIN = 0.25;
+const ZOOM_MAX = 1.6;
+function applyZoomDelta(factor) {
+  // pause any active camera tween & ken-burns so user input wins
+  camState.animActive = false;
+  camState.pauseUntil = performance.now() + 6000;
+  camState.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, camState.zoom * factor));
+  setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
+}
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  // smaller zoom step per wheel tick; trackpad sends many small events
+  const factor = Math.exp(e.deltaY * 0.0015);
+  applyZoomDelta(factor);
+}, { passive: false });
+
+// Pinch-to-zoom on touch devices
+const pinch = { active: false, startDist: 0, startZoom: 1 };
+function touchDist(t0, t1) {
+  const dx = t0.clientX - t1.clientX;
+  const dy = t0.clientY - t1.clientY;
+  return Math.hypot(dx, dy);
+}
+canvas.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 2) {
+    pinch.active = true;
+    pinch.startDist = touchDist(e.touches[0], e.touches[1]);
+    pinch.startZoom = camState.zoom;
+    // cancel any drag started by the first touch
+    drag.active = false;
+    drag.didDrag = false;
+  }
+}, { passive: true });
+canvas.addEventListener('touchmove', (e) => {
+  if (pinch.active && e.touches.length === 2) {
+    e.preventDefault();
+    const d = touchDist(e.touches[0], e.touches[1]);
+    if (pinch.startDist > 0) {
+      const ratio = pinch.startDist / d; // pinch out (d>start) → zoom in (smaller value)
+      camState.animActive = false;
+      camState.pauseUntil = performance.now() + 6000;
+      camState.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pinch.startZoom * ratio));
+      setCamera(camState.lookAt.x, camState.lookAt.z, camState.zoom);
+    }
+  }
+}, { passive: false });
+canvas.addEventListener('touchend', (e) => {
+  if (e.touches.length < 2) pinch.active = false;
+}, { passive: true });
+
 function selectHostel(idx) {
   selectedIdx = idx;
   const h = HOSTELS[idx];
