@@ -1666,9 +1666,6 @@ function selectHostel(idx) {
   dCountry.textContent = h.country;
   dName.textContent = h.name;
   dTag.textContent = h.tagline;
-  dOcc.textContent = `${75 + (idx * 7) % 24}%`;
-  dBeds.textContent = `${60 + (idx * 13) % 120}`;
-  dOpened.textContent = 2010 + (idx * 3) % 14;
   detailEl.classList.add('show');
 
   // Frame the entire country cluster so sibling pins stay visible.
