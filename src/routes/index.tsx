@@ -194,6 +194,7 @@ function DataInnovation() {
             <p className="mt-[24px] max-w-[520px] text-[15px] font-light leading-[1.58] text-muted-foreground lg:text-[17px]">
             We combine tech excellence with human experience to drive industry-leading conversion and brand loyalty.
             </p>
+            <a href={foundersMailto} className="mt-7 inline-flex border border-foreground px-6 py-3 text-[12px] font-black uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background lg:px-7 lg:py-4 lg:text-[13px]">Request Info</a>
           </div>
           <div>
             <div className="grid max-w-[760px] grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-[56px]">
