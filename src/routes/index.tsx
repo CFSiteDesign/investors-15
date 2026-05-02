@@ -428,7 +428,58 @@ function Ethical() {
   );
 }
 
-const footerLinks = ["About Us", "Locations", "Investors", "Sustainability", "Press", "Careers"];
+const footerSections: { title: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: "Rules & Legal",
+    links: [
+      { label: "Tour & Groups", href: "https://madmonkeyhostels.com/groups" },
+      { label: "No Sex Tourists", href: "https://madmonkeyhostels.com/no-sex-tourists" },
+      { label: "Cancellation Policy", href: "https://madmonkeyhostels.com/cancellation-policy" },
+      { label: "Privacy Policy", href: "https://madmonkeyhostels.com/privacy-policy" },
+      { label: "Terms & Conditions", href: "https://madmonkeyhostels.com/terms-and-conditions" },
+    ],
+  },
+  {
+    title: "Partner With Us",
+    links: [
+      { label: "Investor", href: "https://madmonkeyhostels.com/partners/investors" },
+      { label: "Property Partners", href: "https://madmonkeyhostels.com/partners/property-partners" },
+      { label: "Content Creators", href: "https://madmonkeyhostels.com/creative-hub" },
+      { label: "Travel Agencies", href: "https://madmonkeyhostels.com/partners/travel-agents" },
+      { label: "Tour Operators & Suppliers", href: "https://madmonkeyhostels.com/partners/suppliers" },
+    ],
+  },
+  {
+    title: "Career",
+    links: [
+      { label: "We're Hiring", href: "https://madmonkeyhostels.com/career/" },
+    ],
+  },
+  {
+    title: "Press",
+    links: [
+      { label: "Mad Monkey News", href: "https://madmonkeyhostels.com/mad-monkey-in-the-news" },
+      { label: "Press Releases", href: "https://madmonkeyhostels.com/press-releases" },
+      { label: "Corporate Social Responsibility", href: "https://madmonkeyhostels.com/corporate-social-responsibility" },
+    ],
+  },
+  {
+    title: "Guides",
+    links: [
+      { label: "Backpacker Guides", href: "https://madmonkeyhostels.com/backpackers-guide" },
+      { label: "Mad Monkey's Travel Blog", href: "https://madmonkeyhostels.com/our-blog" },
+      { label: "Free Content Creator Stays", href: "https://madmonkeyhostels.com/creative-hub" },
+    ],
+  },
+];
+
+const footerSocials: { label: string; href: string }[] = [
+  { label: "Instagram", href: "https://www.instagram.com/madmonkeyhostels/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@madmonkeyhostels" },
+  { label: "X", href: "http://twitter.com/madmonkeyhostel" },
+  { label: "Facebook", href: "https://www.facebook.com/MadMonkeyHostels" },
+  { label: "YouTube", href: "https://www.youtube.com/channel/UCkUGlFdhp5Ndk68j_QRS1kw" },
+];
 
 function Footer() {
   return (
@@ -437,11 +488,11 @@ function Footer() {
         <div className="lg:col-span-4">
           <img src={footerLogo} alt="Mad Monkey Hostels" loading="lazy" className="mb-8 h-16 w-auto object-contain md:h-20" />
           <div className="space-y-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Navigation</p>
-            <ul className="grid grid-cols-2 gap-4 text-[14px] font-black uppercase tracking-[0.16em]">
-              {footerLinks.map((label) => (
-                <li key={label}>
-                  <a href="#" className="transition-opacity hover:opacity-60">{label}</a>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Follow</p>
+            <ul className="flex flex-wrap gap-x-6 gap-y-3 text-[12px] font-black uppercase tracking-[0.16em]">
+              {footerSocials.map((s) => (
+                <li key={s.label}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-60">{s.label}</a>
                 </li>
               ))}
             </ul>
@@ -454,6 +505,20 @@ function Footer() {
           </div>
         </div>
       </div>
+      <div className="mt-12 grid grid-cols-1 gap-10 border-t border-border pt-10 sm:grid-cols-2 lg:grid-cols-5">
+        {footerSections.map((section) => (
+          <div key={section.title}>
+            <p className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">{section.title}</p>
+            <ul className="space-y-3 text-[13px] font-black uppercase tracking-[0.14em]">
+              {section.links.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-60">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
       <div className="mt-12 border-t border-border pt-10">
         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Contact Founders@madmonkeyhostels.com</p>
         <ContactForm />
@@ -461,8 +526,8 @@ function Footer() {
       <div className="flex flex-col items-center justify-between gap-8 border-t border-border pt-12 md:flex-row">
         <p className="text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">© 2026 Mad Monkey Hostels. All Rights Reserved.</p>
         <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
-          <a href="#" className="transition-opacity hover:opacity-100">Privacy Policy</a>
-          <a href="#" className="transition-opacity hover:opacity-100">Terms of Service</a>
+          <a href="https://madmonkeyhostels.com/privacy-policy" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100">Privacy Policy</a>
+          <a href="https://madmonkeyhostels.com/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100">Terms of Service</a>
         </div>
       </div>
     </footer>
