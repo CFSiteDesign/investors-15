@@ -260,10 +260,10 @@ function LoyaltyChart() {
           const isAnchor = index === 0 || index === 12 || index === loyalty.length - 1;
           return (
             <g key={`${label}-${index}`}>
-              {/* Mobile: only Jan 25, Jan 26, Mar */}
-              <text x={x} y="356" className="fill-muted-foreground text-[11px] font-bold sm:hidden" textAnchor="middle" opacity={isAnchor ? 1 : 0}>{label}</text>
-              {/* Desktop: every label */}
-              <text x={x} y="356" className="hidden fill-muted-foreground text-[11px] font-bold sm:block" textAnchor="middle">{label}</text>
+              {/* Compact: only Jan 25, Jan 26, Mar */}
+              <text x={x} y="356" className="fill-muted-foreground text-[11px] font-bold lg:hidden" textAnchor="middle" opacity={isAnchor ? 1 : 0}>{label}</text>
+              {/* Wide: every label */}
+              <text x={x} y="356" className="hidden fill-muted-foreground text-[11px] font-bold lg:block" textAnchor="middle">{label}</text>
             </g>
           );
         })}
