@@ -250,9 +250,18 @@ function LoyaltyChart() {
         ))}
         <polygon points={area} fill="url(#loyaltyFill)" />
         <polyline points={line} fill="none" className={`${hasEntered ? "animate-line-draw" : ""} stroke-graph-purple`} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="620" strokeDashoffset={hasEntered ? undefined : "620"} />
-        {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26', 'Feb', 'Mar'].map((label, index) => (
-          <text key={`${label}-${index}`} x={55 + (index / (loyalty.length - 1)) * 390} y="354" className="fill-muted-foreground text-[11px] font-bold" textAnchor="middle">{label}</text>
-        ))}
+        {['Jan 25', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26', 'Feb', 'Mar'].map((label, index) => {
+          const x = 55 + (index / (loyalty.length - 1)) * 390;
+          const isAnchor = index === 0 || index === 12 || index === loyalty.length - 1;
+          return (
+            <g key={`${label}-${index}`}>
+              {/* Mobile: only Jan 25, Jan 26, Mar */}
+              <text x={x} y="354" className="fill-muted-foreground text-[11px] font-bold sm:hidden" textAnchor="middle" opacity={isAnchor ? 1 : 0}>{label}</text>
+              {/* Desktop: every label */}
+              <text x={x} y="354" className="hidden fill-muted-foreground text-[11px] font-bold sm:block" textAnchor="middle">{label}</text>
+            </g>
+          );
+        })}
       </svg>
     </article>
   );
