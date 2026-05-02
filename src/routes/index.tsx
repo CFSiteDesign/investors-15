@@ -347,7 +347,7 @@ function Chart({ title, subtitle, data, x, y, type, maxValue, wide = false }: { 
     if (title === "Guests Per Month") return Math.round(value * 1000).toLocaleString();
     return Math.round(value * 1000).toLocaleString();
   };
-  const visibleXLabels = title === "Loyalty Members"
+  const visibleXLabels: { label: string; index: number; anchor: "start" | "middle" | "end" }[] = title === "Loyalty Members"
     ? [
         { label: "Jan 25", index: 0, anchor: "start" },
         { label: "Jul", index: 6, anchor: "middle" },
