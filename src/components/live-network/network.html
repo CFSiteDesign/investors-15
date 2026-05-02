@@ -1464,6 +1464,7 @@ const camState = {
 
 function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
 function easeOutQuart(t)   { return 1 - Math.pow(1 - t, 4); }
+function easeInOutQuint(t) { return t < 0.5 ? 16*t*t*t*t*t : 1 - Math.pow(-2*t+2, 5)/2; }
 
 function setCamera(lookAtX, lookAtZ, zoom) {
   // Viewport-fit: the map is roughly 28 units wide. We want it to comfortably
