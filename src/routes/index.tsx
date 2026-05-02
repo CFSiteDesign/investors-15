@@ -119,7 +119,7 @@ function LiveNetwork() {
 function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto flex h-[68px] max-w-[1184px] items-center justify-between gap-5 px-5 lg:h-[84px] lg:gap-8 lg:px-6">
+      <div className="flex h-[68px] w-full items-center justify-between gap-5 px-5 lg:h-[84px] lg:gap-8">
         <a href="/" aria-label="Mad Monkey home" className="flex items-center gap-3">
           <img src={madMonkeyLogo} alt="Mad Monkey" width={360} height={180} className="h-[28px] w-auto object-contain lg:h-[46px]" />
         </a>
