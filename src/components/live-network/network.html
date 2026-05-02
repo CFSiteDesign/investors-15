@@ -1929,28 +1929,29 @@ function animate(now) {
       baseOp *= 0.4;
     }
     const targetOp = active ? 0.85 : baseOp;
-    const targetCol = active ? new THREE.Color(PALETTE.cyan) : new THREE.Color(PALETTE.blue);
     line.material.opacity += (targetOp - line.material.opacity) * 0.18 * dtN;
-    line.material.color.lerp(targetCol, 0.18 * dtN);
+    line.material.color.lerp(active ? _COL_CYAN : _COL_BLUE, 0.18 * dtN);
   });
 
-  // ---- hover raycast ----
-
-  // ---- hover raycast ----
-  raycaster.setFromCamera(pointer, camera);
-  const focusedCountry = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
-  const hits = [];
-  hostelMeshes.forEach(g => {
-    const idx = g.userData.index;
-    if (focusedCountry && HOSTELS[idx].country !== focusedCountry) return;
-    const hit = g.userData.parts.hit;
-    const inter = raycaster.intersectObject(hit, false);
-    if (inter.length) hits.push({ d: inter[0].distance, idx });
-  });
-  if (hits.length) {
-    hits.sort((a, b) => a.d - b.d);
-    setHover(hits[0].idx);
-  } else {
+  // ---- hover raycast (skip when pointer is idle/away and nothing selected) ----
+  const pointerActive = pointerOverCanvas && (now - lastPointerMoveAt < 250);
+  if (pointerActive) {
+    raycaster.setFromCamera(pointer, camera);
+    const focusedCountry = (selectedIdx !== -1) ? HOSTELS[selectedIdx].country : null;
+    let bestD = Infinity, bestIdx = -1;
+    for (let mi = 0; mi < hostelMeshes.length; mi++) {
+      const g = hostelMeshes[mi];
+      const idx = g.userData.index;
+      if (focusedCountry && HOSTELS[idx].country !== focusedCountry) continue;
+      const hit = g.userData.parts.hit;
+      const inter = raycaster.intersectObject(hit, false);
+      if (inter.length && inter[0].distance < bestD) {
+        bestD = inter[0].distance;
+        bestIdx = idx;
+      }
+    }
+    setHover(bestIdx);
+  } else if (hoveredIdx !== -1) {
     setHover(-1);
   }
 
