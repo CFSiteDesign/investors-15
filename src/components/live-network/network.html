@@ -1753,7 +1753,7 @@ function selectHostel(idx) {
   const spanX = Math.max(2, maxX - minX);
   const spanZ = Math.max(2, maxZ - minZ);
   const spread = Math.max(spanX, spanZ * 1.4);
-  const zoom = Math.max(0.45, Math.min(1.0, spread / 22 + 0.25));
+  const zoom = Math.max(0.4, Math.min(0.7, spread / 40 + 0.25));
 
   const lookX = cx * 0.7 + h.pos.x * 0.3;
   const lookZ = cz * 0.7 + h.pos.z * 0.3;
