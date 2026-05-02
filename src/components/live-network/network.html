@@ -1598,6 +1598,15 @@ const btnClose = document.getElementById('btn-close');
 function updateHoverCard(e) {
   hoverCardEl.style.left = `${e.clientX}px`;
   hoverCardEl.style.top  = `${e.clientY}px`;
+  // Flip above the cursor if the card would overflow the bottom of the viewport.
+  const rect = hoverCardEl.getBoundingClientRect();
+  const cardH = rect.height || 120;
+  const cardW = rect.width || 240;
+  const wouldOverflowBottom = (e.clientY + cardH + 24) > window.innerHeight;
+  const wouldOverflowRight  = (e.clientX + cardW + 24) > window.innerWidth;
+  const tx = wouldOverflowRight  ? `calc(-100% - 16px)` : `16px`;
+  const ty = wouldOverflowBottom ? `calc(-100% - 16px)` : `16px`;
+  hoverCardEl.style.transform = `translate(${tx}, ${ty})`;
 }
 
 let lastPointerMoveAt = 0;
