@@ -1502,10 +1502,11 @@ function nextKenBurns() {
   camState.holdUntil = performance.now() + 4000 + 4000; // tween + hold
 }
 
-// Initial framing: SE Asia centered, Australia visible bottom-right
-camState.lookAt.set(0, 0, 4);
+// Initial framing: zoomed into the SE Asia mainland cluster
+camState.lookAt.set(2, 0, 2);
+camState.zoom = 0.7;
 _camStateReady = true;
-setCamera(0, 4, 1.05); // centred from load, no intro dolly
+setCamera(2, 2, 0.7);
 
 // Auto ken-burns pan disabled per request — camera holds central framing
 // until a user clicks a hostel.
