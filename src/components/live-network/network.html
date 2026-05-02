@@ -1780,16 +1780,16 @@ const isMobile = window.innerWidth < 768;
 const SPAWN_INTERVAL = isMobile ? 800 : 400;
 
 // Dynamic target traveller count, drifts within [TRAV_MIN, TRAV_MAX].
-const TRAV_MIN = 4;
-const TRAV_MAX = 32;
-let travTarget = 8 + Math.floor(Math.random() * (TRAV_MAX - TRAV_MIN + 1));
+const TRAV_MIN = 14;
+const TRAV_MAX = 29;
+let travTarget = TRAV_MIN + Math.floor(Math.random() * (TRAV_MAX - TRAV_MIN + 1));
 let nextTargetShiftAt = performance.now() + 6000;
 
 let nextSpawnAt = performance.now() + 500;
 let nextCheckinAt = performance.now() + 1500;
 
 // Pre-seed travellers already in motion so the network feels alive on load
-const SEED_COUNT = TRAV_MIN + Math.floor(Math.random() * 6); // 8-13
+const SEED_COUNT = TRAV_MIN + Math.floor(Math.random() * (TRAV_MAX - TRAV_MIN + 1));
 for (let i = 0; i < SEED_COUNT; i++) {
   spawnTraveller();
   // randomise their progress so they aren't all bunched at the start
