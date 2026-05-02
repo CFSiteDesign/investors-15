@@ -1739,8 +1739,8 @@ function deselect() {
   selectedIdx = -1;
   detailEl.classList.remove('show');
   resetFanOut();
-  // Zoom back out to centred SE Asia framing
-  startCameraTween(0, 4, 1.05, 1100);
+  // Zoom back out to match the initial framing
+  startCameraTween(0, 0, 0.7, 1100);
   camState.holdUntil = performance.now() + 1100;
   camState.pauseUntil = performance.now() + 1500;
 }
