@@ -300,11 +300,6 @@ function Performance() {
 
         <Reveal delay={200}>
           <div className="mt-14 sm:mt-20">
-            <p className="text-[11px] font-black uppercase tracking-[0.22em] opacity-70">Live Network</p>
-            <h3 className="mt-2 font-display text-[clamp(28px,6vw,48px)] font-black uppercase leading-[0.95]">South East Asia Footprint</h3>
-            <p className="mt-3 max-w-[640px] text-[14px] font-light leading-[1.5] opacity-80 sm:text-[16px]">
-              Real-time view of the Mad Monkey operation - every property, route and traveller in motion across the region.
-            </p>
             <div
               className="relative mt-6 w-full overflow-hidden rounded-xl border border-[#2A1B5C] bg-[#0d0628]"
               style={{ height: "clamp(420px, 60vh, 560px)" }}
